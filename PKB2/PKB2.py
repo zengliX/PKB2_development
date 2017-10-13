@@ -4,6 +4,30 @@ main program
 author: li zeng
 """
 
+
+#  ██████  ██████  ███    ███ ███    ███  █████  ███    ██ ██████      ██      ██ ███    ██ ███████
+# ██      ██    ██ ████  ████ ████  ████ ██   ██ ████   ██ ██   ██     ██      ██ ████   ██ ██
+# ██      ██    ██ ██ ████ ██ ██ ████ ██ ███████ ██ ██  ██ ██   ██     ██      ██ ██ ██  ██ █████
+# ██      ██    ██ ██  ██  ██ ██  ██  ██ ██   ██ ██  ██ ██ ██   ██     ██      ██ ██  ██ ██ ██
+#  ██████  ██████  ██      ██ ██      ██ ██   ██ ██   ████ ██████      ███████ ██ ██   ████ ███████
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("problem", help="type of analysis (classification/regression/survival)")
+parser.add_argument("input", help="Input folder")
+parser.add_argument("output", help="Output folder")
+parser.add_argument("predictor", help="predictor file")
+parser.add_argument("predictor_set",help="file that specifies predictor group structure")
+parser.add_argument("response",help="outcome data file")
+parser.add_argument("kernel",help="kernel function (rbf/poly3)")
+parser.add_argument("method",help="regularization (L1/L2)")
+parser.add_argument("-maxiter",help="maximum number of iteration (default 800)")
+parser.add_argument("-rate",help="learning rate parameter (default 0.05)")
+parser.add_argument("-Lambda",help="penalty parameter")
+parser.add_argument("-test",help="file containing test data index")
+parser.add_argument("-pen",help="penalty multiplier")
+args = parser.parse_args()
+
 # ██ ███    ███ ██████   ██████  ██████  ████████
 # ██ ████  ████ ██   ██ ██    ██ ██   ██    ██
 # ██ ██ ████ ██ ██████  ██    ██ ██████     ██
@@ -24,32 +48,28 @@ from assist.method_L1 import oneiter_L1, find_Lambda_L1
 from assist.method_L2 import oneiter_L2, find_Lambda_L2
 import time
 from multiprocessing import cpu_count
-
 #import importlib
+
 
 #argv = "PKB2.py classification ../data/example ../data/example/new predictor.txt predictor_sets.txt response.txt rbf L1 -maxiter 800 -rate 0.02 -test test_label0.txt -pen 1"
 #argv = argv.split(' ')
 
 
+
+# ███    ███  █████  ██ ███    ██
+# ████  ████ ██   ██ ██ ████   ██
+# ██ ████ ██ ███████ ██ ██ ██  ██
+# ██  ██  ██ ██   ██ ██ ██  ██ ██
+# ██      ██ ██   ██ ██ ██   ████
+
 if __name__ == "__main__":
-
-# ██ ███    ██ ██████  ██    ██ ████████
-# ██ ████   ██ ██   ██ ██    ██    ██
-# ██ ██ ██  ██ ██████  ██    ██    ██
-# ██ ██  ██ ██ ██      ██    ██    ██
-# ██ ██   ████ ██       ██████     ██
-
     #importlib.reload(assist.input_process)
-    inputs = assist.input_process.input_obj()
-    inputs.parse_args(argv[1:])
+    inputs = assist.input_process.input_obj(args)
     inputs.proc_input()
-    
     # process data
-    inputs.data_preprocessing(center=True) 
-    
+    inputs.data_preprocessing(center=True)
     # split to test, train
     inputs.data_split()
-    
     # report
     inputs.input_summary()
     inputs.model_param()
@@ -89,7 +109,7 @@ if __name__ == "__main__":
         pass
     else:
         print("Analysis ",inputs.problem," not supported"); exit(-1)
-    
+
 
 
 # ██████   ██████   ██████  ███████ ████████ ██ ███    ██  ██████
@@ -105,7 +125,7 @@ if __name__ == "__main__":
     Lambda = inputs.Lambda
 
     # automatic selection of Lambda
-    if inputs.method == 'L1' and Lambda is None: 
+    if inputs.method == 'L1' and Lambda is None:
         Lambda = find_Lambda_L1(inputs.problem,K_train,F_train,ytrain,Kdims)
         Lambda *= inputs.pen
         print("L1 method: use Lambda",Lambda)
@@ -126,13 +146,13 @@ if __name__ == "__main__":
         print("Algorithm: parallel algorithm not used")
 
     ESTOP = 50 # early stop if test_loss have no increase
-    
+
     """---------------------------
     CV FOR NUMBER OF ITERATIONS
     ----------------------------"""
     opt_iter = CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=ESTOP,\
                       ncpu=1,parallel=parallel,gr_sub=gr_sub,plot=True)
-    
+
     """---------------------------
     BOOSTING ITERATIONS
     ----------------------------"""
@@ -145,22 +165,22 @@ if __name__ == "__main__":
         if inputs.method == 'L2':
             [m,beta,c] = oneiter_L2(inputs.problem,sharedK,F_train,ytrain,Kdims,\
                     Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
-                    sele_loc=None,group_subset = gr_sub)    
+                    sele_loc=None,group_subset = gr_sub)
         if inputs.method == 'L1':
             [m,beta,c] = oneiter_L1(inputs.problem,sharedK,F_train,ytrain,Kdims,\
                     Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
-                    sele_loc=None,group_subset = gr_sub) 
-    
+                    sele_loc=None,group_subset = gr_sub)
+
         # line search
         x = assist.util.line_search(inputs.problem,sharedK,F_train,ytrain,Kdims,[m,beta,c])
         beta *= x
         c *= x
-    
+
         # update outputs
         outputs.trace.append([m,beta,c])
         F_train += (K_train[:,:,m].dot(beta) + c)*inputs.nu
         outputs.train_loss.append(loss_fun(F_train,ytrain,inputs.problem))
-            
+
         if inputs.problem == "classification": # only classification has err
             outputs.train_err.append((np.sign(F_train)!=ytrain).sum()/len(ytrain))
         if inputs.Ntest>0:
@@ -168,8 +188,8 @@ if __name__ == "__main__":
             new_loss = loss_fun(F_test,ytest,inputs.problem)
             outputs.test_loss.append(loss_fun(F_test,ytest,inputs.problem))
             if inputs.problem == "classification":
-                outputs.test_err.append((np.sign(F_test)!=ytest).sum()/len(ytest))       
-                   
+                outputs.test_err.append((np.sign(F_test)!=ytest).sum()/len(ytest))
+
         # print time report
         if t%10 == 0:
             iter_persec = t/(time.time() - time0) # time of one iteration
