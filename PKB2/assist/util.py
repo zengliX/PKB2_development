@@ -66,7 +66,13 @@ print title
 "---- title ----"
 """
 def print_section(s, width = 40):
-    pass
+    if not s:
+        print('-'*width)
+    else:
+        ct_left = (width - len(s) -2)//2
+        ct_right = width - len(s) - 2 - ct_left
+        print('-'*ct_left + ' {} '.format(s) + '-'*ct_right)
+
 
 
 """-----------------

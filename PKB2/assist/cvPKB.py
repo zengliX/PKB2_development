@@ -4,7 +4,7 @@ author: li zeng
 """
 
 import assist
-from assist.util import line_search, subsamp
+from assist.util import line_search, subsamp, print_section
 import numpy as np
 import pandas as pd
 from assist.method_L1 import oneiter_L1
@@ -51,7 +51,7 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
     print([x.test_loss for x in models])
     min_loss = prev_loss =  np.mean( [x.test_loss[0] for x in models] )
     ave_loss = [prev_loss]
-    print("-------------------- CV -----------------------")
+    print_section('CV')
     print("iteration\tMean test loss")
     for t in range(1,inputs.maxiter+1):
         # one iteration
@@ -92,7 +92,9 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
             print('Early stop criterion satisfied: break CV.')
             print('using iteration number:',opt_iter)
             break
-    print("-----------------------------------------------\n")
+    print_section()
+    print()
+
     # visualization
     if plot:
         folder = inputs.output_folder

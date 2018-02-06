@@ -159,7 +159,7 @@ if __name__ == "__main__":
     ----------------------------"""
 
     time0 = time.time()
-    print("--------------------- Boosting ------------------------")
+    assist.util.print_section("BOOSTING")
     print("iteration\ttrain loss\ttest loss\t    time")
     for t in range(1,opt_iter+1):
         # one iteration
@@ -188,7 +188,7 @@ if __name__ == "__main__":
             rem_time = (opt_iter-t)/iter_persec # remaining time
             print("%9.0f\t%10.4f\t%9.4f\t%8.4f" % \
                   (t,model.train_loss[t],model.test_loss[t],rem_time/60))
-    print("-------------------------------------------------------")
+    print()
 
 # ██████  ███████ ███████ ██    ██ ██   ████████ ███████
 # ██   ██ ██      ██      ██    ██ ██      ██    ██
