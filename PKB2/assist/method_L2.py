@@ -4,16 +4,15 @@ author: li zeng
 """
 
 import numpy as np
-from assist.util import calcu_h, calcu_q
+from assist.util import get_K
 import multiprocessing as mp
 
 # function to parallelized
 
 def paral_fun_L2(sharedK,m,nrow,h,q,Lambda,sele_loc):
     # get K
-    width = nrow**2
-    Km = sharedK[(m*width):((m+1)*width)].reshape((nrow,nrow))
-    Km = Km[np.ix_(sele_loc,sele_loc)]
+    Km = get_K(sharedK,m,nrow,sele_loc)
+
     # working Lambda
     new_Lambda= len(sele_loc)*Lambda
 
@@ -29,14 +28,14 @@ def paral_fun_L2(sharedK,m,nrow,h,q,Lambda,sele_loc):
 
 
 # find Lambda
-def find_Lambda_L2(problem,K_train,F_train,ytrain,Kdims,C=2):
-    h = calcu_h(F_train,ytrain,problem)
-    q = calcu_q(F_train,ytrain,problem)
+def find_Lambda_L2(K_train,model,Kdims,C=2):
+    h = model.calcu_h()
+    q = model.calcu_q()
     # max(|Km*eta|)/N for each Km
     eta = h/q
     w_half = np.diag(np.sqrt(q/2))
     eta_tilde = w_half.dot(eta - eta*q/q.sum())
-    
+
     l_list = [] # list of lambdas from each group
     for m in range(Kdims[1]):
         Km = K_train[:,:,m]
@@ -51,23 +50,23 @@ def find_Lambda_L2(problem,K_train,F_train,ytrain,Kdims,C=2):
 
 
 # one boosting iteration for second order method
-def oneiter_L2(problem,sharedK,F_train,ytrain,Kdims,Lambda,ncpu = 1,\
+def oneiter_L2(sharedK,model,Kdims,Lambda,ncpu = 1,\
                parallel=False,sele_loc = None,group_subset = False):
     # whether stochastic gradient boosting
     if sele_loc is None:
-        sele_loc = np.array(range(len(ytrain)))
-        
+        sele_loc = np.array(range(model.Ntrain))
+
     # calculate derivatives h,q
-    h = calcu_h(F_train,ytrain,problem)
-    q = calcu_q(F_train,ytrain,problem)
-    
+    h = model.calcu_h()
+    q = model.calcu_q()
+
     # identify best fit K_m
     if not parallel: ncpu =1
         # random subset of groups
     mlist = range(Kdims[1])
     if group_subset:
         mlist= np.random.choice(mlist,min([Kdims[1]//3,100]),replace=False)
-        
+
     pool = mp.Pool(processes =ncpu,maxtasksperchild=300)
     results = [pool.apply_async(paral_fun_L2,args=(sharedK,m,Kdims[0],h,q,Lambda,sele_loc)) for m in mlist]
     out = [res.get() for res in results]

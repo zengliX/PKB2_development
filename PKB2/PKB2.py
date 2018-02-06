@@ -42,14 +42,13 @@ import sharedmem
 #matplotlib.use('Agg')
 #from matplotlib import pyplot as plt
 import assist
-from assist.util import loss_fun
 from assist.cvPKB import CV_PKB
 from assist.method_L1 import oneiter_L1, find_Lambda_L1
 from assist.method_L2 import oneiter_L2, find_Lambda_L2
 import time
 from multiprocessing import cpu_count
-#import importlib
 
+#import importlib
 
 #argv = "PKB2.py classification ../data/example ../data/example/new predictor.txt predictor_sets.txt response.txt rbf L1 -maxiter 800 -rate 0.02 -test test_label0.txt -pen 1"
 #argv = argv.split(' ')
@@ -96,21 +95,20 @@ if __name__ == "__main__":
 
 
     """---------------------------
-    initialize outputs object
+    initialize model object
     ----------------------------"""
     #importlib.reload(assist.outputs)
-    outputs = assist.outputs.output_obj(inputs)
-
     if inputs.problem == "classification":
-        F_train, ytrain, F_test, ytest = assist.util.init_F_classification(inputs,outputs)
+        ytrain = np.squeeze(inputs.train_response.values)
+        ytest = np.squeeze(inputs.test_response.values) if not inputs.Ntest == None else None
+        model = assist.Classification.PKB_Classification(inputs,ytrain,ytest)
+        model.init_F()
     elif inputs.problem == "regression":
         pass
     elif inputs.problem == "survival":
         pass
     else:
         print("Analysis ",inputs.problem," not supported"); exit(-1)
-
-
 
 # ██████   ██████   ██████  ███████ ████████ ██ ███    ██  ██████
 # ██   ██ ██    ██ ██    ██ ██         ██    ██ ████   ██ ██
@@ -126,11 +124,11 @@ if __name__ == "__main__":
 
     # automatic selection of Lambda
     if inputs.method == 'L1' and Lambda is None:
-        Lambda = find_Lambda_L1(inputs.problem,K_train,F_train,ytrain,Kdims)
+        Lambda = find_Lambda_L1(K_train,model,Kdims)
         Lambda *= inputs.pen
         print("L1 method: use Lambda",Lambda)
     if inputs.method == 'L2' and Lambda is None:
-        Lambda = find_Lambda_L2(inputs.problem,K_train,F_train,ytrain,Kdims,C=1)
+        Lambda = find_Lambda_L2(K_train,model,Kdims,C=1)
         Lambda *= inputs.pen
         print("L2 method: use Lambda",Lambda)
 
@@ -150,8 +148,11 @@ if __name__ == "__main__":
     """---------------------------
     CV FOR NUMBER OF ITERATIONS
     ----------------------------"""
+
     opt_iter = CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=ESTOP,\
                       ncpu=1,parallel=parallel,gr_sub=gr_sub,plot=True)
+
+    #opt_iter = 50
 
     """---------------------------
     BOOSTING ITERATIONS
@@ -163,42 +164,31 @@ if __name__ == "__main__":
     for t in range(1,opt_iter+1):
         # one iteration
         if inputs.method == 'L2':
-            [m,beta,c] = oneiter_L2(inputs.problem,sharedK,F_train,ytrain,Kdims,\
+            [m,beta,c] = oneiter_L2(sharedK,model,Kdims,\
                     Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
                     sele_loc=None,group_subset = gr_sub)
         if inputs.method == 'L1':
-            [m,beta,c] = oneiter_L1(inputs.problem,sharedK,F_train,ytrain,Kdims,\
+            [m,beta,c] = oneiter_L1(sharedK,model,Kdims,\
                     Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
                     sele_loc=None,group_subset = gr_sub)
-
         # line search
-        x = assist.util.line_search(inputs.problem,sharedK,F_train,ytrain,Kdims,[m,beta,c])
+        x = assist.util.line_search(sharedK,model,Kdims,[m,beta,c])
         beta *= x
         c *= x
 
-        # update outputs
-        outputs.trace.append([m,beta,c])
-        F_train += (K_train[:,:,m].dot(beta) + c)*inputs.nu
-        outputs.train_loss.append(loss_fun(F_train,ytrain,inputs.problem))
-
-        if inputs.problem == "classification": # only classification has err
-            outputs.train_err.append((np.sign(F_train)!=ytrain).sum()/len(ytrain))
-        if inputs.Ntest>0:
-            F_test += (K_test[:,:,m].T.dot(beta)+ c)*inputs.nu
-            new_loss = loss_fun(F_test,ytest,inputs.problem)
-            outputs.test_loss.append(loss_fun(F_test,ytest,inputs.problem))
-            if inputs.problem == "classification":
-                outputs.test_err.append((np.sign(F_test)!=ytest).sum()/len(ytest))
+        # update model parameters
+        if model.hasTest:
+            model.update([m,beta,c],K_train[:,:,m],K_test[:,:,m],inputs.nu)
+        else:
+            model.update([m,beta,c],K_train[:,:,m],None,inputs.nu)
 
         # print time report
         if t%10 == 0:
             iter_persec = t/(time.time() - time0) # time of one iteration
             rem_time = (opt_iter-t)/iter_persec # remaining time
             print("%9.0f\t%10.4f\t%9.4f\t%8.4f" % \
-                  (t,outputs.train_loss[t],outputs.test_loss[t],rem_time/60))
+                  (t,model.train_loss[t],model.test_loss[t],rem_time/60))
     print("-------------------------------------------------------")
-
-
 
 # ██████  ███████ ███████ ██    ██ ██   ████████ ███████
 # ██   ██ ██      ██      ██    ██ ██      ██    ██
@@ -206,6 +196,7 @@ if __name__ == "__main__":
 # ██   ██ ██           ██ ██    ██ ██      ██         ██
 # ██   ██ ███████ ███████  ██████  ███████ ██    ███████
 
+    outputs = assist.outputs.output_obj(model,inputs)
     ## show results
     # trace
     if inputs.problem == "classification":
@@ -233,11 +224,7 @@ if __name__ == "__main__":
     import pickle
     out_file = inputs.output_folder + "/results.pckl"
     f = open(out_file,'wb')
-    outputs.inputs.test_predictors =None
-    outputs.inputs.train_predictors = None
-    outputs.inputs.test_response=None
-    outputs.inputs.train_response=None
-    outputs.inputs.pred_sets=None
+    outputs.clean_up()
     pickle.dump(outputs,f)
     f.close()
     print("results saved to:",out_file)
