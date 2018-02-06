@@ -7,6 +7,7 @@ import sys
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import scale
+from assist.util import print_section
 
 # test existence of data
 def have_file(myfile):
@@ -89,7 +90,7 @@ class input_obj:
         """
         load corresponding data
         """
-        print('----------- LOAD DATA -------------------')
+        print_section('LOAD DATA')
         # make output folder
         if not os.path.exists(self.output_folder):
             os.makedirs(self.output_folder)
@@ -122,8 +123,7 @@ class input_obj:
         preprocess data:
         remove low variance, normalize each column, and drop not used groups
         """
-        print()
-        print('------------PROCESS DATA ----------------')
+        print_section('PROCESS DATA')
         if not self.loaded:
             print("No data loaded. Can not preprocess.")
             return
@@ -161,8 +161,7 @@ class input_obj:
         """
         split the data into test and train
         """
-        print()
-        print('--------------SPLIT DATA ----------------')
+        print_section('SPLIT DATA')
         print("Using test label: ",self.test_file)
         if self.test_file is None: return
         # load test file
@@ -187,8 +186,7 @@ class input_obj:
     # ██      ██   ██ ██ ██   ████    ██
 
     def input_summary(self):
-        print()
-        print('------------- SUMMARY ------------------')
+        print_section('SUMMARY')
         print("Analysis type:",self.problem)
         print("input folder:", self.input_folder)
         print("output file folder:",self.output_folder)
@@ -199,8 +197,7 @@ class input_obj:
         return
 
     def model_param(self):
-        print()
-        print('------------ PARAMS --------------------')
+        print_section('PARAMETERS')
         print("learning rate:",self.nu)
         print("Lambda:",self.Lambda)
         print("maximum iteration:", self.maxiter)

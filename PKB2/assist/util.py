@@ -65,7 +65,8 @@ def get_K(sharedK,m,nrow,sele_loc):
 print title
 "---- title ----"
 """
-def print_section(s, width = 40):
+def print_section(s, width = 60):
+    print()
     if not s:
         print('-'*width)
     else:

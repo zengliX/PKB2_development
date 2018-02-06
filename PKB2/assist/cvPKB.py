@@ -48,9 +48,9 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
 
     ########## boosting for each fold ###############
     opt_iter = 0
-    print([x.test_loss for x in models])
     min_loss = prev_loss =  np.mean( [x.test_loss[0] for x in models] )
     ave_loss = [prev_loss]
+
     print_section('CV')
     print("iteration\tMean test loss")
     for t in range(1,inputs.maxiter+1):
@@ -92,8 +92,6 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
             print('Early stop criterion satisfied: break CV.')
             print('using iteration number:',opt_iter)
             break
-    print_section()
-    print()
 
     # visualization
     if plot:
