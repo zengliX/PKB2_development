@@ -36,6 +36,7 @@ class PKB_Classification(BaseModel):
         self.F_train = F_train
         self.F_test = F_test
 
+
     """
     update class after calculation of [m,beta,c] in each iteration
     pars: [m, beta, c]

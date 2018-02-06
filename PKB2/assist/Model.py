@@ -62,7 +62,6 @@ class BaseModel:
             new_loss = self.loss_fun(self.ytest,self.F_test)
             self.test_loss.append(new_loss)
 
-
     """------------------------------------
     other functions to be added in child classes
 

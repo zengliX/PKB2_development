@@ -4,12 +4,11 @@ main program
 author: li zeng
 """
 
-
-#  ██████  ██████  ███    ███ ███    ███  █████  ███    ██ ██████      ██      ██ ███    ██ ███████
-# ██      ██    ██ ████  ████ ████  ████ ██   ██ ████   ██ ██   ██     ██      ██ ████   ██ ██
-# ██      ██    ██ ██ ████ ██ ██ ████ ██ ███████ ██ ██  ██ ██   ██     ██      ██ ██ ██  ██ █████
-# ██      ██    ██ ██  ██  ██ ██  ██  ██ ██   ██ ██  ██ ██ ██   ██     ██      ██ ██  ██ ██ ██
-#  ██████  ██████  ██      ██ ██      ██ ██   ██ ██   ████ ██████      ███████ ██ ██   ████ ███████
+#  █████  ██████   ██████  ███████
+# ██   ██ ██   ██ ██       ██
+# ███████ ██████  ██   ███ ███████
+# ██   ██ ██   ██ ██    ██      ██
+# ██   ██ ██   ██  ██████  ███████
 
 import argparse
 parser = argparse.ArgumentParser()
@@ -33,8 +32,6 @@ args = parser.parse_args()
 # ██ ██ ████ ██ ██████  ██    ██ ██████     ██
 # ██ ██  ██  ██ ██      ██    ██ ██   ██    ██
 # ██ ██      ██ ██       ██████  ██   ██    ██
-
-
 from sys import argv
 import numpy as np
 import sharedmem
@@ -186,8 +183,6 @@ if __name__ == "__main__":
             iter_persec = t/(time.time() - time0) # time of one iteration
             rem_time = (opt_iter-t)/iter_persec # remaining time
             if model.hasTest:
-                print(model.test_loss)
-                print(model.train_loss)
                 print("%9.0f\t%10.4f\t%9.4f\t%8.4f" % \
                   (t,model.train_loss[t],model.test_loss[t],rem_time/60))
             else:

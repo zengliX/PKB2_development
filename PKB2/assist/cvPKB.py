@@ -51,7 +51,7 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
     min_loss = prev_loss =  np.mean( [x.test_loss[0] for x in models] )
     ave_loss = [prev_loss]
 
-    print_section('CV')
+    print_section('Cross-Validation')
     print("iteration\tMean test loss")
     for t in range(1,inputs.maxiter+1):
         # one iteration
