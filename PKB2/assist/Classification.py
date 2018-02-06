@@ -5,6 +5,7 @@ class PKB_Classification(BaseModel):
     def __init__(self,inputs,ytrain,ytest):
         super().__init__(inputs,ytrain,ytest)
         # for classification only
+        self.problem = 'classification'
         self.train_err = [] # training error
         self.test_err = [] # testing error
 
@@ -37,21 +38,16 @@ class PKB_Classification(BaseModel):
 
     """
     update class after calculation of [m,beta,c] in each iteration
+    pars: [m, beta, c]
     K: training kernel matrix
     K1: testing kernel matrix
+    rate: learning rate parameter
     """
     def update(self,pars,K,K1,rate):
-        m,beta,c = pars
-        self.trace.append([m,beta,c])
-        self.F_train += (K.dot(beta) + c)*rate
-        self.train_loss.append(self.loss_fun(self.ytrain,self.F_train))
+        super().update(pars,K,K1,rate)
         self.train_err.append((np.sign(self.F_train)!=self.ytrain).sum()/self.Ntrain)
         if self.hasTest:
-            self.F_test += (K1.T.dot(beta)+ c)*rate
-            new_loss = self.loss_fun(self.ytest,self.F_test)
-            self.test_loss.append(new_loss)
             self.test_err.append((np.sign(self.F_test)!=self.ytest).sum()/self.Ntest)
-
 
     """
     calculate first order derivative
@@ -71,4 +67,4 @@ class PKB_Classification(BaseModel):
     classification loss function, log loss
     """
     def loss_fun(self,y,f):
-            return np.mean(np.log(1+np.exp(-y*f)))
+        return np.mean(np.log(1+np.exp(-y*f)))

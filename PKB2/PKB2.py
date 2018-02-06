@@ -72,7 +72,6 @@ if __name__ == "__main__":
     # report
     inputs.input_summary()
     inputs.model_param()
-    print("number of cpus available:",cpu_count())
 
 
     # ██████  ██████  ███████ ██████
@@ -152,7 +151,6 @@ if __name__ == "__main__":
 
     opt_iter = CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=ESTOP,\
                       ncpu=1,parallel=parallel,gr_sub=gr_sub,plot=True)
-
     #opt_iter = 50
 
     """---------------------------
@@ -188,6 +186,8 @@ if __name__ == "__main__":
             iter_persec = t/(time.time() - time0) # time of one iteration
             rem_time = (opt_iter-t)/iter_persec # remaining time
             if model.hasTest:
+                print(model.test_loss)
+                print(model.train_loss)
                 print("%9.0f\t%10.4f\t%9.4f\t%8.4f" % \
                   (t,model.train_loss[t],model.test_loss[t],rem_time/60))
             else:

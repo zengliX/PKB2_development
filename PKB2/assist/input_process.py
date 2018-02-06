@@ -17,11 +17,12 @@ def have_file(myfile):
     else:
         print("reading file:",myfile)
 
+"""
+input object:
+- parse command line arguments
+- import data
+"""
 class input_obj:
-    """
-    parse command line arguments
-    import data
-    """
     "class object for input data"
     # data status
     loaded = False
@@ -61,7 +62,9 @@ class input_obj:
     method = None
     pen = 1
 
-    # initialize with command line arguments
+    """
+    initialize input class with command line arguments
+    """
     def __init__(self,args):
         # assign to class objects
         self.problem = args.problem
@@ -85,7 +88,10 @@ class input_obj:
     # ██      ██   ██ ██    ██ ██          ██ ██  ██ ██ ██      ██    ██    ██
     # ██      ██   ██  ██████   ██████     ██ ██   ████ ██       ██████     ██
 
-    # function to process input
+    """
+    process input parameters
+    - load data
+    """
     def proc_input(self):
         """
         load corresponding data
@@ -118,11 +124,12 @@ class input_obj:
         self.loaded = True
         return
 
+    """
+    data processing
+    - center predictor
+    - normalize predictors
+    """
     def data_preprocessing(self,center = False,norm=False):
-        """
-        preprocess data:
-        remove low variance, normalize each column, and drop not used groups
-        """
         print_section('PROCESS DATA')
         if not self.loaded:
             print("No data loaded. Can not preprocess.")
@@ -156,11 +163,10 @@ class input_obj:
         self.Ngroup = len(self.pred_sets)
         return
 
-
+    """
+    split the data into test and train when test_file is present
+    """
     def data_split(self):
-        """
-        split the data into test and train
-        """
         print_section('SPLIT DATA')
         print("Using test label: ",self.test_file)
         if self.test_file is None: return

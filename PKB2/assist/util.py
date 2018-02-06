@@ -34,7 +34,12 @@ def line_search(sharedK,model,Kdims,pars,sele_loc=None):
         print("warning: minimization failure")
     return out.x
 
-# sampling
+
+"""
+stratified sampling
+y: dataframe
+col: the column used for stratification
+"""
 def subsamp(y,col,fold=3):
     grouped = y.groupby(col)
     out = [list() for i in range(fold)]
@@ -73,26 +78,3 @@ def print_section(s, width = 60):
         ct_left = (width - len(s) -2)//2
         ct_right = width - len(s) - 2 - ct_left
         print('-'*ct_left + ' {} '.format(s) + '-'*ct_right)
-
-
-
-"""-----------------
-DERIVATIVES
---------------------"""
-
-# first order
-def calcu_h(F_train,ytrain,problem):
-    if problem == "classification":
-        denom  = np.exp(ytrain * F_train) + 1
-        return (-ytrain)/denom
-    elif problem == "survival":
-        pass
-
-
-# second order
-def calcu_q(F_train,ytrain,problem):
-    if problem == "classification":
-        denom = (np.exp(ytrain * F_train) + 1)**2
-        return np.exp(ytrain * F_train)/denom
-    elif problem == "survival":
-        pass
