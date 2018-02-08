@@ -71,7 +71,6 @@ if __name__ == "__main__":
     inputs.input_summary()
     inputs.model_param()
 
-
     # ██████  ██████  ███████ ██████
     # ██   ██ ██   ██ ██      ██   ██
     # ██████  ██████  █████   ██████

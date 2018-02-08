@@ -16,7 +16,6 @@ Model class is used to
 class BaseModel:
     """
     model initialization
-    coef_mat: beta coefficients for pathways, shape (Ntrain, Ngroup)
     trace: increment parameters in each boosting iteration
     train_loss: training loss of each iteration
     test_loss: testing loss of each iteration
@@ -32,7 +31,6 @@ class BaseModel:
         self.F0 = None
 
         # tracking of performance
-        self.coef_mat =  np.zeros([inputs.Ntrain,inputs.Ngroup])
         self.trace = []  # keep track of each iteration
         self.train_loss = [] # loss function at each iteration
         self.test_loss = []

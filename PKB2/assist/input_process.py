@@ -44,11 +44,13 @@ class input_obj:
     train_predictors=None
     train_response=None
     pred_sets=None
+    train_clinical = None
 
     # optional
     test_file = None
     test_predictors = None
     test_response = None
+    test_clinical = None
 
     # input summary
     Ngroup = 0
@@ -123,10 +125,17 @@ class input_obj:
         have_file(thisfile)
         self.train_response = pd.DataFrame.from_csv(thisfile)
 
+        if self.hasClinical:
+            thisfile = self.input_folder + "/"+ self.clinical_file
+            have_file(thisfile)
+            self.train_clinical = pd.DataFrame.from_csv(thisfile)
+
         # data summary
         self.Ntrain = self.train_predictors.shape[0]
         self.Ngroup = self.pred_sets.shape[0]
         self.Npred = self.train_predictors.shape[1]
+        if self.hasClinical:
+            self.Npred_clin = self.train_clinical.shape[1]
         self.group_names = self.pred_sets.index
 
         # change loaded indicator
@@ -135,8 +144,9 @@ class input_obj:
 
     """
     data processing
-    - center predictor
-    - normalize predictors
+    - center gene predictor
+    - or normalize gene predictors
+    - add intercept to clinical data (if present)
     """
     def data_preprocessing(self,center = False,norm=False):
         print_section('PROCESS DATA')
@@ -144,7 +154,7 @@ class input_obj:
             print("No data loaded. Can not preprocess.")
             return
 
-        # center data
+        # center genomic data
         if center:
             print('Centering data.')
             scale(self.train_predictors,copy=False,with_std=False)
@@ -168,6 +178,14 @@ class input_obj:
         if len(to_drop)>0:
             self.pred_sets = self.pred_sets.drop(self.pred_sets.index[to_drop])
 
+        # add intercept column to clinical data
+        intercept_col = pd.DataFrame( {'intercept':np.ones(self.Ntrain)} , index=self.train_predictors.index)
+        if self.hasClinical:
+            self.train_clinical = pd.concat([self.train_clinical, intercept_col],axis=1)
+        else:
+            self.train_clinical = intercept_col
+
+
         # calculate summary
         self.Ngroup = len(self.pred_sets)
         return
@@ -176,9 +194,9 @@ class input_obj:
     split the data into test and train when test_file is present
     """
     def data_split(self):
+        if not self.hasTest: return
         print_section('SPLIT DATA')
         print("Using test label: ",self.test_file)
-        if self.test_file is None: return
         # load test file
         thisfile = self.input_folder+'/'+self.test_file
         f  = open(thisfile,'r')
@@ -190,6 +208,10 @@ class input_obj:
         train_ind = np.setdiff1d(self.train_predictors.index.values,np.array(test_ind))
         self.train_predictors = self.train_predictors.loc[train_ind]
         self.train_response = self.train_response.loc[train_ind]
+        if self.hasClinical:
+            self.test_clinical = self.train_clinical.loc[test_ind]
+            self.train_clinical = self.train_clinical.loc[train_ind]
+
         # update summary
         self.Ntest = len(self.test_response)
         self.Ntrain = len(self.train_response)
@@ -204,11 +226,12 @@ class input_obj:
         print_section('SUMMARY')
         print("Analysis type:",self.problem)
         print("input folder:", self.input_folder)
-        print("output file folder:",self.output_folder)
+        print("output folder:",self.output_folder)
         print("number of training samples:",self.Ntrain)
-        print("number of test samples:",self.Ntest)
-        print("number of groups:", self.Ngroup)
-        print("number of predictors:", self.Npred)
+        print("number of testing samples:",self.Ntest)
+        print("number of pathways:", self.Ngroup)
+        print("number of gene predictors:", self.Npred)
+        print("number of clinical predictors:", self.Npred_clin)
         return
 
     def model_param(self):

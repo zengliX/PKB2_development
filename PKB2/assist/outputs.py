@@ -22,9 +22,15 @@ output object:
 """
 class output_obj:
     # initialization
+    """
+    coef_mat: beta coefficients for pathways, shape (Ntrain, Ngroup)
+    coef_clinical: alpha coefficients for clinical variables and intercept, shape (Npred_clin+1,)
+    """
     def __init__(self,model,inputs):
         self.inputs = inputs
         self.model = model
+        self.coef_mat =  np.zeros([inputs.Ntrain,inputs.Ngroup])
+        self.coef_clinical = np.zeros(inputs.Npred_clin + 1)
         return
 
     """
@@ -61,14 +67,14 @@ class output_obj:
     return group weights at iteration t
     """
     def group_weights(self,t,plot=True):
-        self.model.coef_mat.fill(0)
+        self.coef_mat.fill(0)
         # calculate coefficient matrix at step t
         for i in range(t+1):
             [m,beta,c] = self.model.trace[i]
-            self.model.coef_mat[:,m] += beta*self.inputs.nu
+            self.coef_mat[:,m] += beta*self.inputs.nu
 
         # calculate pathway weights
-        weights = weight_calc(self.model.coef_mat)
+        weights = weight_calc(self.coef_mat)
 
         # visualization
         if plot:
@@ -83,16 +89,16 @@ class output_obj:
     show the path of weights for each group
     """
     def weights_path(self,plot=True):
-        self.model.coef_mat.fill(0)
+        self.coef_mat.fill(0)
         # calculate coefficient matrix at step t
         weight_mat = np.zeros([len(self.model.train_err),self.inputs.Ngroup])
 
         # calculate weights for each iteration
         for i in range(1,len(self.model.train_err)):
             [m,beta,c] = self.model.trace[i]
-            self.model.coef_mat[:,m] += beta*self.inputs.nu
+            self.coef_mat[:,m] += beta*self.inputs.nu
             weight_mat[i,:] = weight_mat[i-1,:]
-            weight_mat[i,m] =  np.sqrt((self.model.coef_mat[:,m]**2).sum())
+            weight_mat[i,m] =  np.sqrt((self.coef_mat[:,m]**2).sum())
 
         # weights at opt_t
         first5 = weight_mat[-1,:].argsort()[-5:][::-1]
