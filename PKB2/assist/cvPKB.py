@@ -20,6 +20,8 @@ class CVinputs:
         self.Ntrain = ytrain.shape[0]
         self.Ntest = ytest.shape[0]
         self.Ngroup = inputs.Ngroup
+        self.hasTest = inputs.hasTest
+        self.hasClinical = inputs.hasClinical 
 
 """
 Cross-Validation function

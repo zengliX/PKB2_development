@@ -20,6 +20,7 @@ parser.add_argument("predictor_set",help="file that specifies predictor group st
 parser.add_argument("response",help="outcome data file")
 parser.add_argument("kernel",help="kernel function (rbf/poly3)")
 parser.add_argument("method",help="regularization (L1/L2)")
+parser.add_argument("-clinical",help="file of clinical predictors")
 parser.add_argument("-maxiter",help="maximum number of iteration (default 800)")
 parser.add_argument("-rate",help="learning rate parameter (default 0.05)")
 parser.add_argument("-Lambda",help="penalty parameter")
@@ -82,7 +83,7 @@ if __name__ == "__main__":
     ----------------------------"""
     #importlib.reload(assist.kernel_calc)
     K_train = assist.kernel_calc.get_kernels(inputs.train_predictors,inputs.train_predictors,inputs)
-    if not inputs.Ntest is None:
+    if inputs.hasTest:
         K_test= assist.kernel_calc.get_kernels(inputs.train_predictors,inputs.test_predictors,inputs)
 
     # put K_train in shared memory
@@ -97,7 +98,7 @@ if __name__ == "__main__":
     #importlib.reload(assist.outputs)
     if inputs.problem == "classification":
         ytrain = np.squeeze(inputs.train_response.values)
-        ytest = np.squeeze(inputs.test_response.values) if not inputs.Ntest == None else None
+        ytest = np.squeeze(inputs.test_response.values) if inputs.hasTest else None
         model = assist.Classification.PKB_Classification(inputs,ytrain,ytest)
         model.init_F()
     elif inputs.problem == "regression":

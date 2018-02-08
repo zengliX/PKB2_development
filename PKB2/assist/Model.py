@@ -27,7 +27,8 @@ class BaseModel:
         self.ytest = ytest
         self.Ntrain = inputs.Ntrain
         self.Ntest = inputs.Ntest
-        self.hasTest = not inputs.Ntest is None
+        self.hasTest = inputs.hasTest
+        self.hasClinical = inputs.hasClinical
         self.F0 = None
 
         # tracking of performance

@@ -29,6 +29,8 @@ class input_obj:
 
     # type of problem
     problem = None
+    hasTest = False # whether has test data
+    hasClinical = False # whether has clincal data
 
     #folder/files
     input_folder = None
@@ -36,6 +38,7 @@ class input_obj:
     group_file = None
     train_predictor_file = None
     train_response_file = None
+    clinical_file = None
 
     # input, output pars
     train_predictors=None
@@ -48,10 +51,11 @@ class input_obj:
     test_response = None
 
     # input summary
-    Ngroup = None
-    Ntrain = None
-    Ntest = None
-    Npred = None # number of predictor
+    Ngroup = 0
+    Ntrain = 0
+    Ntest = 0
+    Npred = 0 # number of predictor
+    Npred_clin = 0 # number of clinical predictors
     group_names = None
 
     # model pars
@@ -78,8 +82,13 @@ class input_obj:
         if not args.maxiter is None: self.maxiter= int(args.maxiter)
         if not args.rate is None: self.nu = float(args.rate)
         if not args.Lambda is None: self.Lambda = float(args.Lambda)
-        if not args.test is None: self.test_file = args.test
+        if not args.test is None:
+            self.test_file = args.test
+            self.hasTest = True
         if not args.pen is None: self.pen = float(args.pen)
+        if not args.clinical is None:
+            self.clinical_file = args.clinical
+            self.hasClinical = True
         #print(self.__dict__)
 
     # ██████  ██████   ██████   ██████     ██ ███    ██ ██████  ██    ██ ████████
