@@ -146,7 +146,8 @@ class input_obj:
     data processing
     - center gene predictor
     - or normalize gene predictors
-    - add intercept to clinical data (if present)
+    - add intercept to clinical data
+        (if no clinical data, then self.train_clinical is just one column for intercept)
     """
     def data_preprocessing(self,center = False,norm=False):
         print_section('PROCESS DATA')
@@ -205,12 +206,11 @@ class input_obj:
         # split data
         self.test_predictors = self.train_predictors.loc[test_ind]
         self.test_response = self.train_response.loc[test_ind]
+        self.test_clinical = self.train_clinical.loc[test_ind]
         train_ind = np.setdiff1d(self.train_predictors.index.values,np.array(test_ind))
         self.train_predictors = self.train_predictors.loc[train_ind]
         self.train_response = self.train_response.loc[train_ind]
-        if self.hasClinical:
-            self.test_clinical = self.train_clinical.loc[test_ind]
-            self.train_clinical = self.train_clinical.loc[train_ind]
+        self.train_clinical = self.train_clinical.loc[train_ind]
 
         # update summary
         self.Ntest = len(self.test_response)

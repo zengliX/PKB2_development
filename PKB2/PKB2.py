@@ -47,7 +47,6 @@ import time
 from multiprocessing import cpu_count
 
 #import importlib
-
 #argv = "PKB2.py classification ../data/example ../data/example/new predictor.txt predictor_sets.txt response.txt rbf L1 -maxiter 800 -rate 0.02 -test test_label0.txt -pen 1"
 #argv = argv.split(' ')
 
