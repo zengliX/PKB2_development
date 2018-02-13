@@ -77,12 +77,15 @@ if __name__ == "__main__":
     # ██      ██   ██ ███████ ██
 
     """---------------------------
-    CALCULATE KERNEL
+    CALCULATE KERNEL; GET CLINICAL MATRIX
     ----------------------------"""
     #importlib.reload(assist.kernel_calc)
     K_train = assist.kernel_calc.get_kernels(inputs.train_predictors,inputs.train_predictors,inputs)
+    Z_train = inputs.train_clinical.values
     if inputs.hasTest:
         K_test= assist.kernel_calc.get_kernels(inputs.train_predictors,inputs.test_predictors,inputs)
+        Z_test = inputs.test_clinical.values
+
 
     # put K_train in shared memory
     sharedK = sharedmem.empty(K_train.size)
@@ -117,15 +120,14 @@ if __name__ == "__main__":
     ----------------------------"""
     ncpu = min(5,cpu_count())
     Lambda = inputs.Lambda
-    Z = assist.util.get_Z(inputs)
 
     # automatic selection of Lambda
     if inputs.method == 'L1' and Lambda is None:
-        Lambda = find_Lambda_L1(K_train,Z,model,Kdims)
+        Lambda = find_Lambda_L1(K_train,Z_train,model,Kdims)
         Lambda *= inputs.pen
         print("L1 method: use Lambda",Lambda)
     if inputs.method == 'L2' and Lambda is None:
-        Lambda = find_Lambda_L2(K_train,Z,model,Kdims,C=1)
+        Lambda = find_Lambda_L2(K_train,Z_train,model,Kdims,C=1)
         Lambda *= inputs.pen
         print("L2 method: use Lambda",Lambda)
 
@@ -161,26 +163,26 @@ if __name__ == "__main__":
     for t in range(1,opt_iter+1):
         # one iteration
         if inputs.method == 'L2':
-            [m,beta,gamma] = oneiter_L2(sharedK,Z,model,Kdims,\
+            [m,beta,gamma] = oneiter_L2(sharedK,Z_train,model,Kdims,\
                     Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
                     sele_loc=None,group_subset = gr_sub)
         if inputs.method == 'L1':
-            [m,beta,gamma] = oneiter_L1(sharedK,Z,model,Kdims,\
+            [m,beta,gamma] = oneiter_L1(sharedK,Z_train,model,Kdims,\
                     Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
                     sele_loc=None,group_subset = gr_sub)
-        print([m,beta,gamma])
-        print("temporary stop")
-        exit(-1)
+        #print([m,beta,gamma])
+        #print("beta shape: {}; gamma shape: {}".format(beta.shape, gamma.shape))
+
         # line search
-        x = assist.util.line_search(sharedK,model,Kdims,[m,beta,c])
+        x = assist.util.line_search(sharedK,Z_train,model,Kdims,[m,beta,gamma])
         beta *= x
-        c *= x
+        gamma *= x
 
         # update model parameters
         if model.hasTest:
-            model.update([m,beta,c],K_train[:,:,m],K_test[:,:,m],inputs.nu)
+            model.update([m,beta,gamma],K_train[:,:,m],K_test[:,:,m],Z_train,Z_test,inputs.nu)
         else:
-            model.update([m,beta,c],K_train[:,:,m],None,inputs.nu)
+            model.update([m,beta,gamma],K_train[:,:,m],None,Z_train,None,inputs.nu)
 
         # print time report
         if t%10 == 0:
@@ -193,7 +195,8 @@ if __name__ == "__main__":
                 print("%9.0f\t%10.4f\t---------\t%8.4f" % \
                   (t,model.train_loss[t],rem_time/60))
     print()
-
+    print("temporary stop")
+    exit(-1)
 
     # ██████  ███████ ███████ ██    ██ ██   ████████ ███████
     # ██   ██ ██      ██      ██    ██ ██      ██    ██

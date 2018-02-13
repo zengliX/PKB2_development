@@ -13,19 +13,20 @@ FUNCTIONS
 """
 line search function
 sharedK: shared kernel matrix
+Z: clinical data, shape (len(sele_loc),Npred_clin)
 model: a specific model class
 pars: [m, beta, c] from each iteration
 sele_loc: used in CV, only a subset of data used
 """
-def line_search(sharedK,model,Kdims,pars,sele_loc=None):
-    [m,beta,c] = pars
+def line_search(sharedK,Z,model,Kdims,pars,sele_loc=None):
+    [m,beta,gamma] = pars
     if sele_loc is None:
         sele_loc = np.array(range(model.Ntrain))
     # get K
     nrow = Kdims[0]
     Km = get_K(sharedK,m,nrow,sele_loc)
 
-    b = Km.dot(beta)+c
+    b = Km.dot(beta)+ Z.dot(gamma)
     # line search function
     def temp_fun(x):
         return model.loss_fun(model.ytrain, model.F_train+x*b)
@@ -65,15 +66,6 @@ def get_K(sharedK,m,nrow,sele_loc):
     Km = Km[np.ix_(sele_loc,sele_loc)]
     return Km
 
-"""
-get selected rows from clinical data
-return train_clinical[sele_loc,] as numpy array
-"""
-def get_Z(inputs,sele_loc=None):
-    if sele_loc is None:
-        return inputs.train_clinical.values
-    else:
-        return inputs.train_clinical.values[sele_loc,:]
 
 
 """

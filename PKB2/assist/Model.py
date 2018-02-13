@@ -49,15 +49,17 @@ class BaseModel:
     pars: [m, beta, c]
     K: training kernel matrix
     K1: testing kernel matrix
+    Z: training clinical matrix
+    Z1: testing clinical matrix
     rate: learning rate parameter
     """
-    def update(self,pars,K,K1,rate):
-        m,beta,c = pars
-        self.trace.append([m,beta,c])
-        self.F_train += (K.dot(beta) + c)*rate
+    def update(self,pars,K,K1,Z,Z1,rate):
+        m,beta,gamma = pars
+        self.trace.append([m,beta,gamma])
+        self.F_train += ( K.dot(beta) + Z.dot(gamma) )*rate
         self.train_loss.append(self.loss_fun(self.ytrain,self.F_train))
         if self.hasTest:
-            self.F_test += (K1.T.dot(beta)+ c)*rate
+            self.F_test += (K1.T.dot(beta)+ Z1.dot(gamma) )*rate
             new_loss = self.loss_fun(self.ytest,self.F_test)
             self.test_loss.append(new_loss)
 

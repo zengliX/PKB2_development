@@ -44,8 +44,8 @@ class PKB_Classification(BaseModel):
     K1: testing kernel matrix
     rate: learning rate parameter
     """
-    def update(self,pars,K,K1,rate):
-        super().update(pars,K,K1,rate)
+    def update(self,pars,K,K1,Z,Z1,rate):
+        super().update(pars,K,K1,Z,Z1,rate)
         self.train_err.append((np.sign(self.F_train)!=self.ytrain).sum()/self.Ntrain)
         if self.hasTest:
             self.test_err.append((np.sign(self.F_test)!=self.ytest).sum()/self.Ntest)
