@@ -36,20 +36,29 @@ def paral_fun_L2(sharedK,model,m,nrow,h,q,Lambda,sele_loc):
         pass
 
 
-# find Lambda
-def find_Lambda_L2(K_train,model,Kdims,C=2):
+"""
+find a feasible lambda for L2 problem
+K_train: training kernel, shape (Ntrain, Ntrain, Ngroup)
+Z: training clinical data, shape (Ntrain, Npred_clin)
+model: model class object
+Kdims: (Ntrain, Ngroup)
+"""
+def find_Lambda_L2(K_train,Z,model,Kdims,C=2):
     if model.problem in ('classification','survival'):
         h = model.calcu_h()
         q = model.calcu_q()
-        # max(|Km*eta|)/N for each Km
         eta = h/q
+        w = np.diag(q/2)
         w_half = np.diag(np.sqrt(q/2))
-        eta_tilde = w_half.dot(eta - eta*q/q.sum())
+        mid_mat = np.eye(Kdims[0]) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
+        eta_tilde = w_half.dot(mid_mat).dot(eta)
 
         l_list = [] # list of lambdas from each group
+        # max(|Km*eta|)/N for each Km
         for m in range(Kdims[1]):
             Km = K_train[:,:,m]
-            Km_tilde = w_half.dot(Km - np.ones([Kdims[0],1]).dot((q/q.sum()).dot(Km).reshape([1,Kdims[0]])))
+            Km_tilde = w_half.dot(mid_mat).dot(Km)
+            #Km_tilde = w_half.dot(Km - np.ones([Kdims[0],1]).dot((q/q.sum()).dot(Km).reshape([1,Kdims[0]])))
             d = np.linalg.svd(Km_tilde)[1][0]
             l = d*(np.sqrt(np.sum(eta_tilde**2)) - C)/(C*Kdims[0])
             if l > 0:

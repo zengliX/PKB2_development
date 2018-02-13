@@ -117,14 +117,15 @@ if __name__ == "__main__":
     ----------------------------"""
     ncpu = min(5,cpu_count())
     Lambda = inputs.Lambda
+    Z = assist.util.get_Z(inputs)
 
     # automatic selection of Lambda
     if inputs.method == 'L1' and Lambda is None:
-        Lambda = find_Lambda_L1(K_train,model,Kdims)
+        Lambda = find_Lambda_L1(K_train,Z,model,Kdims)
         Lambda *= inputs.pen
         print("L1 method: use Lambda",Lambda)
     if inputs.method == 'L2' and Lambda is None:
-        Lambda = find_Lambda_L2(K_train,model,Kdims,C=1)
+        Lambda = find_Lambda_L2(K_train,Z,model,Kdims,C=1)
         Lambda *= inputs.pen
         print("L2 method: use Lambda",Lambda)
 
@@ -141,13 +142,14 @@ if __name__ == "__main__":
 
     ESTOP = 50 # early stop if test_loss have no increase
 
+
     """---------------------------
     CV FOR NUMBER OF ITERATIONS
     ----------------------------"""
 
-    opt_iter = CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=ESTOP,\
-                      ncpu=1,parallel=parallel,gr_sub=gr_sub,plot=True)
-    #opt_iter = 50
+    #opt_iter = CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=ESTOP,\
+    #                  ncpu=1,parallel=parallel,gr_sub=gr_sub,plot=True)
+    opt_iter = 50
 
     """---------------------------
     BOOSTING ITERATIONS
@@ -159,13 +161,16 @@ if __name__ == "__main__":
     for t in range(1,opt_iter+1):
         # one iteration
         if inputs.method == 'L2':
-            [m,beta,c] = oneiter_L2(sharedK,model,Kdims,\
+            [m,beta,gamma] = oneiter_L2(sharedK,Z,model,Kdims,\
                     Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
                     sele_loc=None,group_subset = gr_sub)
         if inputs.method == 'L1':
-            [m,beta,c] = oneiter_L1(sharedK,model,Kdims,\
+            [m,beta,gamma] = oneiter_L1(sharedK,Z,model,Kdims,\
                     Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
                     sele_loc=None,group_subset = gr_sub)
+        print([m,beta,gamma])
+        print("temporary stop")
+        exit(-1)
         # line search
         x = assist.util.line_search(sharedK,model,Kdims,[m,beta,c])
         beta *= x
@@ -188,6 +193,7 @@ if __name__ == "__main__":
                 print("%9.0f\t%10.4f\t---------\t%8.4f" % \
                   (t,model.train_loss[t],rem_time/60))
     print()
+
 
     # ██████  ███████ ███████ ██    ██ ██   ████████ ███████
     # ██   ██ ██      ██      ██    ██ ██      ██    ██

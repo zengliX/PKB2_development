@@ -65,6 +65,16 @@ def get_K(sharedK,m,nrow,sele_loc):
     Km = Km[np.ix_(sele_loc,sele_loc)]
     return Km
 
+"""
+get selected rows from clinical data
+return train_clinical[sele_loc,] as numpy array
+"""
+def get_Z(inputs,sele_loc=None):
+    if sele_loc is None:
+        return inputs.train_clinical.values
+    else:
+        return inputs.train_clinical.values[sele_loc,:]
+
 
 """
 print title

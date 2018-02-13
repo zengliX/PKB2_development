@@ -21,7 +21,7 @@ h: first order derivative
 q: second order derivative
 sele_loc: index of subset of data to use
 """
-def paral_fun_L1(sharedK,model,m,nrow,h,q,Lambda,sele_loc):
+def paral_fun_L1(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
     # working Lambda
     new_Lambda= Lambda/2 # due to setting of sklearn.linear_model.Lasso
     # get K
@@ -29,9 +29,11 @@ def paral_fun_L1(sharedK,model,m,nrow,h,q,Lambda,sele_loc):
     # transform eta, K for penalized regression
     if model.problem in ('classification','survival'):
         eta = h/q
+        w = np.diag(q/2)
         w_half = np.diag(np.sqrt(q/2))
-        eta_tilde = w_half.dot(eta - eta*q/q.sum())
-        Km_tilde = w_half.dot(Km - np.ones([len(sele_loc),1]).dot((q/q.sum()).dot(Km).reshape([1,len(sele_loc)])))
+        mid_mat = np.eye(len(sele_loc)) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
+        eta_tilde = w_half.dot(mid_mat).dot(eta)
+        Km_tilde = w_half.dot(mid_mat).dot(Km)
     elif model.problem == 'regression':
         pass
 
@@ -40,25 +42,35 @@ def paral_fun_L1(sharedK,model,m,nrow,h,q,Lambda,sele_loc):
                 selection='random',max_iter=20000,tol=10**-4)
     lasso_fit.fit(-Km_tilde,eta_tilde)
     beta = lasso_fit.coef_
-    #get c
-    c = -(q/q.sum()).dot(eta +  Km.dot(beta))
+    #get gamma
+    gamma = - np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)).dot(eta + Km.dot(beta))
     # calculate val
     val = np.sum((eta_tilde+Km_tilde.dot(beta))**2)+ Lambda*len(sele_loc)*np.sum(np.abs(beta))
-    return [val,[m,beta,c]]
+    return [val,[m,beta,gamma]]
 
-# find a Lambda value
-def find_Lambda_L1(K_train,model,Kdims):
+
+"""
+find a feasible lambda for L2 problem
+K_train: training kernel, shape (Ntrain, Ntrain, Ngroup)
+Z: training clinical data, shape (Ntrain, Npred_clin)
+model: model class object
+Kdims: (Ntrain, Ngroup)
+"""
+def find_Lambda_L1(K_train,Z,model,Kdims):
+    h = model.calcu_h()
+    q = model.calcu_q()
     if model.problem in ('classification','survival'):
-        h = model.calcu_h()
-        q = model.calcu_q()
         eta = h/q
+        w = np.diag(q/2)
         w_half = np.diag(np.sqrt(q/2))
-        eta_tilde = w_half.dot(eta - eta*q/q.sum())
-
+        mid_mat = np.eye(Kdims[0]) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
+        #eta_tilde = w_half.dot(eta - eta*q/q.sum())
+        eta_tilde = w_half.dot(mid_mat).dot(eta)
         prod = []
         for m in range(Kdims[1]):
             Km = K_train[:,:,m]
-            Km_tilde = w_half.dot(Km - np.ones([Kdims[0],1]).dot((q/q.sum()).dot(Km).reshape([1,Kdims[0]])))
+            #Km_tilde = w_half.dot(Km - np.ones([Kdims[0],1]).dot((q/q.sum()).dot(Km).reshape([1,Kdims[0]])))
+            Km_tilde = w_half.dot(mid_mat).dot(Km)
             prod += list(Km_tilde.dot(eta_tilde))
         return 2*np.percentile(np.abs(prod),85)/Kdims[0]
     elif model.problem == 'regression':
@@ -72,7 +84,7 @@ Kdims: (Ntrain, Ngroup)
 sele_loc: subset index
 group_subset: bool, whether randomly choose a subset of pathways
 """
-def oneiter_L1(sharedK,model,Kdims,Lambda,\
+def oneiter_L1(sharedK,Z,model,Kdims,Lambda,\
                ncpu = 1,parallel=False,sele_loc = None,group_subset = False):
     # whether stochastic gradient boosting
     if sele_loc is None:
@@ -90,7 +102,7 @@ def oneiter_L1(sharedK,model,Kdims,Lambda,\
         mlist= np.random.choice(mlist,min([Kdims[1]//3,100]),replace=False)
 
     pool = mp.Pool(processes =ncpu,maxtasksperchild=300)
-    results = [pool.apply_async(paral_fun_L1,args=(sharedK,model,m,Kdims[0],h,q,Lambda,sele_loc)) for m in mlist]
+    results = [pool.apply_async(paral_fun_L1,args=(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc)) for m in mlist]
     out = [res.get() for res in results]
     pool.close()
     return out[np.argmin([x[0] for x in out])][1]
