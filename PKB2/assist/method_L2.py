@@ -17,21 +17,34 @@ h: first order derivative
 q: second order derivative
 sele_loc: index of subset of data to use
 """
-def paral_fun_L2(sharedK,model,m,nrow,h,q,Lambda,sele_loc):
+def paral_fun_L2(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
     # get K
     Km = get_K(sharedK,m,nrow,sele_loc)
     if model.problem in ('classification','survival'):
         # working Lambda
         new_Lambda= len(sele_loc)*Lambda
         # calculte values
+        """
         K2 = np.append(Km,np.ones([len(sele_loc),1]),axis=1)
         L_mat = np.diag(list(np.repeat(new_Lambda,len(sele_loc)))+[0])
         eta = -np.linalg.solve((K2.T).dot(np.diag(q/2)).dot(K2)+L_mat,(K2.T).dot(h/2))
         beta = eta[:-1]
         c = eta[-1]
         temp = K2.dot(eta)
-        val = temp.dot(np.diag(q/2)).dot(temp)+temp.dot(h) + new_Lambda*np.sum(beta**2)
-        return [val,[m,beta,c]]
+        """
+        eta = h/q
+        # convert eta, Km
+        w = np.diag(q/2)
+        w_half = np.diag(np.sqrt(q/2))
+        mid_mat = np.eye(len(sele_loc)) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
+        eta_tilde = w_half.dot(mid_mat).dot(eta)
+        Km_tilde = w_half.dot(mid_mat).dot(Km)
+        # L2 solution
+        beta = - np.linalg.solve( Km_tilde.T.dot(Km_tilde) + np.eye(len(sele_loc))*new_Lambda, Km_tilde.T.dot(eta_tilde))
+        #get gamma
+        gamma = - np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)).dot(eta + Km.dot(beta))
+        val = np.sum((eta_tilde+Km_tilde.dot(beta))**2) + new_Lambda*np.sum(beta**2)
+        return [val,[m,beta,gamma]]
     elif model.problem == 'regression':
         pass
 
@@ -78,7 +91,7 @@ Kdims: (Ntrain, Ngroup)
 sele_loc: subset index
 group_subset: bool, whether randomly choose a subset of pathways
 """
-def oneiter_L2(sharedK,model,Kdims,Lambda,ncpu = 1,\
+def oneiter_L2(sharedK,Z,model,Kdims,Lambda,ncpu = 1,\
                parallel=False,sele_loc = None,group_subset = False):
     # whether stochastic gradient boosting
     if sele_loc is None:
@@ -96,7 +109,7 @@ def oneiter_L2(sharedK,model,Kdims,Lambda,ncpu = 1,\
         mlist= np.random.choice(mlist,min([Kdims[1]//3,100]),replace=False)
 
     pool = mp.Pool(processes =ncpu,maxtasksperchild=300)
-    results = [pool.apply_async(paral_fun_L2,args=(sharedK,model,m,Kdims[0],h,q,Lambda,sele_loc)) for m in mlist]
+    results = [pool.apply_async(paral_fun_L2,args=(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc)) for m in mlist]
     out = [res.get() for res in results]
     pool.close()
     return out[np.argmin([x[0] for x in out])][1]
