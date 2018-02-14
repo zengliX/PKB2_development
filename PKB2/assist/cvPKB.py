@@ -21,7 +21,7 @@ class CVinputs:
         self.Ntest = ytest.shape[0]
         self.Ngroup = inputs.Ngroup
         self.hasTest = inputs.hasTest
-        self.hasClinical = inputs.hasClinical 
+        self.hasClinical = inputs.hasClinical
 
 """
 Cross-Validation function
@@ -38,6 +38,8 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
     if inputs.problem == "classification":
         ytrain_ls = [np.squeeze(inputs.train_response.iloc[folds[i][1]].values) for i in range(nfold)]
         ytest_ls = [np.squeeze(inputs.train_response.iloc[folds[i][0]].values) for i in range(nfold)]
+        Ztrain_ls = [inputs.train_clinical.values[folds[i][1],:] for i in range(nfold)]
+        Ztest_ls = [inputs.train_clinical.values[folds[i][0],:] for i in range(nfold)]
         inputs_class = [CVinputs(inputs, ytrain_ls[i], ytest_ls[i]) for i in range(nfold)]
         models = [assist.Classification.PKB_Classification(inputs_class[i], ytrain_ls[i], ytest_ls[i]) for i in range(nfold)]
     elif inputs.problem == 'survival':
@@ -59,24 +61,31 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
         # one iteration
         for k in range(nfold):
             if inputs.method == 'L2':
-                [m,beta,c] = oneiter_L2(sharedK,models[k],Kdims,Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
+                [m,beta,gamma] = oneiter_L2(sharedK,Ztrain_ls[k],models[k],Kdims,Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
                 sele_loc=folds[k][1])
             if inputs.method == 'L1':
-                [m,beta,c] = oneiter_L1(sharedK,models[k],Kdims,Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
+                [m,beta,gamma] = oneiter_L1(sharedK,Ztrain_ls[k],models[k],Kdims,Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
                 sele_loc=folds[k][1],group_subset = gr_sub)
 
+            #print([m,beta,gamma])
+            #print("beta shape: {}; gamma shape: {}".format(beta.shape, gamma.shape))
+            #print("fold:",k)
+            #print("beta norm: {}; gamma norm: {}".format(np.mean(beta**2), np.mean(gamma**2)) )
+
             # line search
-            x = line_search(sharedK,models[k],Kdims,[m,beta,c],sele_loc=folds[k][1])
+            x = line_search(sharedK,Ztrain_ls[k],models[k],Kdims,[m,beta,gamma],sele_loc=folds[k][1])
             beta *= x
-            c *= x
+            gamma *= x
+            #print("x: {}".format(x))
 
             # update model
             cur_Ktrain = K_train[:,:,m][np.ix_(folds[k][1],folds[k][1])]
             cur_Ktest = K_train[:,:,m][np.ix_(folds[k][1],folds[k][0])]
             #print("cur_Ktrain shape: {}\n cur_Ktest shape: {}".format(cur_Ktrain.shape, cur_Ktest.shape))
-            models[k].update([m,beta,c],cur_Ktrain,cur_Ktest,inputs.nu)
+            models[k].update([m,beta,gamma],cur_Ktrain,cur_Ktest,Ztrain_ls[k],Ztest_ls[k],inputs.nu)
 
         # save iteration
+        # print("loss values: {}".format([x.test_loss[-1] for x in models]))
         cur_loss = np.mean([x.test_loss[-1] for x in models])
             #update best loss
         if cur_loss < min_loss:

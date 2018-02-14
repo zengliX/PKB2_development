@@ -149,10 +149,11 @@ if __name__ == "__main__":
     CV FOR NUMBER OF ITERATIONS
     ----------------------------"""
 
-    #opt_iter = CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=ESTOP,\
-    #                  ncpu=1,parallel=parallel,gr_sub=gr_sub,plot=True)
-    opt_iter = 50
-
+    opt_iter = CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=ESTOP,\
+                      ncpu=1,parallel=parallel,gr_sub=gr_sub,plot=True)
+    #opt_iter = 50
+    print("temporary stop")
+    exit(-1)
     """---------------------------
     BOOSTING ITERATIONS
     ----------------------------"""
