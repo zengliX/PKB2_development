@@ -64,58 +64,92 @@ class output_obj:
         return f
 
     """
-    return group weights at iteration t
+    return group,clinical weights at iteration t
     """
-    def group_weights(self,t,plot=True):
+    def weights_timeT(self,t):
         self.coef_mat.fill(0)
+        self.coef_clinical = self.model.trace[0][2]
+
         # calculate coefficient matrix at step t
-        for i in range(t+1):
-            [m,beta,c] = self.model.trace[i]
+        for i in range(1,t+1):
+            [m,beta,gamma] = self.model.trace[i]
             self.coef_mat[:,m] += beta*self.inputs.nu
+            self.coef_clinical += gamma*self.inputs.nu
 
         # calculate pathway weights
         weights = weight_calc(self.coef_mat)
+        return [weights,self.coef_clinical]
 
-        # visualization
-        if plot:
-            f=plt.figure()
-            plt.bar(range(1,self.inputs.Ngroup+1),weights)
-            plt.xlabel("groups")
-            plt.ylabel("group weights")
+    """
+    plot group,clinical weights at iteration t
+    """
 
-        return [weights,f]
+    def plot_group_weights(self,weights):
+        f=plt.figure()
+        plt.bar(range(1,self.inputs.Ngroup+1),weights)
+        plt.xlabel("groups")
+        plt.ylabel("group weights")
+        return f
+
+    def plot_clinical_weights(self,weights):
+        f=plt.figure()
+        plt.bar(self.inputs.train_clinical.columns[:-1],weights[:-1])
+        plt.xlabel("clinical variables")
+        plt.ylabel("clinical coefficients")
+        return f
 
     """
     show the path of weights for each group
     """
-    def weights_path(self,plot=True):
+    def weights_path(self):
         self.coef_mat.fill(0)
+        self.coef_clinical = self.model.trace[0][2]
         # calculate coefficient matrix at step t
         weight_mat = np.zeros([len(self.model.train_err),self.inputs.Ngroup])
+        weight_mat_clin = np.zeros([len(self.model.train_err),self.inputs.Npred_clin])
 
         # calculate weights for each iteration
         for i in range(1,len(self.model.train_err)):
-            [m,beta,c] = self.model.trace[i]
+            [m,beta,gamma] = self.model.trace[i]
             self.coef_mat[:,m] += beta*self.inputs.nu
+            self.coef_clinical += gamma*self.inputs.nu
+            # update group weights
             weight_mat[i,:] = weight_mat[i-1,:]
             weight_mat[i,m] =  np.sqrt((self.coef_mat[:,m]**2).sum())
+            # update clinical weights
+            weight_mat_clin[i,:] = self.coef_clinical[:-1]
 
         # weights at opt_t
         first5 = weight_mat[-1,:].argsort()[-5:][::-1]
+        first5_clin = weight_mat_clin[-1,:].argsort()[-5:][::-1]
 
         # visualization
-        if plot:
-            f1=plt.figure()
-            for m in range(weight_mat.shape[1]):
-                if m in first5:
-                    plt.plot(weight_mat[:,m],label=str(self.inputs.group_names[m]))
+        f1=plt.figure()
+        for m in range(weight_mat.shape[1]):
+            if m in first5:
+                plt.plot(weight_mat[:,m],label=str(self.inputs.group_names[m]))
+            else:
+                plt.plot(weight_mat[:,m])
+        plt.legend()
+        plt.xlabel("iterations")
+        plt.ylabel("weights")
+        plt.title("pathway weights trace")
+
+        if self.inputs.hasClinical:
+            Cnames = self.inputs.train_clinical.columns[:-1]
+            f2=plt.figure()
+            for m in range(weight_mat_clin.shape[1]):
+                if m in first5_clin:
+                    plt.plot(weight_mat_clin[:,m],label=str(Cnames[m]))
                 else:
-                    plt.plot(weight_mat[:,m])
+                    plt.plot(weight_mat_clin[:,m])
             plt.legend()
             plt.xlabel("iterations")
             plt.ylabel("weights")
-            plt.title("group weights dynamics")
-        return [weight_mat,f1]
+            plt.title("clinical variable weights trace")
+        else:
+            f2 = None
+        return [f1,f2]
 
     """
     clean up big data information before being pickled

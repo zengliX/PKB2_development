@@ -28,6 +28,7 @@ class BaseModel:
         self.Ntest = inputs.Ntest
         self.hasTest = inputs.hasTest
         self.hasClinical = inputs.hasClinical
+        self.Npred_clin = inputs.Npred_clin
         self.F0 = None
 
         # tracking of performance

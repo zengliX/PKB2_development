@@ -31,7 +31,8 @@ class PKB_Classification(BaseModel):
         else:
             F_test = None
         # update trace
-        self.trace.append([0,np.repeat(0,self.Ntrain),0])
+        self.trace.append([0,np.repeat(0,self.Ntrain),\
+        np.append( np.repeat(0,self.Npred_clin),[F0] )])
         # update F_train, F_test
         self.F_train = F_train
         self.F_test = F_test

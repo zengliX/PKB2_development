@@ -151,9 +151,8 @@ if __name__ == "__main__":
 
     opt_iter = CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=ESTOP,\
                       ncpu=1,parallel=parallel,gr_sub=gr_sub,plot=True)
-    #opt_iter = 50
-    print("temporary stop")
-    exit(-1)
+    #opt_iter = 30
+
     """---------------------------
     BOOSTING ITERATIONS
     ----------------------------"""
@@ -170,9 +169,8 @@ if __name__ == "__main__":
         if inputs.method == 'L1':
             [m,beta,gamma] = oneiter_L1(sharedK,Z_train,model,Kdims,\
                     Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
-                    sele_loc=None,group_subset = gr_sub)
-        #print([m,beta,gamma])
-        #print("beta shape: {}; gamma shape: {}".format(beta.shape, gamma.shape))
+                    sele_loc=None,group_subset = gr_sub)        #print([m,beta,gamma])
+        #print("\t beta norm: {}; gamma norm: {}".format(np.mean(beta**2), np.mean(gamma**2)) )
 
         # line search
         x = assist.util.line_search(sharedK,Z_train,model,Kdims,[m,beta,gamma])
@@ -196,8 +194,6 @@ if __name__ == "__main__":
                 print("%9.0f\t%10.4f\t---------\t%8.4f" % \
                   (t,model.train_loss[t],rem_time/60))
     print()
-    print("temporary stop")
-    exit(-1)
 
     # ██████  ███████ ███████ ██    ██ ██   ████████ ███████
     # ██   ██ ██      ██      ██    ██ ██      ██    ██
@@ -214,13 +210,19 @@ if __name__ == "__main__":
     f = outputs.show_loss()
     f.savefig(inputs.output_folder + "/loss.pdf")
 
-    # opt weights
-    [weights,f0] = outputs.group_weights(opt_iter-1,plot=True)
-    f0.savefig(inputs.output_folder + "/opt_weights.pdf")
+    # final weights
+    [G_weights, C_weights] = outputs.weights_timeT(opt_iter-1)
+    f0 = outputs.plot_group_weights(G_weights)
+    f0.savefig(inputs.output_folder + "/group_weights.pdf")
+    if inputs.hasClinical:
+        f1 = outputs.plot_clinical_weights(C_weights)
+        f1.savefig(inputs.output_folder + "/clinical_weights.pdf")
 
     # weights paths
-    [path_mat,f1] = outputs.weights_path(plot=True)
-    f1.savefig(inputs.output_folder + "/weights_path.pdf")
+    [f2,f3] = outputs.weights_path()
+    f2.savefig(inputs.output_folder + "/group_weights_path.pdf")
+    if inputs.hasClinical:
+        f3.savefig(inputs.output_folder + "/clinical_weights_path.pdf")
 
 
     # ███████  █████  ██    ██ ███████

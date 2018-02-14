@@ -20,8 +20,9 @@ class CVinputs:
         self.Ntrain = ytrain.shape[0]
         self.Ntest = ytest.shape[0]
         self.Ngroup = inputs.Ngroup
-        self.hasTest = inputs.hasTest
+        self.hasTest = True
         self.hasClinical = inputs.hasClinical
+        self.Npred_clin = inputs.Npred_clin
 
 """
 Cross-Validation function
@@ -69,8 +70,8 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
 
             #print([m,beta,gamma])
             #print("beta shape: {}; gamma shape: {}".format(beta.shape, gamma.shape))
-            #print("fold:",k)
-            #print("beta norm: {}; gamma norm: {}".format(np.mean(beta**2), np.mean(gamma**2)) )
+            #print("fold:",k,end='')
+            #print("\t beta norm: {}; gamma norm: {}".format(np.mean(beta**2), np.mean(gamma**2)) )
 
             # line search
             x = line_search(sharedK,Ztrain_ls[k],models[k],Kdims,[m,beta,gamma],sele_loc=folds[k][1])
@@ -91,7 +92,6 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
         if cur_loss < min_loss:
             min_loss = cur_loss
             opt_iter = t
-        #ave_err.append(cur_err)
         ave_loss.append(cur_loss)
 
         # print report
