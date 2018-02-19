@@ -28,9 +28,9 @@ def paral_fun_L1(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
     Km = get_K(sharedK,m,nrow,sele_loc)
     # transform eta, K for penalized regression
     if model.problem in ('classification','survival'):
-        eta = h/q
-        w = np.diag(q/2)
-        w_half = np.diag(np.sqrt(q/2))
+        eta = model.calcu_eta(h,q)
+        w = model.calcu_w(q)
+        w_half = model.calcu_w_half(q)
         mid_mat = np.eye(len(sele_loc)) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
         eta_tilde = w_half.dot(mid_mat).dot(eta)
         Km_tilde = w_half.dot(mid_mat).dot(Km)
@@ -57,12 +57,12 @@ model: model class object
 Kdims: (Ntrain, Ngroup)
 """
 def find_Lambda_L1(K_train,Z,model,Kdims):
-    h = model.calcu_h()
-    q = model.calcu_q()
     if model.problem in ('classification','survival'):
-        eta = h/q
-        w = np.diag(q/2)
-        w_half = np.diag(np.sqrt(q/2))
+        h = model.calcu_h()
+        q = model.calcu_q()
+        eta = model.calcu_eta(h,q)
+        w = model.calcu_w(q)
+        w_half = model.calcu_w_half(q)
         mid_mat = np.eye(Kdims[0]) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
         #eta_tilde = w_half.dot(eta - eta*q/q.sum())
         eta_tilde = w_half.dot(mid_mat).dot(eta)

@@ -32,10 +32,10 @@ def paral_fun_L2(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
         c = eta[-1]
         temp = K2.dot(eta)
         """
-        eta = h/q
         # convert eta, Km
-        w = np.diag(q/2)
-        w_half = np.diag(np.sqrt(q/2))
+        eta = model.calcu_eta(h,q)
+        w = model.calcu_w(q)
+        w_half = model.calcu_w_half(q)
         mid_mat = np.eye(len(sele_loc)) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
         eta_tilde = w_half.dot(mid_mat).dot(eta)
         Km_tilde = w_half.dot(mid_mat).dot(Km)
@@ -60,9 +60,9 @@ def find_Lambda_L2(K_train,Z,model,Kdims,C=2):
     if model.problem in ('classification','survival'):
         h = model.calcu_h()
         q = model.calcu_q()
-        eta = h/q
-        w = np.diag(q/2)
-        w_half = np.diag(np.sqrt(q/2))
+        eta = model.calcu_eta(h,q)
+        w = model.calcu_w(q)
+        w_half = model.calcu_w_half(q)
         mid_mat = np.eye(Kdims[0]) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
         eta_tilde = w_half.dot(mid_mat).dot(eta)
 

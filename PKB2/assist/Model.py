@@ -67,12 +67,25 @@ class BaseModel:
     """------------------------------------
     other functions to be added in child classes
 
+    #for classification and survival:
+
     #first order derivative
     def calcu_q(self):
         pass
 
     #second order derivative
     def calcu_h(self):
+        pass
+
+    #calculate eta，W, W^(1/2) from h and q
+
+    def calcu_eta(self,h,q):
+        pass
+
+    def calcu_w(self,q):
+        pass
+
+    def calcu_w_half(self,q):
         pass
 
     #loss function

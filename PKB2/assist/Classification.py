@@ -69,6 +69,18 @@ class PKB_Classification(BaseModel):
         return np.exp(self.ytrain * self.F_train)/denom
 
     """
+    calculate eta，W, W^(1/2) from h and q
+    """
+    def calcu_eta(self,h,q):
+        return h/q
+
+    def calcu_w(self,q):
+        return np.diag(q/2)
+
+    def calcu_w_half(self,q):
+        return np.diag(np.sqrt(q/2))
+
+    """
     classification loss function, log loss
     """
     def loss_fun(self,y,f):
