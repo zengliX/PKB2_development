@@ -18,7 +18,7 @@ model: a specific model class
 pars: [m, beta, c] from each iteration
 sele_loc: used in CV, only a subset of data used
 """
-def line_search(sharedK,Z,model,Kdims,pars,sele_loc=None):
+def line_search(sharedK,Z,model,Kdims,pars,sele_loc=None,max_val = 10):
     [m,beta,gamma] = pars
     if sele_loc is None:
         sele_loc = np.array(range(model.Ntrain))
@@ -33,7 +33,7 @@ def line_search(sharedK,Z,model,Kdims,pars,sele_loc=None):
     out = scipy.optimize.minimize_scalar(temp_fun)
     if not out.success:
         print("warning: minimization failure")
-    return out.x
+    return min(out.x,max_val)
 
 
 """
@@ -66,6 +66,14 @@ def get_K(sharedK,m,nrow,sele_loc):
     Km = Km[np.ix_(sele_loc,sele_loc)]
     return Km
 
+"""
+test if Inf appears in v, if true, raise an error
+v: np.array of values
+"""
+def testInf(v,ytrain,F_train):
+    if np.any(np.isinf(v)):
+        loc = np.isinf(v)
+        raise Exception("inf in calcu_h: \nytrain {} \nF_train {}".format(ytrain[loc], F_train[loc]))
 
 
 """

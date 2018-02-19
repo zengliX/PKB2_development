@@ -60,6 +60,7 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
     print("iteration\tMean test loss")
     for t in range(1,inputs.maxiter+1):
         # one iteration
+        #print("-------- iteration: {} ---------".format(t))
         for k in range(nfold):
             if inputs.method == 'L2':
                 [m,beta,gamma] = oneiter_L2(sharedK,Ztrain_ls[k],models[k],Kdims,Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
@@ -68,9 +69,7 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
                 [m,beta,gamma] = oneiter_L1(sharedK,Ztrain_ls[k],models[k],Kdims,Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
                 sele_loc=folds[k][1],group_subset = gr_sub)
 
-            #print([m,beta,gamma])
-            #print("beta shape: {}; gamma shape: {}".format(beta.shape, gamma.shape))
-            #print("fold:",k,end='')
+            #print("fold: {}".format(k))
             #print("\t beta norm: {}; gamma norm: {}".format(np.mean(beta**2), np.mean(gamma**2)) )
 
             # line search
@@ -86,7 +85,7 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
             models[k].update([m,beta,gamma],cur_Ktrain,cur_Ktest,Ztrain_ls[k],Ztest_ls[k],inputs.nu)
 
         # save iteration
-        # print("loss values: {}".format([x.test_loss[-1] for x in models]))
+        #print("loss values: {}".format([x.test_loss[-1] for x in models]))
         cur_loss = np.mean([x.test_loss[-1] for x in models])
             #update best loss
         if cur_loss < min_loss:

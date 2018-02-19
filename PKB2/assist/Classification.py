@@ -1,5 +1,6 @@
 import numpy as np
 from assist.Model import BaseModel
+from assist.util import testInf
 
 class PKB_Classification(BaseModel):
     def __init__(self,inputs,ytrain,ytest):
@@ -56,6 +57,7 @@ class PKB_Classification(BaseModel):
     """
     def calcu_h(self):
         denom  = np.exp(self.ytrain * self.F_train) + 1
+        testInf(denom,self.ytrain,self.F_train)
         return (-self.ytrain)/denom
 
     """
@@ -63,6 +65,7 @@ class PKB_Classification(BaseModel):
     """
     def calcu_q(self):
         denom = (np.exp(self.ytrain * self.F_train) + 1)**2
+        testInf(denom, self.ytrain, self.F_train)
         return np.exp(self.ytrain * self.F_train)/denom
 
     """
