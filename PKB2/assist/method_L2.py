@@ -4,7 +4,7 @@ author: li zeng
 """
 
 import numpy as np
-from assist.util import get_K
+from assist.util import get_K, undefined
 import multiprocessing as mp
 
 # function to parallelized
@@ -46,7 +46,7 @@ def paral_fun_L2(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
         val = np.sum((eta_tilde+Km_tilde.dot(beta))**2) + new_Lambda*np.sum(beta**2)
         return [val,[m,beta,gamma]]
     elif model.problem == 'regression':
-        pass
+        undefined()
 
 
 """
@@ -80,7 +80,7 @@ def find_Lambda_L2(K_train,Z,model,Kdims,C=2):
                 l_list.append(0.01)
         return np.percentile(l_list,20)
     elif model.problem == 'regression':
-        pass
+        undefined()
 
 
 """

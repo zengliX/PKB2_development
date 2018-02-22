@@ -1,4 +1,5 @@
 from assist.Model import BaseModel
+from assist.util import undefined
 
 class PKB_Regression(BaseModel):
     def __init__(self,inputs,ytrain,ytest):
@@ -10,7 +11,7 @@ class PKB_Regression(BaseModel):
     initialize regression model
     """
     def init_F(self):
-        pass
+        undefined()
 
     """
     regression loss function, MSE

@@ -4,7 +4,7 @@ author: li zeng
 """
 
 import numpy as np
-from assist.util import get_K
+from assist.util import get_K, undefined
 import multiprocessing as mp
 import warnings
 import sklearn.exceptions
@@ -35,7 +35,7 @@ def paral_fun_L1(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
         eta_tilde = w_half.dot(mid_mat).dot(eta)
         Km_tilde = w_half.dot(mid_mat).dot(Km)
     elif model.problem == 'regression':
-        pass
+        undefined()
 
     # get beta
     lasso_fit = linear_model.Lasso(alpha = new_Lambda,fit_intercept = False,\
@@ -74,7 +74,7 @@ def find_Lambda_L1(K_train,Z,model,Kdims):
             prod += list(Km_tilde.dot(eta_tilde))
         return 2*np.percentile(np.abs(prod),85)/Kdims[0]
     elif model.problem == 'regression':
-        pass
+        undefined()
 
 """
 perform one iteration of L1-boosting

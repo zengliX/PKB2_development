@@ -88,3 +88,9 @@ def print_section(s, width = 60):
         ct_left = (width - len(s) -2)//2
         ct_right = width - len(s) - 2 - ct_left
         print('-'*ct_left + ' {} '.format(s) + '-'*ct_right)
+
+"""
+raise error: undefined
+"""
+def undefined():
+    raise Exception("method undefined")

@@ -4,7 +4,7 @@ author: li zeng
 """
 
 import assist
-from assist.util import line_search, subsamp, print_section
+from assist.util import line_search, subsamp, print_section, undefined
 import numpy as np
 import pandas as pd
 from assist.method_L1 import oneiter_L1
@@ -44,9 +44,9 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
         inputs_class = [CVinputs(inputs, ytrain_ls[i], ytest_ls[i]) for i in range(nfold)]
         models = [assist.Classification.PKB_Classification(inputs_class[i], ytrain_ls[i], ytest_ls[i]) for i in range(nfold)]
     elif inputs.problem == 'survival':
-        pass
+        undefined()
     else:
-        pass
+        undefined()
 
     for x in models:
         x.init_F()
