@@ -70,7 +70,6 @@ if __name__ == "__main__":
     inputs.input_summary()
     inputs.model_param()
 
-    print(inputs.train_response.head())
 
     # ██████  ██████  ███████ ██████
     # ██   ██ ██   ██ ██      ██   ██
@@ -105,9 +104,15 @@ if __name__ == "__main__":
         model = assist.Classification.PKB_Classification(inputs,ytrain,ytest)
         model.init_F()
     elif inputs.problem == "regression":
-        assist.util.undefined()
+        ytrain = np.squeeze(inputs.train_response.values)
+        ytest = np.squeeze(inputs.test_response.values) if inputs.hasTest else None
+        model = assist.Regression.PKB_Regression(inputs,ytrain,ytest)
+        model.init_F()
     elif inputs.problem == "survival":
-        assist.util.undefined()
+        ytrain = inputs.train_response.values
+        ytest = inputs.test_response.values if inputs.hasTest else None
+        model = assist.Survival.PKB_Survival(inputs,ytrain,ytest)
+        model.init_F()
     else:
         print("Analysis ",inputs.problem," not supported"); exit(-1)
 

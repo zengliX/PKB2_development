@@ -42,8 +42,6 @@ class BaseModel:
     def init_F(self):
         self.F_train = []
         self.F_test = []
-        self.ytrain = None
-        self.ytest = None
 
     """
     update [F_train, F_test, trian_loss, test_loss] after calculation of [m,beta,c] in each iteration
