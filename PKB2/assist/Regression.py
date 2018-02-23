@@ -14,6 +14,14 @@ class PKB_Regression(BaseModel):
         undefined()
 
     """
+    calculate eta, negative residual
+    eta = -r in note
+    shape (Ntrain,)
+    """
+    def calcu_eta(self):
+        undefined()
+
+    """
     regression loss function, MSE
     y: np.array of shape (Ntrain,)
     f: np.array of shape (Ntrain,)
