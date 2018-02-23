@@ -44,9 +44,15 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
         inputs_class = [CVinputs(inputs, ytrain_ls[i], ytest_ls[i]) for i in range(nfold)]
         models = [assist.Classification.PKB_Classification(inputs_class[i], ytrain_ls[i], ytest_ls[i]) for i in range(nfold)]
     elif inputs.problem == 'survival':
-        undefined()
-    else:
-        undefined()
+        ytrain_ls = [inputs.train_response.iloc[folds[i][1],].values for i in range(nfold)]
+        ytest_ls = [inputs.train_response.iloc[folds[i][0],].values for i in range(nfold)]
+        inputs_class = [CVinputs(inputs, ytrain_ls[i], ytest_ls[i]) for i in range(nfold)]
+        models = [assist.Classification.PKB_Classification(inputs_class[i], ytrain_ls[i], ytest_ls[i]) for i in range(nfold)]
+    elif inputs.problem == "regression":
+        ytrain_ls = [np.squeeze(inputs.train_response.iloc[folds[i][1]].values) for i in range(nfold)]
+        ytest_ls = [np.squeeze(inputs.train_response.iloc[folds[i][0]].values) for i in range(nfold)]
+        inputs_class = [CVinputs(inputs, ytrain_ls[i], ytest_ls[i]) for i in range(nfold)]
+        models = [assist.Regression.PKB_Regression(inputs_class[i], ytrain_ls[i], ytest_ls[i]) for i in range(nfold)]
 
     for x in models:
         x.init_F()

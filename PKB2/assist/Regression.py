@@ -15,6 +15,8 @@ class PKB_Regression(BaseModel):
 
     """
     regression loss function, MSE
+    y: np.array of shape (Ntrain,)
+    f: np.array of shape (Ntrain,)
     """
     def loss_fun(self,y,f):
         return np.mean( (y-f)**2 )

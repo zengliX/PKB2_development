@@ -44,7 +44,8 @@ class BaseModel:
         self.F_test = []
 
     """
-    update [F_train, F_test, trian_loss, test_loss] after calculation of [m,beta,c] in each iteration
+    update [F_train, F_test, trian_loss, test_loss] after
+    calculation of [m,beta,c] in each iteration
     pars: [m, beta, c]
     K: training kernel matrix
     K1: testing kernel matrix

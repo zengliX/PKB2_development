@@ -54,6 +54,7 @@ class PKB_Classification(BaseModel):
 
     """
     calculate first order derivative
+    return gradient, shape (Ntrain,)
     """
     def calcu_h(self):
         denom  = np.exp(self.ytrain * self.F_train) + 1
@@ -62,6 +63,7 @@ class PKB_Classification(BaseModel):
 
     """
     calculate second order derivative
+    return diagonal of hessian matrix, shape (Ntrain, )
     """
     def calcu_q(self):
         denom = (np.exp(self.ytrain * self.F_train) + 1)**2
@@ -82,6 +84,8 @@ class PKB_Classification(BaseModel):
 
     """
     classification loss function, log loss
+    y: np.array of shape (Ntrain,)
+    f: np.array of shape (Ntrain,)
     """
     def loss_fun(self,y,f):
         return np.mean(np.log(1+np.exp(-y*f)))
