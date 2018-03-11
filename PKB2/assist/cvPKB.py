@@ -4,7 +4,7 @@ author: li zeng
 """
 
 import assist
-from assist.util import line_search, subsamp, print_section, undefined
+from assist.util import line_search, simple_subsamp, subsamp, print_section, undefined
 import numpy as np
 import pandas as pd
 from assist.method_L1 import oneiter_L1
@@ -23,21 +23,30 @@ class CVinputs:
         self.hasTest = True
         self.hasClinical = inputs.hasClinical
         self.Npred_clin = inputs.Npred_clin
-
+        self.inputs = inputs
+        
 """
 Cross-Validation function
 """
 def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=False,gr_sub=False,plot=False):
     ########## split data ###############
-    test_inds = subsamp(inputs.train_response,inputs.train_response.columns[0],nfold)
     temp = pd.Series(range(inputs.Ntrain),index= inputs.train_response.index)
+    if inputs.problem == "classification":
+        test_inds = subsamp(inputs.train_response,inputs.train_response.columns[0],nfold)
+    elif inputs.problem == 'survival':
+        test_inds = simple_subsamp(inputs.train_response,inputs.train_response.columns[0],nfold)   
+    elif inputs.problem == "regression":
+        test_inds = simple_subsamp(inputs.train_response,inputs.train_response.columns[0],nfold)
     folds = []
+    print(inputs.problem)
     for i in range(nfold):
-        folds.append([ temp[test_inds[i]].values, np.setdiff1d(temp.values,temp[test_inds[i]].values)])
-
+        folds.append([ temp[test_inds[i]].values, np.setdiff1d(temp.values,temp[test_inds[i]].values)])    
+     
     ########## initiate model for each fold ###############
     Ztrain_ls = [inputs.train_clinical.values[folds[i][1],:] for i in range(nfold)]
     Ztest_ls = [inputs.train_clinical.values[folds[i][0],:] for i in range(nfold)]
+    #print("Z_train")
+    #print(Ztrain_ls[0])
     if inputs.problem == "classification":
         ytrain_ls = [np.squeeze(inputs.train_response.iloc[folds[i][1]].values) for i in range(nfold)]
         ytest_ls = [np.squeeze(inputs.train_response.iloc[folds[i][0]].values) for i in range(nfold)]
@@ -53,12 +62,14 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
         ytest_ls = [np.squeeze(inputs.train_response.iloc[folds[i][0]].values) for i in range(nfold)]
         inputs_class = [CVinputs(inputs, ytrain_ls[i], ytest_ls[i]) for i in range(nfold)]
         models = [assist.Regression.PKB_Regression(inputs_class[i], ytrain_ls[i], ytest_ls[i]) for i in range(nfold)]
-
+    
+       
     for x in models:
         x.init_F()
 
     ########## boosting for each fold ###############
     opt_iter = 0
+    tmp_list = [x.test_loss[0] for x in models]
     min_loss = prev_loss =  np.mean( [x.test_loss[0] for x in models] )
     ave_loss = [prev_loss]
 
@@ -74,7 +85,6 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
             if inputs.method == 'L1':
                 [m,beta,gamma] = oneiter_L1(sharedK,Ztrain_ls[k],models[k],Kdims,Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
                 sele_loc=folds[k][1],group_subset = gr_sub)
-
             #print("fold: {}".format(k))
             #print("\t beta norm: {}; gamma norm: {}".format(np.mean(beta**2), np.mean(gamma**2)) )
 

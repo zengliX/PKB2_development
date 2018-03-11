@@ -36,8 +36,8 @@ args = parser.parse_args()
 from sys import argv
 import numpy as np
 import sharedmem
-#import matplotlib
-#matplotlib.use('Agg')
+import matplotlib
+matplotlib.use('Agg')
 #from matplotlib import pyplot as plt
 import assist
 from assist.cvPKB import CV_PKB
@@ -186,6 +186,7 @@ if __name__ == "__main__":
         gamma *= x
 
         # update model parameters
+        
         if model.hasTest:
             model.update([m,beta,gamma],K_train[:,:,m],K_test[:,:,m],Z_train,Z_test,inputs.nu)
         else:
