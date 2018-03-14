@@ -138,12 +138,18 @@ def oneiter_L2(sharedK,Z,model,Kdims,Lambda,ncpu = 1,\
     # identify best fit K_m
     if not parallel: ncpu =1
         # random subset of groups
+    print(Kdims)
     mlist = range(Kdims[1])
     if group_subset:
         mlist= np.random.choice(mlist,min([Kdims[1]//3,100]),replace=False)
 
-    pool = mp.Pool(processes =ncpu,maxtasksperchild=300)
-    results = [pool.apply_async(paral_fun_L2,args=(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc)) for m in mlist]
-    out = [res.get() for res in results]
-    pool.close()
+    #===========================================================================
+    # pool = mp.Pool(processes =ncpu,maxtasksperchild=300)
+    # results = [pool.apply_async(paral_fun_L2,args=(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc)) for m in mlist]
+    # out = [res.get() for res in results]
+    # pool.close()
+    #===========================================================================
+    out = []
+    for m in mlist:
+        out.append(paral_fun_L2(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc))
     return out[np.argmin([x[0] for x in out])][1]
