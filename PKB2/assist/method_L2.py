@@ -34,33 +34,14 @@ def paral_fun_L2(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
     elif model.problem == 'regression':
         # working Lambda
         new_Lambda= len(sele_loc)*Lambda
-        e = np.linalg.solve(Z.T.dot(Z), np.eye(Z.shape[1])).dot(Z.T)
-        eta = model.calcu_eta(Z)
+        e = np.linalg.solve(Z.T.dot(Z), Z.T)
+        eta = model.calcu_eta()
         mid_mat = np.eye(len(sele_loc)) - Z.dot(e)
         #mid_mat = np.eye(len(sele_loc)) - Z.dot( np.linalg.solve(Z.T.dot(Z), Z.T) )
         eta_tilde = mid_mat.dot(eta)
         Km_tilde = mid_mat.dot(Km)
-    # L2 solution
-    #===========================================================================
-    # print("L2 solution")
-    # print(Km_tilde)
-    # print(Km_tilde.T.dot(Km_tilde))
-    #===========================================================================
-    tmp_mat1 = Km_tilde.T.dot(Km_tilde)
-    tmp_mat = Km_tilde.T.dot(Km_tilde) + np.eye(len(sele_loc))*new_Lambda
-    #sol = scipy.linalg.inv(tmp_mat)
-    #sol = np.linalg.inv(tmp_mat,np.eye(tmp_mat.shape[0]))
-    #print("solved")
-    #beta = - scipy.linalg.inv(tmp_mat,np.eye(tmp_mat.shape[0])).dot(Km_tilde.T.dot(eta_tilde))
-    #===========================================================================
-    # try:
-    #     inverse = np.linalg.inv(tmp_mat)
-    #     print("Yeah!")
-    # except np.linalg.LinAlgError:
-    #     pass
-    #===========================================================================
-    #beta = - scipy.linalg.inv(tmp_mat).dot(Km_tilde.T.dot(eta_tilde))
 
+    # L2 solution
     beta = - np.linalg.solve( Km_tilde.T.dot(Km_tilde) + np.eye(len(sele_loc))*new_Lambda, Km_tilde.T.dot(eta_tilde))
 
     #get gamma
@@ -98,7 +79,7 @@ def find_Lambda_L2(K_train,Z,model,Kdims,C=2):
             l = l if l>0 else 0.01
             l_list.append(l)
     elif model.problem == 'regression':
-        eta = model.calcu_eta(Z)
+        eta = model.calcu_eta()
         mid_mat = np.eye(Z.shape[0]) - Z.dot( np.linalg.solve(Z.T.dot(Z), Z.T) )
         eta_tilde = mid_mat.dot(eta)
         # max(|Km*eta|)/N for each Km
@@ -134,22 +115,18 @@ def oneiter_L2(sharedK,Z,model,Kdims,Lambda,ncpu = 1,\
     elif model.problem == 'regression':
         h = None
         q = None
-
     # identify best fit K_m
-    if not parallel: ncpu =1
         # random subset of groups
-    print(Kdims)
     mlist = range(Kdims[1])
     if group_subset:
         mlist= np.random.choice(mlist,min([Kdims[1]//3,100]),replace=False)
-
-    #===========================================================================
-    # pool = mp.Pool(processes =ncpu,maxtasksperchild=300)
-    # results = [pool.apply_async(paral_fun_L2,args=(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc)) for m in mlist]
-    # out = [res.get() for res in results]
-    # pool.close()
-    #===========================================================================
-    out = []
-    for m in mlist:
-        out.append(paral_fun_L2(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc))
+    if not parallel:
+        pool = mp.Pool(processes = ncpu,maxtasksperchild=300)
+        results = [pool.apply_async(paral_fun_L2,args=(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc)) for m in mlist]
+        out = [res.get() for res in results]
+        pool.close()
+    else:
+        out = []
+        for m in mlist:
+            out.append(paral_fun_L2(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc))
     return out[np.argmin([x[0] for x in out])][1]
