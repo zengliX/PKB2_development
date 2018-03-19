@@ -94,6 +94,7 @@ class PKB_Survival(BaseModel):
     f: np.array of shape (Ntrain,)
     """
     def loss_fun(self,y,f):
+        print("in loss_fun:\n",f)
         N = np.shape(y)[0]
         delta = 1 - y[:,1]
         train_time = y[:,0]

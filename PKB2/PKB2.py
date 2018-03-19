@@ -156,10 +156,10 @@ if __name__ == "__main__":
     CV FOR NUMBER OF ITERATIONS
     ----------------------------"""
 
-    opt_iter = CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=ESTOP,\
-                      ncpu=1,parallel=parallel,gr_sub=gr_sub,plot=True)
+    #opt_iter = CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=ESTOP,\
+    #                  ncpu=1,parallel=parallel,gr_sub=gr_sub,plot=True)
     #opt_iter = int(opt_iter*1.5)
-    #opt_iter = 300
+    opt_iter = 300
 
     """---------------------------
     BOOSTING ITERATIONS
@@ -191,7 +191,6 @@ if __name__ == "__main__":
             model.update([m,beta,gamma],K_train[:,:,m],K_test[:,:,m],Z_train,Z_test,inputs.nu)
         else:
             model.update([m,beta,gamma],K_train[:,:,m],None,Z_train,None,inputs.nu)
-
         # print time report
         if t%10 == 0:
             iter_persec = t/(time.time() - time0) # time of one iteration
