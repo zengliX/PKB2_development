@@ -109,8 +109,8 @@ if __name__ == "__main__":
         model = assist.Regression.PKB_Regression(inputs,ytrain,ytest)
         model.init_F()
     elif inputs.problem == "survival":
-        ytrain = inputs.train_response.values
-        ytest = inputs.test_response.values if inputs.hasTest else None
+        ytrain = np.squeeze(inputs.train_response.values)
+        ytest = np.squeeze(inputs.test_response.values) if inputs.hasTest else None
         model = assist.Survival.PKB_Survival(inputs,ytrain,ytest)
         model.init_F()
     else:
