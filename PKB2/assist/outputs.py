@@ -18,7 +18,6 @@ def weight_calc(mat):
 output object:
 - with model as a member
 - has visualization function to interact with model
-
 """
 class output_obj:
     # initialization
@@ -105,11 +104,11 @@ class output_obj:
         self.coef_mat.fill(0)
         self.coef_clinical = self.model.trace[0][2]
         # calculate coefficient matrix at step t
-        weight_mat = np.zeros([len(self.model.train_err),self.inputs.Ngroup])
-        weight_mat_clin = np.zeros([len(self.model.train_err),self.inputs.Npred_clin])
+        weight_mat = np.zeros([len(self.model.train_loss),self.inputs.Ngroup])
+        weight_mat_clin = np.zeros([len(self.model.train_loss),self.inputs.Npred_clin])
 
         # calculate weights for each iteration
-        for i in range(1,len(self.model.train_err)):
+        for i in range(1,len(self.model.train_loss)):
             [m,beta,gamma] = self.model.trace[i]
             self.coef_mat[:,m] += beta*self.inputs.nu
             self.coef_clinical += gamma*self.inputs.nu
@@ -119,7 +118,7 @@ class output_obj:
             # update clinical weights
             weight_mat_clin[i,:] = self.coef_clinical[:-1]
 
-        # weights at opt_t
+        # weights in last iteration
         first5 = weight_mat[-1,:].argsort()[-5:][::-1]
         first5_clin = weight_mat_clin[-1,:].argsort()[-5:][::-1]
 

@@ -41,9 +41,11 @@ class PKB_Classification(BaseModel):
 
     """
     update class after calculation of [m,beta,c] in each iteration
-    pars: [m, beta, c]
+    pars: [m, beta, gamma]
     K: training kernel matrix
     K1: testing kernel matrix
+    Z: training clinical matrix
+    Z1: testing clinical matrix
     rate: learning rate parameter
     """
     def update(self,pars,K,K1,Z,Z1,rate):

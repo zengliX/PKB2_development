@@ -186,7 +186,7 @@ if __name__ == "__main__":
         gamma *= x
 
         # update model parameters
-        
+
         if model.hasTest:
             model.update([m,beta,gamma],K_train[:,:,m],K_test[:,:,m],Z_train,Z_test,inputs.nu)
         else:

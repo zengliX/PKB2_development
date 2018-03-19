@@ -1,8 +1,6 @@
 from assist.Model import BaseModel
 from assist.util import undefined
-import scipy
 import numpy as np
-from scipy.optimize import minimize
 
 class PKB_Regression(BaseModel):
     def __init__(self, inputs, ytrain, ytest):
@@ -18,62 +16,33 @@ class PKB_Regression(BaseModel):
     initialize regression model
     """
     def init_F(self):
-        def tmp_loss(x):
-            return(np.mean((self.ytrain - x)**2))
-            
-        #F0 = scipy.optimize.minimize(tmp_loss, x0 = 0, method = "SLSQP")
+        # add training loss[0]
         self.F0 = np.mean(self.ytrain)
-        #self.F0 = F0.fun
-        #print(self.F0)
         self.F_train = np.repeat(self.F0,self.Ntrain)
+        self.train_loss.append(self.loss_fun(self.ytrain,self.F_train))
+        # add testing loss[0]
         if self.hasTest:
             self.F_test = np.repeat(self.F0,self.Ntest)
+            self.test_loss.append(self.loss_fun(self.ytest,self.F_test))
         else:
             self.F_test = None
-        l = tmp_loss(self.F0)
-        self.test_loss.append(l)
-        
+        # add trace[0]
+        self.trace.append([0,np.repeat(0,self.Ntrain),\
+        np.append( np.repeat(0,self.Npred_clin),[self.F0] )])
 
     """
     calculate eta, negative residual
     eta = -r in note
     shape (Ntrain,)
     """
-    def calcu_eta(self,Z):
+    def calcu_eta(self):
         rt = self.ytrain - self.F_train
-        #(np.eye(len(self.ytrain)) - Z.dot(np.linalg.solve(Z.T.dot(Z), Z.T))).dot(rt)
-        return rt
+        return -rt
 
     """
     regression loss function, MSE
-    y: np.array of shape (Ntrain,)
-    f: np.array of shape (Ntrain,)
+    y: np.array of shape (N,)
+    f: np.array of shape (N,)
     """
     def loss_fun(self,y,f):
         return np.mean( (y-f)**2 )
-    
-    def update(self,pars,K,K1,Z,Z1,rate):
-        super().update(pars,K,K1,Z,Z1,rate)
-        self.train_err.append((np.sign(self.F_train)!=self.ytrain).sum()/self.Ntrain)
-        if self.hasTest:
-            self.test_err.append((np.sign(self.F_test)!=self.ytest).sum()/self.Ntest)
-        m,beta,gamma = pars
-        self.trace.append([m,beta,gamma])
-        #=======================================================================
-        # print(K.shape)
-        # print(K1.shape)
-        # print(Z.shape)
-        # print(Z1.shape)
-        # print(type(K1.T.dot(beta)))
-        # print(K1.T.dot(beta).shape)
-        # print(K1.T.dot(beta))
-        # print(type(Z1.dot(gamma)))
-        # print(Z.dot(gamma))
-        # print(Z.dot(gamma).shape)
-        #=======================================================================
-        self.F_train += ( K.dot(beta) + Z.dot(gamma) )*rate
-        self.train_loss.append(self.loss_fun(self.ytrain,self.F_train))
-        if self.hasTest:
-            self.F_test += (K1.T.dot(beta)+ Z1.dot(gamma) )*rate
-            new_loss = self.loss_fun(self.ytest,self.F_test)
-            self.test_loss.append(new_loss)

@@ -36,8 +36,9 @@ def paral_fun_L1(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
         Km_tilde = w_half.dot(mid_mat).dot(Km)
     elif model.problem == 'regression':
         # calculate rt (eta)
-        eta = model.calcu_eta(Z)    
-        e = np.linalg.solve(Z.T.dot(Z), np.eye(Z.shape[1])).dot(Z.T)
+        eta = model.calcu_eta()
+        #e = np.linalg.solve(Z.T.dot(Z), np.eye(Z.shape[1])).dot(Z.T)
+        e = np.linalg.solve(Z.T.dot(Z), Z.T)
         mid_mat = np.eye(len(sele_loc)) - Z.dot(e)
         eta_tilde = mid_mat.dot(eta)
         Km_tilde = mid_mat.dot(Km)
@@ -46,7 +47,7 @@ def paral_fun_L1(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
                 selection='random',max_iter=20000,tol=10**-4)
     lasso_fit.fit(-Km_tilde,eta_tilde)
     beta = lasso_fit.coef_
-    
+
     #get gamma
     if model.problem in ('classification','survival'):
         gamma = - np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)).dot(eta + Km.dot(beta))
@@ -80,7 +81,7 @@ def find_Lambda_L1(K_train,Z,model,Kdims):
             Km_tilde = w_half.dot(mid_mat).dot(Km)
             prod += list(Km_tilde.dot(eta_tilde))
     elif model.problem == 'regression':
-        eta = model.calcu_eta(Z)
+        eta = model.calcu_eta()
         mid_mat = np.eye(Z.shape[0]) - Z.dot( np.linalg.solve(Z.T.dot(Z), Z.T) )
         eta_tilde = mid_mat.dot(eta)
         for m in range(Kdims[1]):
@@ -111,15 +112,17 @@ def oneiter_L1(sharedK,Z,model,Kdims,Lambda,\
         h = None
         q = None
     # identify best fit K_m
-    if not parallel: ncpu =1
-    # random subset of groups
+        # random subset of groups
     mlist = range(Kdims[1])
     if group_subset:
         mlist= np.random.choice(mlist,min([Kdims[1]//3,100]),replace=False)
-    pool = mp.Pool(processes =ncpu,maxtasksperchild=300)
-    results = [pool.apply_async(paral_fun_L1,args=(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc)) for m in mlist]
-    #print(len(results))
-    out = [res.get() for res in results]
-    pool.close()
+    if parallel:
+        pool = mp.Pool(processes =ncpu,maxtasksperchild=300)
+        results = [pool.apply_async(paral_fun_L1,args=(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc)) for m in mlist]
+        out = [res.get() for res in results]
+        pool.close()
+    else:
+        out = []
+        for m in mlist:
+            out.append(paral_fun_L1(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc))
     return out[np.argmin([x[0] for x in out])][1]
-    
