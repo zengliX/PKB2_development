@@ -21,7 +21,7 @@ class PKB_Survival(BaseModel):
     initialize survival model
     """
     def init_F(self):
-        F0 = 1
+        F0 = 1.0
         self.F0 = F0 # initial value
         # update training loss, err
         F_train = np.repeat(F0,self.Ntrain)
@@ -94,7 +94,6 @@ class PKB_Survival(BaseModel):
     f: np.array of shape (Ntrain,)
     """
     def loss_fun(self,y,f):
-        print("in loss_fun:\n",f)
         N = np.shape(y)[0]
         delta = 1 - y[:,1]
         train_time = y[:,0]
@@ -114,8 +113,9 @@ class PKB_Survival(BaseModel):
     """
     def calcu_eta(self,h,q):
         u, s, vh = npl.svd(q)
-        S = 1/s
-        return np.dot(np.dot(u, np.dot(S, vh)), h)
+        S = np.diag(1/s)
+        temp = np.dot(np.dot(u, np.dot(S, vh)), h)
+        return temp
 
     def calcu_w(self,q):
         return q/2
