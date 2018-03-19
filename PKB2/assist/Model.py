@@ -56,6 +56,7 @@ class BaseModel:
     def update(self,pars,K,K1,Z,Z1,rate):
         m,beta,gamma = pars
         self.trace.append([m,beta,gamma])
+        #print(self.F_train)
         self.F_train += ( K.dot(beta) + Z.dot(gamma) )*rate
         self.train_loss.append(self.loss_fun(self.ytrain,self.F_train))
         if self.hasTest:

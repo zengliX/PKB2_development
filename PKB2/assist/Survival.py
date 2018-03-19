@@ -94,7 +94,6 @@ class PKB_Survival(BaseModel):
     f: np.array of shape (Ntrain,)
     """
     def loss_fun(self,y,f):
-        print("in loss_fun:\n",f)
         N = np.shape(y)[0]
         delta = 1 - y[:,1]
         train_time = y[:,0]
@@ -115,7 +114,12 @@ class PKB_Survival(BaseModel):
     def calcu_eta(self,h,q):
         u, s, vh = npl.svd(q)
         S = np.diag(1/s)
+<<<<<<< HEAD
         return np.dot(np.dot(u, np.dot(S, vh)), h)
+=======
+        temp = np.dot(np.dot(u, np.dot(S, vh)), h)
+        return temp
+>>>>>>> 7772712a223ecfdd5b07b074d67f92afe7c6428a
 
     def calcu_w(self,q):
         return q/2
