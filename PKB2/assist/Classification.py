@@ -91,3 +91,14 @@ class PKB_Classification(BaseModel):
     """
     def loss_fun(self,y,f):
         return np.mean(np.log(1+np.exp(-y*f)))
+
+    """
+    make predictions (1/-1) using new data
+    beta: estimated beta (Ntrain, Ngroup)
+    gamma: estimated gamma (Ntrain,)
+    Knew: (Nnew, Ntrain, Ngroup)-shape new kernel matrix
+    Znew: (Nnew, Npred_clin)-shape new clinical matrix
+    """
+    def predict(self,beta,gamma,Knew,Znew):
+        out = super().predict(beta,gamma,Knew,Znew)
+        return 2*(out>0)-1

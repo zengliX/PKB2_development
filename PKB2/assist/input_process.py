@@ -45,6 +45,7 @@ class input_obj:
     train_response=None
     pred_sets=None
     train_clinical = None
+    train_index = None
 
     # optional
     test_file = None
@@ -208,6 +209,7 @@ class input_obj:
         self.test_response = self.train_response.loc[test_ind]
         self.test_clinical = self.train_clinical.loc[test_ind]
         train_ind = np.setdiff1d(self.train_predictors.index.values,np.array(test_ind))
+        self.train_index = train_ind
         self.train_predictors = self.train_predictors.loc[train_ind]
         self.train_response = self.train_response.loc[train_ind]
         self.train_clinical = self.train_clinical.loc[train_ind]
