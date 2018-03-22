@@ -5,6 +5,7 @@ import numpy as np
 import numpy.linalg as npl
 # import lifelines
 
+
 # censor = 1 means censor
 
 class PKB_Survival(BaseModel):
@@ -48,7 +49,7 @@ class PKB_Survival(BaseModel):
         E2 = self.ytrain_time >= self.ytrain_time[j]
         E = E1*E2
         return E.sum()
-
+    
     def calcu_denom_array(self):
         N = self.Ntrain
         S = np.zeros(N)
