@@ -158,4 +158,3 @@ class output_obj:
         self.inputs.train_predictors = None
         self.inputs.test_response=None
         self.inputs.train_response=None
-        self.inputs.pred_sets=None

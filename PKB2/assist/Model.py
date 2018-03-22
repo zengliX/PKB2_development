@@ -64,6 +64,19 @@ class BaseModel:
             new_loss = self.loss_fun(self.ytest,self.F_test)
             self.test_loss.append(new_loss)
 
+    """
+    make predictions (of F) using new data
+    beta: estimated beta (Ntrain, Ngroup)
+    gamma: estimated gamma (Ntrain,)
+    Knew: (Nnew, Ntrain, Ngroup)-shape new kernel matrix
+    Znew: (Nnew, Npred_clin)-shape new clinical matrix
+    """
+    def predict(self,beta,gamma,Knew,Znew):
+        out = Znew.dot(gamma)
+        for i in range(Knew.shape[2]):
+            out += Knew[:,:,i].dot(beta[:,i])
+        return out
+
     """------------------------------------
     other functions to be added in child classes
 

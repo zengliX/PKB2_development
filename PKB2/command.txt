@@ -1,0 +1,11 @@
+python3 PKB2.py classification ../data/simu_toy ../data/simu_toy/results predictor.txt predictor_sets.txt response.txt poly3 L1 -maxiter 300 -rate 0.02 -pen 1 -test test_label4.txt -clinical clinical.txt
+
+python3 PKB2.py classification ../data/simu_toy ../data/simu_toy/results predictor.txt predictor_sets.txt response.txt rbf L1 -maxiter 200 -rate 0.02 -pen 1  -clinical clinical.txt
+
+
+python3 PKB2.py regression ../data/simu_toy_regression ../data/simu_toy_regression/results predictor.txt predictor_sets.txt response.txt poly3 L2 -maxiter 200 -rate 0.03 -pen 1 -test test_label1.txt -clinical clinical.txt
+python3 PKB2.py regression ../data/simu_toy_regression ../data/simu_toy_regression/results predictor.txt predictor_sets.txt response.txt poly3 L1 -maxiter 200 -rate 0.01 -pen 1 -test test_label1.txt -clinical clinical.txt
+
+
+python3 PKB2.py survival ../data/simu_toy_survival ../data/simu_toy_survival/results predictor.txt predictor_sets.txt response.txt poly3 L1 -maxiter 300 -rate 0.01 -pen 1 -test test_label4.txt -clinical clinical.txt
+
