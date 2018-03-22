@@ -7,12 +7,19 @@ from sklearn import metrics
 import numpy as np
 import sys
 
+"""
+get kernel matrices for each group
+X: (N1,Ngene)
+Y: (N2,Ngene)
+inputs: an input_obj
+output: shape (N1,N2,Ngroup), array of kernel matrices
+"""
 def get_kernels(X,Y,inputs):
     M = inputs.Ngroup
     N1 = X.shape[0]
     N2 = Y.shape[0]
     out = np.zeros([N1,N2,M])
-    
+
     ct = 0
     for value in inputs.pred_sets.values:
         genes = value.split(" ")
