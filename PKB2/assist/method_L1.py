@@ -31,13 +31,14 @@ def paral_fun_L1(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
         eta = model.calcu_eta(h,q)
         w = model.calcu_w(q)
         w_half = model.calcu_w_half(q)
-        mid_mat = np.eye(len(sele_loc)) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
+        if model.problem == 'survival' and not model.hasClinical:
+            mid_mat = w_half
+        else:
+            mid_mat = np.eye(len(sele_loc)) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
         eta_tilde = w_half.dot(mid_mat).dot(eta)
         Km_tilde = w_half.dot(mid_mat).dot(Km)
     elif model.problem == 'regression':
-        # calculate rt (eta)
         eta = model.calcu_eta()
-        #e = np.linalg.solve(Z.T.dot(Z), np.eye(Z.shape[1])).dot(Z.T)
         e = np.linalg.solve(Z.T.dot(Z), Z.T)
         mid_mat = np.eye(len(sele_loc)) - Z.dot(e)
         eta_tilde = mid_mat.dot(eta)
@@ -50,7 +51,10 @@ def paral_fun_L1(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
 
     #get gamma
     if model.problem in ('classification','survival'):
-        gamma = - np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)).dot(eta + Km.dot(beta))
+        if model.problem == 'survival' and not model.hasClinical:
+            gamma = np.array([0.0])
+        else:
+            gamma = - np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)).dot(eta + Km.dot(beta))
     elif model.problem == 'regression':
         gamma = - e.dot(eta + Km.dot(beta))
     # calculate val
@@ -73,7 +77,10 @@ def find_Lambda_L1(K_train,Z,model,Kdims):
         eta = model.calcu_eta(h,q)
         w = model.calcu_w(q)
         w_half = model.calcu_w_half(q)
-        mid_mat = np.eye(Kdims[0]) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
+        if model.problem == 'survival' and not model.hasClinical:
+            mid_mat = w_half
+        else:
+            mid_mat = np.eye(Kdims[0]) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
         eta_tilde = w_half.dot(mid_mat).dot(eta)
         for m in range(Kdims[1]):
             Km = K_train[:,:,m]

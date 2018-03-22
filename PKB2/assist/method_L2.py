@@ -28,7 +28,10 @@ def paral_fun_L2(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
         eta = model.calcu_eta(h,q)
         w = model.calcu_w(q)
         w_half = model.calcu_w_half(q)
-        mid_mat = np.eye(len(sele_loc)) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
+        if model.problem == 'survival' and not model.hasClinical:
+            mid_mat = w_half
+        else:
+            mid_mat = np.eye(len(sele_loc)) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
         eta_tilde = w_half.dot(mid_mat).dot(eta)
         Km_tilde = w_half.dot(mid_mat).dot(Km)
     elif model.problem == 'regression':
@@ -37,7 +40,6 @@ def paral_fun_L2(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
         e = np.linalg.solve(Z.T.dot(Z), Z.T)
         eta = model.calcu_eta()
         mid_mat = np.eye(len(sele_loc)) - Z.dot(e)
-        #mid_mat = np.eye(len(sele_loc)) - Z.dot( np.linalg.solve(Z.T.dot(Z), Z.T) )
         eta_tilde = mid_mat.dot(eta)
         Km_tilde = mid_mat.dot(Km)
 
@@ -46,7 +48,10 @@ def paral_fun_L2(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
 
     #get gamma
     if model.problem in ('classification','survival'):
-        gamma = - np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)).dot(eta + Km.dot(beta))
+        if model.problem == 'survival' and not model.hasClinical:
+            gamma = np.array([0.0])
+        else:
+            gamma = - np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)).dot(eta + Km.dot(beta))
     elif model.problem == 'regression':
         #gamma = - np.linalg.solve(Z.T.dot(Z), Z.T).dot(eta + Km.dot(beta))
         gamma = - e.dot(eta + Km.dot(beta))
@@ -68,7 +73,10 @@ def find_Lambda_L2(K_train,Z,model,Kdims,C=2):
         eta = model.calcu_eta(h,q)
         w = model.calcu_w(q)
         w_half = model.calcu_w_half(q)
-        mid_mat = np.eye(Kdims[0]) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
+        if model.problem == 'survival' and not model.hasClinical:
+            mid_mat = w_half
+        else:
+            mid_mat = np.eye(Kdims[0]) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
         eta_tilde = w_half.dot(mid_mat).dot(eta)
         # max(|Km*eta|)/N for each Km
         for m in range(Kdims[1]):

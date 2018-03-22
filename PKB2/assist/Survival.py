@@ -15,14 +15,15 @@ class PKB_Survival(BaseModel):
         self.problem = 'survival'
         self.ytrain_time = self.ytrain[:,0]
         self.ytrain_cen = self.ytrain[:,1]
-        self.ytest_time = self.ytest[:,0]
-        self.ytest_cen = self.ytest[:,1]
+        if self.hasTest:
+            self.ytest_time = self.ytest[:,0]
+            self.ytest_cen = self.ytest[:,1]
 
     """
     initialize survival model
     """
     def init_F(self):
-        F0 = 100.0
+        F0 = 0.1
         self.F0 = F0 # initial value
         # update training loss, err
         F_train = np.repeat(F0, self.Ntrain)
@@ -35,7 +36,7 @@ class PKB_Survival(BaseModel):
         else:
             F_test = None
         # update trace
-        self.trace.append([0,np.repeat(0,self.Ntrain),np.append( np.repeat(0,self.Npred_clin),[F0] )])
+        self.trace.append([0,np.repeat(0.0,self.Ntrain),np.repeat(0.0,self.Npred_clin)])
         # update F_train, F_test
         self.F_train = F_train
         self.F_test = F_test
@@ -49,7 +50,7 @@ class PKB_Survival(BaseModel):
         E2 = self.ytrain_time >= self.ytrain_time[j]
         E = E1*E2
         return E.sum()
-    
+
     def calcu_denom_array(self):
         N = self.Ntrain
         S = np.zeros(N)

@@ -183,7 +183,8 @@ class input_obj:
         # add intercept column to clinical data
         intercept_col = pd.DataFrame( {'intercept':np.ones(self.Ntrain)} , index=self.train_predictors.index)
         if self.hasClinical:
-            self.train_clinical = pd.concat([self.train_clinical, intercept_col],axis=1)
+            if self.problem != "survival":
+                self.train_clinical = pd.concat([self.train_clinical, intercept_col],axis=1)
         else:
             self.train_clinical = intercept_col
 

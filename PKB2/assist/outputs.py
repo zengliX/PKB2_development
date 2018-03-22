@@ -29,7 +29,7 @@ class output_obj:
         self.inputs = inputs
         self.model = model
         self.coef_mat =  np.zeros([inputs.Ntrain,inputs.Ngroup])
-        self.coef_clinical = np.zeros(inputs.Npred_clin + 1)
+        self.coef_clinical = None
         return
 
     """
@@ -116,7 +116,10 @@ class output_obj:
             weight_mat[i,:] = weight_mat[i-1,:]
             weight_mat[i,m] =  np.sqrt((self.coef_mat[:,m]**2).sum())
             # update clinical weights
-            weight_mat_clin[i,:] = self.coef_clinical[:-1]
+            if self.inputs.problem == 'survival' and self.inputs.hasClinical:
+                weight_mat_clin[i,:] = self.coef_clinical
+            else:
+                weight_mat_clin[i,:] = self.coef_clinical[:-1]
 
         # weights in last iteration
         first5 = weight_mat[-1,:].argsort()[-5:][::-1]
@@ -135,7 +138,7 @@ class output_obj:
         plt.title("pathway weights trace")
 
         if self.inputs.hasClinical:
-            Cnames = self.inputs.train_clinical.columns[:-1]
+            Cnames = self.inputs.train_clinical.columns[:self.inputs.Npred_clin]
             f2=plt.figure()
             for m in range(weight_mat_clin.shape[1]):
                 if m in first5_clin:
