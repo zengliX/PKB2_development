@@ -23,7 +23,7 @@ class PKB_Survival(BaseModel):
     initialize survival model
     """
     def init_F(self):
-        F0 = 0.1
+        F0 = 0.0
         self.F0 = F0 # initial value
         # update training loss, err
         F_train = np.repeat(F0, self.Ntrain)
@@ -53,7 +53,7 @@ class PKB_Survival(BaseModel):
 
     def calcu_denom_array(self):
         N = self.Ntrain
-        S = np.zeros(N)
+        S = np.repeat(0.0, N)
         for i in range(N):
             S[i] = self.calcu_denom(i)
         return(S)
@@ -66,7 +66,7 @@ class PKB_Survival(BaseModel):
     def calcu_h(self):
         delta = 1 - self.ytrain_cen
         E1 = np.exp(self.F_train)
-        N2 = np.repeat(0, self.Ntrain)
+        N2 = np.repeat(0.0, self.Ntrain)
         temp = self.calcu_denom_array()
         for k in range(self.Ntrain):
             E2 = delta*(self.ytrain_time[k] >= self.ytrain_time)/temp
@@ -114,7 +114,7 @@ class PKB_Survival(BaseModel):
             E = E1*E2
             return E.sum()
         def calc_de_array():
-            S = np.zeros(N)
+            S = np.repeat(0.0, N)
             for i in range(N):
                 S[i] = calc_de(i)
             return(S)
@@ -131,9 +131,9 @@ class PKB_Survival(BaseModel):
         u, s, vh = npl.svd(q)
         abss = np.abs(s)
         med = np.median(abss)
-        s = s[abss>=0.01*med]
-        u = u[:,abss>=0.01*med]
-        vh = vh[abss>=0.01*med,:]
+        s = s[abss>=0.0001*med]
+        u = u[:,abss>=0.0001*med]
+        vh = vh[abss>=0.0001*med,:]
         S = np.diag(1/s)
         return np.dot(np.dot(u, np.dot(S, vh)), h)
 
