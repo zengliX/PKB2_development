@@ -23,7 +23,7 @@ class PKB_Survival(BaseModel):
     initialize survival model
     """
     def init_F(self):
-        F0 = 0.1
+        F0 = 10.0
         self.F0 = F0 # initial value
         # update training loss, err
         F_train = np.repeat(F0, self.Ntrain)
