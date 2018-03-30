@@ -92,7 +92,10 @@ class output_obj:
 
     def plot_clinical_weights(self,weights):
         f=plt.figure()
-        plt.bar(self.inputs.train_clinical.columns[:-1],weights[:-1])
+        labels = self.inputs.train_clinical.columns[:-1]
+        x = range(len(labels))
+        plt.bar(x,weights[:-1])
+        plt.xticks(x, labels)
         plt.xlabel("clinical variables")
         plt.ylabel("clinical coefficients")
         return f
