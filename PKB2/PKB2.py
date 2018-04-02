@@ -48,8 +48,8 @@ from multiprocessing import cpu_count
 """
 class temp:
     problem='regression'
-    input='../simulation_regression/Reg1_M50'
-    output='./simu_results/Reg1_M50/poly3-L2-0.01-0.2-clinical/test_label0'
+    input='../simulation_regression/Reg3_M20'
+    output='./simu_results/Reg3_M20/poly3-L2-0.01-0.2-clinical/test_label0'
     predictor='expression.txt'
     response='response.txt'
     predictor_set='pathways.txt'
@@ -71,7 +71,6 @@ args = temp()
 # ██      ██ ██   ██ ██ ██   ████
 
 if __name__ == "__main__":
-    #importlib.reload(assist.input_process)
     inputs = assist.input_process.input_obj(args)
     inputs.proc_input()
     # process data
@@ -137,6 +136,8 @@ if __name__ == "__main__":
     """---------------------------
     BOOSTING PARAMETERS
     ----------------------------"""
+    # use seed for reproducibility
+    np.random.seed(1)
     ncpu = min(5,cpu_count())
     Lambda = inputs.Lambda
 
