@@ -33,7 +33,6 @@ args = parser.parse_args()
 # ██ ██ ████ ██ ██████  ██    ██ ██████     ██
 # ██ ██  ██  ██ ██      ██    ██ ██   ██    ██
 # ██ ██      ██ ██       ██████  ██   ██    ██
-from sys import argv
 import numpy as np
 import sharedmem
 import matplotlib
@@ -46,10 +45,24 @@ from assist.method_L2 import oneiter_L2, find_Lambda_L2
 import time
 from multiprocessing import cpu_count
 
-#import importlib
-#argv = "PKB2.py classification ../data/example ../data/example/new predictor.txt predictor_sets.txt response.txt rbf L1 -maxiter 800 -rate 0.02 -test test_label0.txt -pen 1"
-#argv = argv.split(' ')
-
+"""
+class temp:
+    problem='regression'
+    input='../simulation_regression/Reg1_M50'
+    output='./simu_results/Reg1_M50/poly3-L2-0.01-0.2-clinical/test_label0'
+    predictor='expression.txt'
+    response='response.txt'
+    predictor_set='pathways.txt'
+    kernel='poly3'
+    method='L2'
+    maxiter=20
+    rate=0.01
+    pen=0.2
+    test='test_label0.txt'
+    clinical='clinical.txt'
+    Lambda=None
+args = temp()
+"""
 
 # ███    ███  █████  ██ ███    ██
 # ████  ████ ██   ██ ██ ████   ██
@@ -133,7 +146,7 @@ if __name__ == "__main__":
         Lambda *= inputs.pen
         print("L1 method: use Lambda",Lambda)
     if inputs.method == 'L2' and Lambda is None:
-        Lambda = find_Lambda_L2(K_train,Z_train,model,Kdims,C=1)
+        Lambda = find_Lambda_L2(K_train,Z_train,model,Kdims)
         Lambda *= inputs.pen
         print("L2 method: use Lambda",Lambda)
 

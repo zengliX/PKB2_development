@@ -82,19 +82,14 @@ def find_Lambda_L1(K_train,Z,model,Kdims):
         else:
             mid_mat = np.eye(Kdims[0]) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
         eta_tilde = w_half.dot(mid_mat).dot(eta)
-        for m in range(Kdims[1]):
-            Km = K_train[:,:,m]
-            #Km_tilde = w_half.dot(Km - np.ones([Kdims[0],1]).dot((q/q.sum()).dot(Km).reshape([1,Kdims[0]])))
-            Km_tilde = w_half.dot(mid_mat).dot(Km)
-            prod += list(Km_tilde.dot(eta_tilde))
     elif model.problem == 'regression':
         eta = model.calcu_eta()
         mid_mat = np.eye(Z.shape[0]) - Z.dot( np.linalg.solve(Z.T.dot(Z), Z.T) )
         eta_tilde = mid_mat.dot(eta)
-        for m in range(Kdims[1]):
-            Km = K_train[:,:,m]
-            Km_tilde = mid_mat.dot(Km)
-            prod += list(Km_tilde.dot(eta_tilde))
+    for m in range(Kdims[1]):
+        Km = K_train[:,:,m]
+        Km_tilde = mid_mat.dot(Km)
+        prod += list(Km_tilde.dot(eta_tilde))
     return 2*np.percentile(np.abs(prod),85)/Kdims[0]
 
 """

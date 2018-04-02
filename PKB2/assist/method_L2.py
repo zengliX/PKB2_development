@@ -64,8 +64,10 @@ K_train: training kernel, shape (Ntrain, Ntrain, Ngroup)
 Z: training clinical data, shape (Ntrain, Npred_clin)
 model: model class object
 Kdims: (Ntrain, Ngroup)
+C: control |K*b| <= C*sqrt(Ntrain)
 """
-def find_Lambda_L2(K_train,Z,model,Kdims,C=2):
+def find_Lambda_L2(K_train,Z,model,Kdims,C=0.1):
+    C = C*np.sqrt(Kdims[0])
     l_list = [] # list of lambdas from each group
     if model.problem in ('classification','survival'):
         h = model.calcu_h()
@@ -78,27 +80,21 @@ def find_Lambda_L2(K_train,Z,model,Kdims,C=2):
         else:
             mid_mat = np.eye(Kdims[0]) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
         eta_tilde = w_half.dot(mid_mat).dot(eta)
-        # max(|Km*eta|)/N for each Km
-        for m in range(Kdims[1]):
-            Km = K_train[:,:,m]
-            Km_tilde = w_half.dot(mid_mat).dot(Km)
-            d = np.linalg.svd(Km_tilde)[1][0]
-            l = d*(np.sqrt(np.sum(eta_tilde**2)) - C)/(C*Kdims[0])
-            l = l if l>0 else 0.01
-            l_list.append(l)
     elif model.problem == 'regression':
         eta = model.calcu_eta()
         mid_mat = np.eye(Z.shape[0]) - Z.dot( np.linalg.solve(Z.T.dot(Z), Z.T) )
         eta_tilde = mid_mat.dot(eta)
-        # max(|Km*eta|)/N for each Km
-        for m in range(Kdims[1]):
-            Km = K_train[:,:,m]
-            Km_tilde = mid_mat.dot(Km)
+    for m in range(Kdims[1]):
+        Km = K_train[:,:,m]
+        Km_tilde = mid_mat.dot(Km)
+        try:
             d = np.linalg.svd(Km_tilde)[1][0]
-            l = d*(np.sqrt(np.sum(eta_tilde**2)) - C)/(C*Kdims[0])
-            l = l if l>0 else 0.01
-            l_list.append(l)
-    return np.percentile(l_list,20)
+        except:
+            continue
+        l = d*(np.sqrt(np.sum(eta_tilde**2)) - C)/(C*Kdims[0])
+        l = l if l>0 else 0.01
+        l_list.append(l)
+    return np.percentile(l_list,85)
 
 
 """
