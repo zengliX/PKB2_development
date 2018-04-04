@@ -60,6 +60,7 @@ class input_obj:
     Npred = 0 # number of predictor
     Npred_clin = 0 # number of clinical predictors
     group_names = None
+    clin_names = None
 
     # model pars
     nu = 0.05
@@ -130,6 +131,7 @@ class input_obj:
             thisfile = self.input_folder + "/"+ self.clinical_file
             have_file(thisfile)
             self.train_clinical = pd.DataFrame.from_csv(thisfile)
+            self.clin_names = self.train_clinical.columns
 
         # data summary
         self.Ntrain = self.train_predictors.shape[0]

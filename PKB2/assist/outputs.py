@@ -67,7 +67,7 @@ class output_obj:
     """
     def weights_timeT(self,t):
         self.coef_mat.fill(0)
-        self.coef_clinical = self.model.trace[0][2]
+        self.coef_clinical = self.model.trace[0][2].copy()
 
         # calculate coefficient matrix at step t
         for i in range(1,t+1):
@@ -105,7 +105,7 @@ class output_obj:
     """
     def weights_path(self):
         self.coef_mat.fill(0)
-        self.coef_clinical = self.model.trace[0][2]
+        self.coef_clinical = self.model.trace[0][2].copy()
         # calculate coefficient matrix at step t
         weight_mat = np.zeros([len(self.model.train_loss),self.inputs.Ngroup])
         weight_mat_clin = np.zeros([len(self.model.train_loss),self.inputs.Npred_clin])
