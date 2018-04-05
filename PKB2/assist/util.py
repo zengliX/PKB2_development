@@ -60,7 +60,6 @@ y: dataframe
 col: the column used for stratification
 """
 def simple_subsamp(y,col,fold=3):
-    grouped = y.groupby(col)
     out = [list() for i in range(fold)]
     n = y.shape[0]
     r = list(range(0,n+1,n//fold))
