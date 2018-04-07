@@ -15,9 +15,17 @@ class PKB_Survival(BaseModel):
         self.problem = 'survival'
         self.ytrain_time = self.ytrain[:,0]
         self.ytrain_cen = self.ytrain[:,1]
-        if self.hasTest:
+        temp = 1 - self.ytrain[:,1]
+        self.ytrain_delta = temp
+        self.ytrain_tau = np.zeros((self.Ntrain, self.Ntrain))
+        for i in range(self.Ntrain):
+            self.ytrain_tau[i,:] = self.ytrain_time >= self.ytrain_time[i]
             self.ytest_time = self.ytest[:,0]
             self.ytest_cen = self.ytest[:,1]
+            self.ytest_delta = np.squeeze(1 - self.ytest[:,1])
+            self.ytest_tau = np.zeros((self.Ntest, self.Ntest))
+            for i in range(self.Ntest):
+                self.ytest_tau[i,:] = self.ytest_time >= self.ytest_time[i]
 
     """
     initialize survival model
@@ -33,72 +41,48 @@ class PKB_Survival(BaseModel):
             F_test = np.repeat(F0,self.Ntest)
             l = self.loss_fun(self.ytest,F_test)
             self.test_loss.append(l)
+            exp_ftest = np.squeeze(np.exp(F_test))
         else:
             F_test = None
+            exp_ftest = None
         # update trace
         self.trace.append([0,np.repeat(0.0,self.Ntrain),np.repeat(0.0,self.Npred_clin)])
         # update F_train, F_test
         self.F_train = F_train
         self.F_test = F_test
-
-
-    """
-    a function to calculate a temp value
-    """
-    def calcu_denom(self, j):
-        E1 = np.exp(self.F_train)
-        E2 = self.ytrain_time >= self.ytrain_time[j]
-        E = E1*E2
-        return E.sum()
-
-    def calcu_denom_array(self):
-        N = self.Ntrain
-        S = np.repeat(0.0, N)
-        for i in range(N):
-            S[i] = self.calcu_denom(i)
-        return(S)
-
+        self.exp_ftrain = np.squeeze(np.exp(self.F_train))
+        self.exp_indicate = np.squeeze(np.dot(self.ytrain_tau, self.exp_ftrain))
+        self.fraction_matrix = np.squeeze(self.exp_ftrain*np.dot(self.ytrain_tau.T, (self.ytrain_delta/self.exp_indicate)))
+        self.exp_ftest = np.squeeze(exp_ftest)
 
     """
     calculate first order derivative
     return gradient, shape (Ntrain,)
     """
     def calcu_h(self):
-        delta = 1 - self.ytrain_cen
-        E1 = np.exp(self.F_train)
-        N2 = np.repeat(0.0, self.Ntrain)
-        temp = self.calcu_denom_array()
-        for k in range(self.Ntrain):
-            E2 = delta*(self.ytrain_time[k] >= self.ytrain_time)/temp
-            S1 = E2.sum()
-            N2[k] = S1
-        return - delta + E1 * N2
+        return np.squeeze(-self.ytrain_delta+self.fraction_matrix)
 
     """
     calculate second order derivative
     return hessian matrix, shape (Ntrain, Ntrain)
     """
     def calcu_q(self):
-        delta = 1 - self.ytrain_cen
-        Q = np.zeros((self.Ntrain, self.Ntrain))
-        E1 = np.exp(self.F_train)
-        sqE1 = E1**2
-        temp = self.calcu_denom_array()
-        for i in range(self.Ntrain):
-            for l in range(self.Ntrain):
-                if i == l:
-                    denomj = delta*(self.ytrain_time[i]>=self.ytrain_time)/temp
-                    sqdenomj = delta*(self.ytrain_time[i]>=self.ytrain_time)/temp**2
-                    sumdenomj = denomj.sum()
-                    sumsqdenomj = sqdenomj.sum()
-                    Q[i,i] = E1[i]*sumdenomj - sumsqdenomj*sqE1[i]
-                elif i != l:
-                    denom = delta*(self.ytrain_time[i]>=self.ytrain_time)*(self.ytrain_time[l]>=self.ytrain_time)/temp**2
-                    sumdenom = denom.sum()
-                    Q[i,l] = - sumdenom * E1[i]*E1[l]
-        return Q
+        temp = self.ytrain_delta/self.exp_indicate*self.ytrain_tau.T
+        mat = np.matrix(self.exp_ftrain)
+        Q = np.diag(self.fraction_matrix) - np.multiply(np.dot(mat.T, mat),np.dot(temp,temp.T))
+        return np.array(Q)
+
+    def update_att(self):
+        self.exp_ftrain = np.squeeze(np.exp(self.F_train))
+        self.exp_indicate = np.squeeze(np.dot(self.ytrain_tau, self.exp_ftrain))
+        self.fraction_matrix = np.squeeze(self.exp_ftrain*np.dot(self.ytrain_tau.T, (self.ytrain_delta/self.exp_indicate)))
+        if self.hasTest:
+            self.exp_ftest = np.squeeze(np.exp(self.F_test))
 
 
+    def update(self,pars,K,K1,Z,Z1,rate):
+        super().update(pars,K,K1,Z,Z1,rate)
+        self.update_att()
     """
     survival loss function, negative log-likelihood
     y: np.array of shape (Ntrain,2)
