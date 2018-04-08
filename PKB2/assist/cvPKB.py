@@ -10,6 +10,7 @@ import pandas as pd
 from assist.method_L1 import oneiter_L1
 from assist.method_L2 import oneiter_L2
 from matplotlib import pyplot as plt
+import time
 
 """
 CVinputs class
@@ -24,7 +25,7 @@ class CVinputs:
         self.hasClinical = inputs.hasClinical
         self.Npred_clin = inputs.Npred_clin
         self.inputs = inputs
-        
+
 """
 Cross-Validation function
 """
@@ -34,14 +35,13 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
     if inputs.problem == "classification":
         test_inds = subsamp(inputs.train_response,inputs.train_response.columns[0],nfold)
     elif inputs.problem == 'survival':
-        test_inds = simple_subsamp(inputs.train_response,inputs.train_response.columns[0],nfold)   
+        test_inds = simple_subsamp(inputs.train_response,inputs.train_response.columns[0],nfold)
     elif inputs.problem == "regression":
         test_inds = simple_subsamp(inputs.train_response,inputs.train_response.columns[0],nfold)
     folds = []
-    print(inputs.problem)
     for i in range(nfold):
-        folds.append([ temp[test_inds[i]].values, np.setdiff1d(temp.values,temp[test_inds[i]].values)])    
-     
+        folds.append([ temp[test_inds[i]].values, np.setdiff1d(temp.values,temp[test_inds[i]].values)])
+
     ########## initiate model for each fold ###############
     Ztrain_ls = [inputs.train_clinical.values[folds[i][1],:] for i in range(nfold)]
     Ztest_ls = [inputs.train_clinical.values[folds[i][0],:] for i in range(nfold)]
@@ -62,8 +62,8 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
         ytest_ls = [np.squeeze(inputs.train_response.iloc[folds[i][0]].values) for i in range(nfold)]
         inputs_class = [CVinputs(inputs, ytrain_ls[i], ytest_ls[i]) for i in range(nfold)]
         models = [assist.Regression.PKB_Regression(inputs_class[i], ytrain_ls[i], ytest_ls[i]) for i in range(nfold)]
-    
-       
+
+
     for x in models:
         x.init_F()
 
@@ -74,10 +74,11 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
     ave_loss = [prev_loss]
 
     print_section('Cross-Validation')
-    print("iteration\tMean test loss")
+    print("{:>9}\t{:>14}\t{:>24}".format("iteration","Mean test loss","time (if no E-stop)"))
+
+    time0 = time.time()
     for t in range(1,inputs.maxiter+1):
         # one iteration
-        #print("-------- iteration: {} ---------".format(t))
         for k in range(nfold):
             if inputs.method == 'L2':
                 [m,beta,gamma] = oneiter_L2(sharedK,Ztrain_ls[k],models[k],Kdims,Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
@@ -111,7 +112,9 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
 
         # print report
         if t%10 == 0:
-            print("%9.0f\t%14.4f" % (t,cur_loss))
+            iter_persec = t/(time.time() - time0) # time of one iteration
+            rem_time = (inputs.maxiter-t)/iter_persec # remaining time
+            print("{:9.0f}\t{:14.4f}\t{:24.4f}".format(t,cur_loss,rem_time/60))
 
         # detect early stop
         if t-opt_iter >= ESTOP:

@@ -20,6 +20,7 @@ class PKB_Survival(BaseModel):
         self.ytrain_tau = np.zeros((self.Ntrain, self.Ntrain))
         for i in range(self.Ntrain):
             self.ytrain_tau[i,:] = self.ytrain_time >= self.ytrain_time[i]
+        if self.hasTest:
             self.ytest_time = self.ytest[:,0]
             self.ytest_cen = self.ytest[:,1]
             self.ytest_delta = np.squeeze(1 - self.ytest[:,1])
