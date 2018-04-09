@@ -33,7 +33,8 @@ class output_obj:
         return
 
     """
-    show the trace of fitting
+    CLASSIFICATION ONLY
+    show the trace of classification error
     """
     def show_err(self):
         f = plt.figure()
@@ -45,6 +46,22 @@ class output_obj:
         plt.xlabel("iterations")
         plt.ylabel("classification error")
         plt.title("Classifiction errors in each iteration")
+        return f
+
+    """
+    SURVIVAL ONLY
+    show the trace of survival prediction Cindex
+    """
+    def show_Cind(self):
+        f = plt.figure()
+        plt.plot(self.model.train_Cind,'b')
+        plt.text(len(self.model.train_Cind),self.model.train_Cind[-1], "training C-index")
+        if self.model.hasTest:
+            plt.plot(self.model.test_Cind,'r')
+            plt.text(len(self.model.test_Cind),self.model.test_Cind[-1], "testing C-index")
+        plt.xlabel("iterations")
+        plt.ylabel("C-index")
+        plt.title("Survival prediction C-index in each iteration")
         return f
 
     """
@@ -92,9 +109,13 @@ class output_obj:
 
     def plot_clinical_weights(self,weights):
         f=plt.figure()
-        labels = self.inputs.train_clinical.columns[:-1]
+        if self.model.problem == 'survival':
+            labels = self.inputs.train_clinical.columns
+        else:
+            labels = self.inputs.train_clinical.columns[:-1]
+            weights = weights[:-1]
         x = range(len(labels))
-        plt.bar(x,weights[:-1])
+        plt.bar(x,weights)
         plt.xticks(x, labels)
         plt.xlabel("clinical variables")
         plt.ylabel("clinical coefficients")

@@ -4,8 +4,6 @@ from assist.util import testInf
 import numpy as np
 import numpy.linalg as npl
 # import lifelines
-
-
 # censor = 1 means censor
 
 class PKB_Survival(BaseModel):
@@ -18,13 +16,16 @@ class PKB_Survival(BaseModel):
         temp = 1 - self.ytrain[:,1]
         self.ytrain_delta = temp
         self.ytrain_tau = np.zeros((self.Ntrain, self.Ntrain))
+        self.train_Cind = []
         for i in range(self.Ntrain):
             self.ytrain_tau[i,:] = self.ytrain_time >= self.ytrain_time[i]
+        # if test data exists
         if self.hasTest:
             self.ytest_time = self.ytest[:,0]
             self.ytest_cen = self.ytest[:,1]
             self.ytest_delta = np.squeeze(1 - self.ytest[:,1])
             self.ytest_tau = np.zeros((self.Ntest, self.Ntest))
+            self.test_Cind = []
             for i in range(self.Ntest):
                 self.ytest_tau[i,:] = self.ytest_time >= self.ytest_time[i]
 
@@ -34,27 +35,28 @@ class PKB_Survival(BaseModel):
     def init_F(self):
         F0 = 0.0
         self.F0 = F0 # initial value
-        # update training loss, err
+        # update training loss, c-index ...
         F_train = np.repeat(F0, self.Ntrain)
-        self.train_loss.append(self.loss_fun(self.ytrain, F_train))
-        # update testing loss, err
-        if self.hasTest:
-            F_test = np.repeat(F0,self.Ntest)
-            l = self.loss_fun(self.ytest,F_test)
-            self.test_loss.append(l)
-            exp_ftest = np.squeeze(np.exp(F_test))
-        else:
-            F_test = None
-            exp_ftest = None
-        # update trace
-        self.trace.append([0,np.repeat(0.0,self.Ntrain),np.repeat(0.0,self.Npred_clin)])
-        # update F_train, F_test
         self.F_train = F_train
-        self.F_test = F_test
+        self.train_loss.append(self.loss_fun(self.ytrain, F_train))
+        self.train_Cind.append(self.C_index(self.ytrain, self.F_train))
         self.exp_ftrain = np.squeeze(np.exp(self.F_train))
         self.exp_indicate = np.squeeze(np.dot(self.ytrain_tau, self.exp_ftrain))
+        # update testing loss, c-index ...
+        if self.hasTest:
+            F_test = np.repeat(F0,self.Ntest)
+            self.F_test = F_test
+            l = self.loss_fun(self.ytest,F_test)
+            self.test_loss.append(l)
+            self.test_Cind.append(self.C_index(self.ytest, self.F_test))
+            exp_ftest = np.squeeze(np.exp(F_test))
+            self.exp_ftest = np.squeeze(exp_ftest)
+        else:
+            self.F_test = None
+            self.exp_ftest = None
+        # update trace
+        self.trace.append([0,np.repeat(0.0,self.Ntrain),np.repeat(0.0,self.Npred_clin)])
         self.fraction_matrix = np.squeeze(self.exp_ftrain*np.dot(self.ytrain_tau.T, (self.ytrain_delta/self.exp_indicate)))
-        self.exp_ftest = np.squeeze(exp_ftest)
 
     """
     calculate first order derivative
@@ -83,7 +85,12 @@ class PKB_Survival(BaseModel):
 
     def update(self,pars,K,K1,Z,Z1,rate):
         super().update(pars,K,K1,Z,Z1,rate)
+        # survival only updates
+        self.train_Cind.append(self.C_index(self.ytrain, self.F_train))
+        if self.hasTest:
+            self.test_Cind.append(self.C_index(self.ytest, self.F_test))
         self.update_att()
+
     """
     survival loss function, negative log-likelihood
     y: np.array of shape (Ntrain,2)
@@ -106,6 +113,45 @@ class PKB_Survival(BaseModel):
         T1 = np.log(calc_de_array())
         T2 = - delta*(f - T1)
         return np.mean(T2)
+
+    """
+    C-index (concordance index) function
+    y: np.array of shape (Ntrain,2)
+    f: np.array of shape (Ntrain,)
+    """
+    def C_index(self,y,f):
+        ct_pairs = 0.0 # count concordant pairs
+        ct=  0 # count total pairs
+        for i in range(len(f)-1):
+            for j in range(i+1,len(f)):
+                val =  self.concordant(y[i,0],y[j,0],y[i,1],y[j,1],f[i],f[j])
+                if val is None: continue
+                ct_pairs += val
+                ct += 1
+        return ct_pairs/ct
+
+    def concordant(self,y1,y2,d1,d2,f1,f2):
+        """
+        y1,y2: survival time
+        d1,d2: censoring
+        f1,f2: predicted risk
+        return None for non-permissible
+        """
+        # non-permissible
+        if (y1<y2 and d1 == 1) or (y2<y1 and d2 == 1):
+            return None
+        if y1 == y2 and d1==d2==1:
+            return None
+        # permissible
+        if y1 != y2:
+            if f1 == f2: return 0.5
+            return (1 if (y1>y2) == (f1<f2) else 0)
+        else:
+            # y1 == y2
+            if d1==d2==0:
+                return (1 if f1==f2 else 0.5)
+            else:
+                return (0.5 if f1==f2 else 1 if (d1>d2)==(f2>f1) else 0)
 
     """
     calculate eta，W, W^(1/2) from h and q

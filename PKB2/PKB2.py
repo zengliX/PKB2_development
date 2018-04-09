@@ -228,6 +228,9 @@ if __name__ == "__main__":
     if inputs.problem == "classification":
         f = outputs.show_err()
         f.savefig(inputs.output_folder + "/err.pdf")
+    if inputs.problem == "survival":
+        f = outputs.show_Cind()
+        f.savefig(inputs.output_folder + "/Cindex.pdf")
     f = outputs.show_loss()
     f.savefig(inputs.output_folder + "/loss.pdf")
 

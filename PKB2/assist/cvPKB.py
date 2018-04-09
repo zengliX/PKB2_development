@@ -119,9 +119,11 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
         # detect early stop
         if t-opt_iter >= ESTOP:
             print('Early stop criterion satisfied: break CV.')
-            print('using iteration number:',opt_iter)
             break
 
+    # print the number of iterations used
+    print('using iteration number:',opt_iter)
+    
     # visualization
     if plot:
         folder = inputs.output_folder
