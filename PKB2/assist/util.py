@@ -12,19 +12,16 @@ FUNCTIONS
 
 """
 line search function
-sharedK: shared kernel matrix
+K_train: kernel matrix (Ntrain, Ntrain, Ngroup)
 Z: clinical data, shape (len(sele_loc),Npred_clin)
 model: a specific model class
 pars: [m, beta, c] from each iteration
 sele_loc: used in CV, only a subset of data used
 """
-def line_search(sharedK,Z,model,Kdims,pars,sele_loc=None,max_val = 10):
+def line_search(K_train,Z,model,pars,max_val = 10):
     [m,beta,gamma] = pars
-    if sele_loc is None:
-        sele_loc = np.array(range(model.Ntrain))
     # get K
-    nrow = Kdims[0]
-    Km = get_K(sharedK,m,nrow,sele_loc)
+    Km = get_K(K_train,m)
 
     b = Km.dot(beta)+ Z.dot(gamma)
     # line search function
@@ -71,13 +68,11 @@ def simple_subsamp(y,col,fold=3):
     return out
 
 """
-get kernel matrices from sharedK
+get kernel matrices from K_train
 return K[:,:,m][sele_loc,selec_l]
 """
-def get_K(sharedK,m,nrow,sele_loc):
-    width = nrow**2
-    Km = sharedK[(m*width):((m+1)*width)].reshape((nrow,nrow))
-    Km = Km[np.ix_(sele_loc,sele_loc)]
+def get_K(K_train,m):
+    Km = K_train[:,:,m]
     return Km
 
 """

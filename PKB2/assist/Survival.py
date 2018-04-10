@@ -104,7 +104,7 @@ class PKB_Survival(BaseModel):
         for i in range(N):
             tau[i,:] = sur_time >= sur_time[i]
         expy = np.exp(f)
-        
+
         T1 = np.log(np.dot(tau, expy))
         T2 = - delta*(f - T1)
         return np.mean(T2)

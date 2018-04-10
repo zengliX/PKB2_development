@@ -5,25 +5,24 @@ author: li zeng
 
 import numpy as np
 from assist.util import get_K, undefined
-import multiprocessing as mp
 import scipy
 
-# function to parallelized
+# function to paralleled
 """
 solve L2 penalized regression for pathway m
-sharedK: shared kernel matrix
+K_train: Kernel matrix of training data (Ntrain, Ntrain, Ngroup)
 model: model class object
 m: pathway index
 h: first order derivative
 q: second order derivative
-sele_loc: index of subset of data to use
 """
-def paral_fun_L2(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
+def paral_fun_L2(K_train,Z,model,m,h,q,Lambda):
+    Nsamp = K_train.shape[0]
     # get K
-    Km = get_K(sharedK,m,nrow,sele_loc)
+    Km = get_K(K_train,m)
     if model.problem in ('classification','survival'):
         # working Lambda
-        new_Lambda= len(sele_loc)*Lambda
+        new_Lambda= Nsamp*Lambda
         # convert eta, Km
         eta = model.calcu_eta(h,q)
         w = model.calcu_w(q)
@@ -31,20 +30,20 @@ def paral_fun_L2(sharedK,Z,model,m,nrow,h,q,Lambda,sele_loc):
         if model.problem == 'survival' and not model.hasClinical:
             mid_mat = w_half
         else:
-            mid_mat = np.eye(len(sele_loc)) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
+            mid_mat = np.eye(Nsamp) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
         eta_tilde = w_half.dot(mid_mat).dot(eta)
         Km_tilde = w_half.dot(mid_mat).dot(Km)
     elif model.problem == 'regression':
         # working Lambda
-        new_Lambda= len(sele_loc)*Lambda
+        new_Lambda= Nsamp*Lambda
         e = np.linalg.solve(Z.T.dot(Z), Z.T)
         eta = model.calcu_eta()
-        mid_mat = np.eye(len(sele_loc)) - Z.dot(e)
+        mid_mat = np.eye(Nsamp) - Z.dot(e)
         eta_tilde = mid_mat.dot(eta)
         Km_tilde = mid_mat.dot(Km)
 
     # L2 solution
-    beta = - np.linalg.solve( Km_tilde.T.dot(Km_tilde) + np.eye(len(sele_loc))*new_Lambda, Km_tilde.T.dot(eta_tilde))
+    beta = - np.linalg.solve( Km_tilde.T.dot(Km_tilde) + np.eye(Nsamp)*new_Lambda, Km_tilde.T.dot(eta_tilde))
 
     #get gamma
     if model.problem in ('classification','survival'):
@@ -63,11 +62,12 @@ find a feasible lambda for L2 problem
 K_train: training kernel, shape (Ntrain, Ntrain, Ngroup)
 Z: training clinical data, shape (Ntrain, Npred_clin)
 model: model class object
-Kdims: (Ntrain, Ngroup)
 C: control |K*b| <= C*sqrt(Ntrain)
 """
-def find_Lambda_L2(K_train,Z,model,Kdims,C=0.1):
-    C = C*np.sqrt(Kdims[0])
+def find_Lambda_L2(K_train,Z,model,C = 0.1):
+    Nsamp = K_train.shape[0]
+    Ngroup = K_train.shape[2]
+    C = C*np.sqrt(Nsamp)
     l_list = [] # list of lambdas from each group
     if model.problem in ('classification','survival'):
         h = model.calcu_h()
@@ -78,20 +78,20 @@ def find_Lambda_L2(K_train,Z,model,Kdims,C=0.1):
         if model.problem == 'survival' and not model.hasClinical:
             mid_mat = w_half
         else:
-            mid_mat = np.eye(Kdims[0]) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
+            mid_mat = np.eye(Nsamp) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
         eta_tilde = w_half.dot(mid_mat).dot(eta)
     elif model.problem == 'regression':
         eta = model.calcu_eta()
         mid_mat = np.eye(Z.shape[0]) - Z.dot( np.linalg.solve(Z.T.dot(Z), Z.T) )
         eta_tilde = mid_mat.dot(eta)
-    for m in range(Kdims[1]):
+    for m in range(Ngroup):
         Km = K_train[:,:,m]
         Km_tilde = mid_mat.dot(Km)
         try:
             d = np.linalg.svd(Km_tilde)[1][0]
         except:
             continue
-        l = d*(np.sqrt(np.sum(eta_tilde**2)) - C)/(C*Kdims[0])
+        l = d*(np.sqrt(np.sum(eta_tilde**2)) - C)/(C*Nsamp)
         l = l if l>0 else 0.01
         l_list.append(l)
     return np.percentile(l_list,85)
@@ -99,18 +99,14 @@ def find_Lambda_L2(K_train,Z,model,Kdims,C=0.1):
 
 """
 perform one iteration of L2-boosting
-sharedK: kernel matrix
+K_train: kernel matrix
 model: model class object
-Kdims: (Ntrain, Ngroup)
-sele_loc: subset index
 group_subset: bool, whether randomly choose a subset of pathways
 """
-def oneiter_L2(sharedK,Z,model,Kdims,Lambda,ncpu = 1,\
-               parallel=False,sele_loc = None,group_subset = False):
-    # whether stochastic gradient boosting
-    if sele_loc is None:
-        sele_loc = np.array(range(model.Ntrain))
-
+def oneiter_L2(K_train,Z,model,Lambda,\
+               parallel=False,group_subset = False):
+    Nsamp = K_train.shape[0]
+    Ngroup = K_train.shape[2]
     # calculate derivatives h,q
     if model.problem in ('classification','survival'):
         # calculate derivatives h,q
@@ -121,16 +117,13 @@ def oneiter_L2(sharedK,Z,model,Kdims,Lambda,ncpu = 1,\
         q = None
     # identify best fit K_m
         # random subset of groups
-    mlist = range(Kdims[1])
+    mlist = range(Ngroup)
     if group_subset:
-        mlist= np.random.choice(mlist,min([Kdims[1]//3,100]),replace=False)
+        mlist= np.random.choice(mlist,min([Ngroup//3,100]),replace=False)
     if parallel:
-        pool = mp.Pool(processes = ncpu,maxtasksperchild=300)
-        results = [pool.apply_async(paral_fun_L2,args=(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc)) for m in mlist]
-        out = [res.get() for res in results]
-        pool.close()
+        raise Exception("parallel algorithm currently not supported.")
     else:
         out = []
         for m in mlist:
-            out.append(paral_fun_L2(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc))
+            out.append(paral_fun_L2(K_train,Z,model,m,h,q,Lambda))
     return out[np.argmin([x[0] for x in out])][1]

@@ -34,7 +34,6 @@ args = parser.parse_args()
 # ██ ██  ██  ██ ██      ██    ██ ██   ██    ██
 # ██ ██      ██ ██       ██████  ██   ██    ██
 import numpy as np
-import sharedmem
 import matplotlib
 matplotlib.use('Agg')
 #from matplotlib import pyplot as plt
@@ -43,7 +42,6 @@ from assist.cvPKB import CV_PKB
 from assist.method_L1 import oneiter_L1, find_Lambda_L1
 from assist.method_L2 import oneiter_L2, find_Lambda_L2
 import time
-from multiprocessing import cpu_count
 
 """
 class temp:
@@ -98,13 +96,6 @@ if __name__ == "__main__":
         K_test= assist.kernel_calc.get_kernels(inputs.train_predictors,inputs.test_predictors,inputs)
         Z_test = inputs.test_clinical.values
 
-
-    # put K_train in shared memory
-    sharedK = sharedmem.empty(K_train.size)
-    sharedK[:] = np.transpose(K_train,(2,0,1)).reshape((K_train.size,))
-    Kdims = (K_train.shape[0],K_train.shape[2])
-
-
     """---------------------------
     initialize model object
     ----------------------------"""
@@ -138,29 +129,26 @@ if __name__ == "__main__":
     ----------------------------"""
     # use seed for reproducibility
     np.random.seed(1)
-    ncpu = min(5,cpu_count())
     Lambda = inputs.Lambda
 
     # automatic selection of Lambda
     if inputs.method == 'L1' and Lambda is None:
-        Lambda = find_Lambda_L1(K_train,Z_train,model,Kdims)
+        Lambda = find_Lambda_L1(K_train,Z_train,model)
         Lambda *= inputs.pen
         print("L1 method: use Lambda",Lambda)
     if inputs.method == 'L2' and Lambda is None:
-        Lambda = find_Lambda_L2(K_train,Z_train,model,Kdims)
+        Lambda = find_Lambda_L2(K_train,Z_train,model)
         Lambda *= inputs.pen
         print("L2 method: use Lambda",Lambda)
 
-    # is there a need to run parallel
+    # use random groups when sample size or group number are large
     if (inputs.Ntrain > 500 or inputs.Ngroup > 40):
         parallel = False
-        #print("Algorithm: parallel on",ncpu,"cores")
         gr_sub = True
         print("Algorithm: random groups selected in each iteration")
     else:
         parallel = False
         gr_sub = False
-        #print("Algorithm: parallel algorithm not used")
 
     ESTOP = 50 # early stop if test_loss have no increase
 
@@ -169,10 +157,10 @@ if __name__ == "__main__":
     CV FOR NUMBER OF ITERATIONS
     ----------------------------"""
 
-    opt_iter = CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=ESTOP,\
-                      ncpu=1,parallel=parallel,gr_sub=gr_sub,plot=True)
+    opt_iter = CV_PKB(inputs,K_train,Lambda,nfold=3,ESTOP=ESTOP,\
+                      parallel=parallel,gr_sub=gr_sub,plot=True)
     #opt_iter = int(opt_iter*1.5)
-    #opt_iter = 100
+    #opt_iter = 1000
 
     """---------------------------
     BOOSTING ITERATIONS
@@ -184,17 +172,15 @@ if __name__ == "__main__":
     for t in range(1,opt_iter+1):
         # one iteration
         if inputs.method == 'L2':
-            [m,beta,gamma] = oneiter_L2(sharedK,Z_train,model,Kdims,\
-                    Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
-                    sele_loc=None,group_subset = gr_sub)
+            [m,beta,gamma] = oneiter_L2(K_train,Z_train,model,Lambda=Lambda,\
+                        parallel = parallel,group_subset = gr_sub)
         if inputs.method == 'L1':
-            [m,beta,gamma] = oneiter_L1(sharedK,Z_train,model,Kdims,\
-                    Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
-                    sele_loc=None,group_subset = gr_sub)        #print([m,beta,gamma])
+            [m,beta,gamma] = oneiter_L1(K_train,Z_train,model,\
+                    Lambda=Lambda,parallel = parallel,group_subset = gr_sub)
         #print("\t beta norm: {}; gamma norm: {}".format(np.mean(beta**2), np.mean(gamma**2)) )
 
         # line search
-        x = assist.util.line_search(sharedK,Z_train,model,Kdims,[m,beta,gamma])
+        x = assist.util.line_search(K_train,Z_train,model,[m,beta,gamma])
         beta *= x
         gamma *= x
 

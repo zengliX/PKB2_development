@@ -28,8 +28,14 @@ class CVinputs:
 
 """
 Cross-Validation function
+K_train: shape (Nsamp, Nsamp, Ngroup) kernel matrices
+Lambda: penalty parameter
+nfold: number of CV folds
+ESTOP: early stop steps
+parallel: use parallel algorithm (not supported in current version)
+gr_sub: use random group selection or not
 """
-def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=False,gr_sub=False,plot=False):
+def CV_PKB(inputs,K_train,Lambda,nfold=3,ESTOP=50,parallel=False,gr_sub=False,plot=False):
     ########## split data ###############
     temp = pd.Series(range(inputs.Ntrain),index= inputs.train_response.index)
     if inputs.problem == "classification":
@@ -45,8 +51,9 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
     ########## initiate model for each fold ###############
     Ztrain_ls = [inputs.train_clinical.values[folds[i][1],:] for i in range(nfold)]
     Ztest_ls = [inputs.train_clinical.values[folds[i][0],:] for i in range(nfold)]
-    #print("Z_train")
-    #print(Ztrain_ls[0])
+    K_train_ls = [K_train[np.ix_(folds[i][1],folds[i][1])] for i in range(nfold)]
+    K_test_ls = [K_train[np.ix_(folds[i][1],folds[i][0])] for i in range(nfold)]
+    
     if inputs.problem == "classification":
         ytrain_ls = [np.squeeze(inputs.train_response.iloc[folds[i][1]].values) for i in range(nfold)]
         ytest_ls = [np.squeeze(inputs.train_response.iloc[folds[i][0]].values) for i in range(nfold)]
@@ -81,25 +88,18 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
         # one iteration
         for k in range(nfold):
             if inputs.method == 'L2':
-                [m,beta,gamma] = oneiter_L2(sharedK,Ztrain_ls[k],models[k],Kdims,Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
-                sele_loc=folds[k][1])
+                [m,beta,gamma] = oneiter_L2(K_train_ls[k],Ztrain_ls[k],models[k],\
+                                Lambda=Lambda,parallel = parallel,group_subset = gr_sub)
             if inputs.method == 'L1':
-                [m,beta,gamma] = oneiter_L1(sharedK,Ztrain_ls[k],models[k],Kdims,Lambda=Lambda,ncpu = ncpu,parallel = parallel,\
-                sele_loc=folds[k][1],group_subset = gr_sub)
-            #print("fold: {}".format(k))
-            #print("\t beta norm: {}; gamma norm: {}".format(np.mean(beta**2), np.mean(gamma**2)) )
-
+                [m,beta,gamma] = oneiter_L1(K_train_ls[k],Ztrain_ls[k],models[k],\
+                                Lambda=Lambda,parallel = parallel,group_subset = gr_sub)
             # line search
-            x = line_search(sharedK,Ztrain_ls[k],models[k],Kdims,[m,beta,gamma],sele_loc=folds[k][1])
+            x = line_search(K_train_ls[k],Ztrain_ls[k],models[k],[m,beta,gamma])
             beta *= x
             gamma *= x
-            #print("x: {}".format(x))
 
             # update model
-            cur_Ktrain = K_train[:,:,m][np.ix_(folds[k][1],folds[k][1])]
-            cur_Ktest = K_train[:,:,m][np.ix_(folds[k][1],folds[k][0])]
-            #print("cur_Ktrain shape: {}\n cur_Ktest shape: {}".format(cur_Ktrain.shape, cur_Ktest.shape))
-            models[k].update([m,beta,gamma],cur_Ktrain,cur_Ktest,Ztrain_ls[k],Ztest_ls[k],inputs.nu)
+            models[k].update([m,beta,gamma],K_train_ls[k][:,:,m],K_test_ls[k][:,:,m],Ztrain_ls[k],Ztest_ls[k],inputs.nu)
 
         # save iteration
         #print("loss values: {}".format([x.test_loss[-1] for x in models]))
@@ -123,7 +123,7 @@ def CV_PKB(inputs,sharedK,K_train,Kdims,Lambda,nfold=3,ESTOP=30,ncpu=1,parallel=
 
     # print the number of iterations used
     print('using iteration number:',opt_iter)
-    
+
     # visualization
     if plot:
         folder = inputs.output_folder
