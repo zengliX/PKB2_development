@@ -44,7 +44,7 @@ def paral_fun_L1(K_train,Z,model,m,h,q,Lambda):
         Km_tilde = mid_mat.dot(Km)
     # get beta
     lasso_fit = linear_model.Lasso(alpha = new_Lambda,fit_intercept = False,\
-                selection='random',max_iter=20000,tol=10**-4)
+                selection='random',max_iter=200,tol=10**-4)
     lasso_fit.fit(-Km_tilde,eta_tilde)
     beta = lasso_fit.coef_
 
