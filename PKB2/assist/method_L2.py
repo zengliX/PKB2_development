@@ -124,7 +124,7 @@ def oneiter_L2(sharedK,Z,model,Kdims,Lambda,ncpu = 1,\
     mlist = range(Kdims[1])
     if group_subset:
         mlist= np.random.choice(mlist,min([Kdims[1]//3,100]),replace=False)
-    if not parallel:
+    if parallel:
         pool = mp.Pool(processes = ncpu,maxtasksperchild=300)
         results = [pool.apply_async(paral_fun_L2,args=(sharedK,Z,model,m,Kdims[0],h,q,Lambda,sele_loc)) for m in mlist]
         out = [res.get() for res in results]

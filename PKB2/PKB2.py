@@ -153,14 +153,14 @@ if __name__ == "__main__":
 
     # is there a need to run parallel
     if (inputs.Ntrain > 500 or inputs.Ngroup > 40):
-        parallel = True
-        print("Algorithm: parallel on",ncpu,"cores")
+        parallel = False
+        #print("Algorithm: parallel on",ncpu,"cores")
         gr_sub = True
         print("Algorithm: random groups selected in each iteration")
     else:
         parallel = False
         gr_sub = False
-        print("Algorithm: parallel algorithm not used")
+        #print("Algorithm: parallel algorithm not used")
 
     ESTOP = 50 # early stop if test_loss have no increase
 
