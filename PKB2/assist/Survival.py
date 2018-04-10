@@ -23,7 +23,7 @@ class PKB_Survival(BaseModel):
         if self.hasTest:
             self.ytest_time = self.ytest[:,0]
             self.ytest_cen = self.ytest[:,1]
-            self.ytest_delta = np.squeeze(1 - self.ytest[:,1])
+            self.ytest_delta = 1 - self.ytest[:,1]
             self.ytest_tau = np.zeros((self.Ntest, self.Ntest))
             self.test_Cind = []
             for i in range(self.Ntest):
@@ -40,8 +40,8 @@ class PKB_Survival(BaseModel):
         self.F_train = F_train
         self.train_loss.append(self.loss_fun(self.ytrain, F_train))
         self.train_Cind.append(self.C_index(self.ytrain, self.F_train))
-        self.exp_ftrain = np.squeeze(np.exp(self.F_train))
-        self.exp_indicate = np.squeeze(np.dot(self.ytrain_tau, self.exp_ftrain))
+        self.exp_ftrain = np.exp(self.F_train)
+        self.exp_indicate = np.dot(self.ytrain_tau, self.exp_ftrain)
         # update testing loss, c-index ...
         if self.hasTest:
             F_test = np.repeat(F0,self.Ntest)
@@ -49,21 +49,21 @@ class PKB_Survival(BaseModel):
             l = self.loss_fun(self.ytest,F_test)
             self.test_loss.append(l)
             self.test_Cind.append(self.C_index(self.ytest, self.F_test))
-            exp_ftest = np.squeeze(np.exp(F_test))
-            self.exp_ftest = np.squeeze(exp_ftest)
+            exp_ftest = np.exp(F_test)
+            self.exp_ftest = exp_ftest
         else:
             self.F_test = None
             self.exp_ftest = None
         # update trace
         self.trace.append([0,np.repeat(0.0,self.Ntrain),np.repeat(0.0,self.Npred_clin)])
-        self.fraction_matrix = np.squeeze(self.exp_ftrain*np.dot(self.ytrain_tau.T, (self.ytrain_delta/self.exp_indicate)))
+        self.fraction_matrix = self.exp_ftrain*np.dot(self.ytrain_tau.T, (self.ytrain_delta/self.exp_indicate))
 
     """
     calculate first order derivative
     return gradient, shape (Ntrain,)
     """
     def calcu_h(self):
-        return np.squeeze(-self.ytrain_delta+self.fraction_matrix)
+        return -self.ytrain_delta+self.fraction_matrix
 
     """
     calculate second order derivative
@@ -76,11 +76,11 @@ class PKB_Survival(BaseModel):
         return np.array(Q)
 
     def update_att(self):
-        self.exp_ftrain = np.squeeze(np.exp(self.F_train))
-        self.exp_indicate = np.squeeze(np.dot(self.ytrain_tau, self.exp_ftrain))
-        self.fraction_matrix = np.squeeze(self.exp_ftrain*np.dot(self.ytrain_tau.T, (self.ytrain_delta/self.exp_indicate)))
+        self.exp_ftrain = np.exp(self.F_train)
+        self.exp_indicate = np.dot(self.ytrain_tau, self.exp_ftrain)
+        self.fraction_matrix = self.exp_ftrain*np.dot(self.ytrain_tau.T, (self.ytrain_delta/self.exp_indicate))
         if self.hasTest:
-            self.exp_ftest = np.squeeze(np.exp(self.F_test))
+            self.exp_ftest = np.exp(self.F_test)
 
 
     def update(self,pars,K,K1,Z,Z1,rate):
@@ -99,18 +99,13 @@ class PKB_Survival(BaseModel):
     def loss_fun(self,y,f):
         N = np.shape(y)[0]
         delta = 1 - y[:,1]
-        train_time = y[:,0]
-        def calc_de(j):
-            E1 = np.exp(f)
-            E2 = train_time >= train_time[j]
-            E = E1*E2
-            return E.sum()
-        def calc_de_array():
-            S = np.repeat(0.0, N)
-            for i in range(N):
-                S[i] = calc_de(i)
-            return(S)
-        T1 = np.log(calc_de_array())
+        sur_time = y[:,0]
+        tau = np.zeros((N, N))
+        for i in range(N):
+            tau[i,:] = sur_time >= sur_time[i]
+        expy = np.exp(f)
+        
+        T1 = np.log(np.dot(tau, expy))
         T2 = - delta*(f - T1)
         return np.mean(T2)
 
