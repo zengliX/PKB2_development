@@ -10,6 +10,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("folder", help="path to data folder (relative to RandomForest.py)")
 parser.add_argument("outfolder",help="output folder name (under ~/RandomForest)")
+parser.add_argument("-c", help="use clinical data only")
 args = parser.parse_args()
 
 
@@ -33,11 +34,17 @@ np.random.seed(1)
 gene_file = "{}/expression.txt".format(folder)
 clinical_file = "{}/clinical.txt".format(folder)
 resp_file = "{}/response.txt".format(folder)
-X = pd.DataFrame.from_csv(gene_file)
+
 Z = pd.DataFrame.from_csv(clinical_file)
 Y = pd.DataFrame.from_csv(resp_file)
+if args.c is None:
+    X = pd.DataFrame.from_csv(gene_file)
+    X = pd.concat([Z,X],axis=1)
+else:
+    X = Z
 all_ind = Y.index
-X = pd.concat([Z,X],axis=1)
+print("X shape: {}".format(X.shape))
+
 
 """
 RUN LINEAR MODELS
@@ -51,13 +58,13 @@ for i in range(10):
     test_lab = "{}/test_label{}.txt".format(folder,i)
     with open(test_lab,'r') as f:
         test_ind = [x.strip() for x in f]
-    train_ind = np.setdiff1d(all_ind,np.array(test_ind))                                                   
+    train_ind = np.setdiff1d(all_ind,np.array(test_ind))
     Xtrain = X.loc[train_ind]
     ytrain = Y.loc[train_ind]
     Xtest = X.loc[test_ind]
     ytest = Y.loc[test_ind]
-    print("fitting test data: {}".format(test_lab))    
-    
+    print("fitting test data: {}".format(test_lab))
+
     """
     LASSO FIT
     """
@@ -66,11 +73,11 @@ for i in range(10):
     sele_alpha = lasso_cv.alpha_
     lasso = LM.Lasso(alpha= sele_alpha, random_state=0)
     lasso.fit(Xtrain,ytrain)
-    pred = lasso.predict(Xtest)    
+    pred = lasso.predict(Xtest)
     err = mean_squared_error(ytest.iloc[:,0],pred)
     res_lasso.append(err)
     print("LASSO par {}, error {}".format(sele_alpha,err))
-    
+
     """
     RIDGE FIT
     """
@@ -84,7 +91,7 @@ for i in range(10):
     err = mean_squared_error(ytest.iloc[:,0],pred)
     res_ridge.append(err)
     print("Ridge par {},error {}".format(sele_alpha,err))
-    
+
     """
     ELASTICNET FIT
     """
@@ -108,7 +115,7 @@ ORGANIZE OUTPUT AND WRITE TO FILE
 
 if not os.path.exists(outfolder):
     os.makedirs(outfolder)
-    
+
 # write to file
 outfile = "{}/results.txt".format(outfolder)
 with open(outfile,'w') as f:
@@ -127,4 +134,3 @@ with open(outfile,'w') as f:
            round(np.std(res_enet),3),np.round(res_enet,3))
     f.write(msg+'\n')
     print("results saved to:",outfile)
-

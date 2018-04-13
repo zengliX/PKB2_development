@@ -41,7 +41,7 @@ RUN GRADIENT BOOSTING
 """
 maxiter = 800
 max_depth = [3,5,7]
-rate = [0.002,0.01,0.05]
+rate = [0.005,0.02,0.05]
 
 #maxiter = 20
 #max_depth = [3,5]
@@ -70,13 +70,13 @@ for i in range(10):
         model.fit(Xtrain, ytrain.iloc[:,0])
         cum_imprv = np.cumsum(model.oob_improvement_)
         opt_iter = np.argmax(cum_imprv)+1
-        print("{} optimal iterations: {}".format(label,opt_iter))
         # Fit regressor with optimal maxiter
         pars = {'n_estimators':opt_iter,'learning_rate':r,'max_depth':M}
         model = ensemble.GradientBoostingRegressor(**pars,max_features='sqrt')
         model.fit(Xtrain, ytrain.iloc[:,0])
         pred = model.predict(Xtest)
-        loss = np.mean( (pred - ytest.values)**2 )
+        loss = np.mean( (pred - np.squeeze(ytest.values) )**2 )
+        print("{} optimal iterations: {}, loss: {}".format(label,opt_iter,loss))
         if label in res:
             res[label].append(loss)
         else:
