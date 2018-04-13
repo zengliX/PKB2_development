@@ -15,7 +15,7 @@ if args.data == 'simulation':
         for fd in folders:
             if not os.path.exists(fd):
                 os.makedirs(fd)
-            start = "source ~/.bashrc; cd /gpfs/ysm/pi/zhao/lz276/Project3/RandomForest;"
+            start = "source ~/.bashrc; cd /gpfs/ysm/project/lz276/Project3/RandomForest;"
             infolder = '../simulation_regression/{}'.format(fd)
             report = '{}/report.txt'.format(fd)
             f.write("{} python -u RandomForest.py {} {} > {} 2>&1\n".format(start, infolder, fd, report))
@@ -30,7 +30,7 @@ elif args.data == 'real':
             except:
                 print("{} does not exist".format(infolder))
                 continue
-            start = "source ~/.bashrc; cd /gpfs/ysm/pi/zhao/lz276/Project3/RandomForest;"
+            start = "source ~/.bashrc; cd /gpfs/ysm/project/lz276/Project3/RandomForest;"
             report = '{}/report.txt'.format(fd)
             f.write("{} python -u RandomForest.py {} {} > {} 2>&1\n".format(start, infolder, fd, report))
             if not os.path.exists(fd):

@@ -60,7 +60,7 @@ def simu_command_gen(d):
             if 'clinical' in d:
                 s += ' -clinical {}'.format(d['clinical'])
             s += ' > ' + report + ' 2>&1'
-            s= "source ~/.bashrc; cd /gpfs/ysm/pi/zhao/lz276/Project3/PKB2/; "+s
+            s= "source ~/.bashrc; cd /ysm-gpfs/home/lz276/project/Project3/PKB2/; "+s
             out.append(s)
     return out
 
@@ -110,7 +110,7 @@ def real_command_gen(d):
             if 'clinical' in d:
                 s += ' -clinical {}'.format(d['clinical'])
             s += ' > ' + report + ' 2>&1'
-            s= "source ~/.bashrc; cd /gpfs/ysm/pi/zhao/lz276/Project3/PKB2/; "+s
+            s= "source ~/.bashrc; cd /ysm-gpfs/home/lz276/project/Project3/PKB2/; "+s
             out.append(s)
     return out
 
