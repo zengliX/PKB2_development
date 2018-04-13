@@ -99,7 +99,6 @@ if __name__ == "__main__":
     """---------------------------
     initialize model object
     ----------------------------"""
-    #importlib.reload(assist.outputs)
     if inputs.problem == "classification":
         ytrain = np.squeeze(inputs.train_response.values)
         ytest = np.squeeze(inputs.test_response.values) if inputs.hasTest else None
