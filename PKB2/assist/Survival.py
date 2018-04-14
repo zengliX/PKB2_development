@@ -157,9 +157,9 @@ class PKB_Survival(BaseModel):
         u, s, vh = npl.svd(q)
         abss = np.abs(s)
         med = np.median(abss)
-        s = s[abss>=0.0001*med]
-        u = u[:,abss>=0.0001*med]
-        vh = vh[abss>=0.0001*med,:]
+        s = s[abss>=0.01*med]
+        u = u[:,abss>=0.01*med]
+        vh = vh[abss>=0.01*med,:]
         S = np.diag(1/s)
         return np.dot(np.dot(u, np.dot(S, vh)), h)
 
