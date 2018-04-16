@@ -1,8 +1,8 @@
 """
 UTILITY FUNCTIONS USED IN ANALYSIS OF PKB2 RESULTS
 """
-import os
 import pandas as pd
+import os
 
 """
 GET OPTIMAL PARAMETERS FOR ONE DATASET
@@ -28,6 +28,26 @@ test: test number, 0-9
 def load_pickle(folder,pars,test):
     # folder that has result for pars
     file = "{}/{}/test_label{}/results.pckl".format(folder,pars,test)
-    res = pd.read_pickle(file)
+    if os.stat(file).st_size > 0:
+        res = pd.read_pickle(file)
+    else:
+        res = None
     return res
-        
+
+"""
+get path of output folder (relative to ~/analysis folder)
+depending on simu/real, type of analysis, and name of folder
+data: simulation/real
+model: regression/survival
+name: name of the folder
+"""
+def getPath(data,model,name):
+    if data == 'simulation':
+        return '../PKB2/simu_results/{}'.format(name)
+    elif data == 'real':
+        if model == 'regression':
+            return '../PKB2/reg_results/{}'.format(name)
+        elif model == 'survival':
+            return '../PKB2/surv_results/{}'.format(name)
+    else:
+        return None
