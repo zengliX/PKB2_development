@@ -224,3 +224,29 @@ if __name__ == "__main__":
     """
     real data survival
     """
+    if args.data == 'real' and args.model == 'survival':
+        for fd in folders:
+            infolder = '../data_survival/'+fd
+            outfolder = './surv_results/'+fd
+            try:
+                assert(os.path.exists(infolder))
+            except:
+                print("{} does not exist".format(infolder))
+                continue
+            d = {
+                'model': 'survival',
+                'input_folder': infolder,
+                'output_folder': outfolder,
+                'predictor': 'expression.txt',
+                'sets': ['KEGG','GO_BP','Biocarta'],
+                'response': 'response.txt',
+                'maxiter': 800,
+                'kernel': ['poly3', 'rbf'],
+                'reg': ['L1','L2'],
+                'rate': [0.005, 0.03],
+                'pen': [0.04,0.2,1],
+                'clinical': 'clinical.txt',
+                'test': ['test_label{}.txt'.format(x) for x in range(10)]
+                }
+            out = real_command_gen(d)
+            write_list('./scripts/{}.txt'.format(fd),out)

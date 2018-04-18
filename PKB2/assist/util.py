@@ -25,8 +25,12 @@ def line_search(K_train,Z,model,pars,max_val = 10):
 
     b = Km.dot(beta)+ Z.dot(gamma)
     # line search function
-    def temp_fun(x):
-        return model.loss_fun(model.ytrain, model.F_train+x*b)
+    if model.problem == 'survival':
+        def temp_fun(x):
+            return model.loss_fun_train(model.F_train+x*b)
+    else:
+        def temp_fun(x):
+            return model.loss_fun(model.ytrain, model.F_train+x*b)
     out = scipy.optimize.minimize_scalar(temp_fun)
     if not out.success:
         print("warning: minimization failure")

@@ -13,8 +13,7 @@ class PKB_Survival(BaseModel):
         self.problem = 'survival'
         self.ytrain_time = self.ytrain[:,0]
         self.ytrain_cen = self.ytrain[:,1]
-        temp = 1 - self.ytrain[:,1]
-        self.ytrain_delta = temp
+        self.ytrain_delta = 1 - self.ytrain[:,1]
         self.ytrain_tau = np.zeros((self.Ntrain, self.Ntrain))
         self.train_Cind = []
         for i in range(self.Ntrain):
@@ -33,24 +32,20 @@ class PKB_Survival(BaseModel):
     initialize survival model
     """
     def init_F(self):
-        F0 = 0.0
-        self.F0 = F0 # initial value
+        # initial value
+        self.F0 = 0.0
         # update training loss, c-index ...
-        F_train = np.repeat(F0, self.Ntrain)
-        self.F_train = F_train
-        self.train_loss.append(self.loss_fun(self.ytrain, F_train))
-        self.train_Cind.append(self.C_index(self.ytrain, self.F_train))
+        self.F_train = np.repeat(self.F0, self.Ntrain)
         self.exp_ftrain = np.exp(self.F_train)
         self.exp_indicate = np.dot(self.ytrain_tau, self.exp_ftrain)
+        self.train_loss.append(self.loss_fun_train(self.F_train))
+        self.train_Cind.append(self.C_index(self.ytrain, self.F_train))
         # update testing loss, c-index ...
         if self.hasTest:
-            F_test = np.repeat(F0,self.Ntest)
-            self.F_test = F_test
-            l = self.loss_fun(self.ytest,F_test)
-            self.test_loss.append(l)
+            self.F_test = np.repeat(self.F0,self.Ntest)
+            self.exp_ftest = np.exp(self.F_test)
+            self.test_loss.append(self.loss_fun_test())
             self.test_Cind.append(self.C_index(self.ytest, self.F_test))
-            exp_ftest = np.exp(F_test)
-            self.exp_ftest = exp_ftest
         else:
             self.F_test = None
             self.exp_ftest = None
@@ -75,28 +70,40 @@ class PKB_Survival(BaseModel):
         Q = np.diag(self.fraction_matrix) - np.multiply(np.dot(mat.T, mat),np.dot(temp,temp.T))
         return np.array(Q)
 
-    def update_att(self):
+    """
+    update [F_train, F_test, trian_loss, test_loss] after
+    calculation of [m,beta,c] in each iteration
+    pars: [m, beta, c]
+    K: training kernel matrix
+    K1: testing kernel matrix
+    Z: training clinical matrix
+    Z1: testing clinical matrix
+    rate: learning rate parameter
+    """
+    def update(self,pars,K,K1,Z,Z1,rate):
+        m,beta,gamma = pars
+        self.trace.append([m,beta,gamma])
+        # update training info
+        self.F_train += ( K.dot(beta) + Z.dot(gamma) )*rate
         self.exp_ftrain = np.exp(self.F_train)
         self.exp_indicate = np.dot(self.ytrain_tau, self.exp_ftrain)
         self.fraction_matrix = self.exp_ftrain*np.dot(self.ytrain_tau.T, (self.ytrain_delta/self.exp_indicate))
-        if self.hasTest:
-            self.exp_ftest = np.exp(self.F_test)
-
-
-    def update(self,pars,K,K1,Z,Z1,rate):
-        super().update(pars,K,K1,Z,Z1,rate)
-        # survival only updates
+        self.train_loss.append(self.loss_fun_train(self.F_train))
         self.train_Cind.append(self.C_index(self.ytrain, self.F_train))
+        # update testing info
         if self.hasTest:
+            self.F_test += (K1.T.dot(beta)+ Z1.dot(gamma) )*rate
+            self.exp_ftest = np.exp(self.F_test)
+            self.test_loss.append(self.loss_fun_test())
             self.test_Cind.append(self.C_index(self.ytest, self.F_test))
-        self.update_att()
 
     """
-    survival loss function, negative log-likelihood
-    y: np.array of shape (Ntrain,2)
+    survival loss function (only on training data), negative log-likelihood
+    will use precomputed values; make sure F_train-related values are updated
     f: np.array of shape (Ntrain,)
     """
-    def loss_fun(self,y,f):
+    def loss_fun_train(self,f):
+        """
         N = np.shape(y)[0]
         delta = 1 - y[:,1]
         sur_time = y[:,0]
@@ -108,6 +115,22 @@ class PKB_Survival(BaseModel):
         T1 = np.log(np.dot(tau, expy))
         T2 = - delta*(f - T1)
         return np.mean(T2)
+        """
+        if id(f) == id(self.F_train):
+            expf = self.exp_ftrain
+        else:
+            expf = np.exp(f)
+        res = -self.ytrain_delta*(f - np.log(self.ytrain_tau.dot(expf)))
+        return np.mean(res)
+
+    """
+    survival loss function (only on testing data), negative log-likelihood
+    will use precomputed values; make sure F_test-related values are updated
+    f: np.array of shape (Ntest,)
+    """
+    def loss_fun_test(self):
+        res = -self.ytest_delta*(self.F_test - np.log(self.ytest_tau.dot(self.exp_ftest)))
+        return np.mean(res)
 
     """
     C-index (concordance index) function
