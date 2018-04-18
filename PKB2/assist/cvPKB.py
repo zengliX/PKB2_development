@@ -53,7 +53,7 @@ def CV_PKB(inputs,K_train,Lambda,nfold=3,ESTOP=50,parallel=False,gr_sub=False,pl
     Ztest_ls = [inputs.train_clinical.values[folds[i][0],:] for i in range(nfold)]
     K_train_ls = [K_train[np.ix_(folds[i][1],folds[i][1])] for i in range(nfold)]
     K_test_ls = [K_train[np.ix_(folds[i][1],folds[i][0])] for i in range(nfold)]
-    
+
     if inputs.problem == "classification":
         ytrain_ls = [np.squeeze(inputs.train_response.iloc[folds[i][1]].values) for i in range(nfold)]
         ytest_ls = [np.squeeze(inputs.train_response.iloc[folds[i][0]].values) for i in range(nfold)]

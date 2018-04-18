@@ -31,7 +31,7 @@ def line_search(K_train,Z,model,pars,max_val = 10):
     else:
         def temp_fun(x):
             return model.loss_fun(model.ytrain, model.F_train+x*b)
-    out = scipy.optimize.minimize_scalar(temp_fun)
+    out = scipy.optimize.minimize_scalar(temp_fun,tol=0.01)
     if not out.success:
         print("warning: minimization failure")
     return min(out.x,max_val)
@@ -55,6 +55,7 @@ def subsamp(y,col,fold=3):
         for j in range(fold):
             out[j] += list(perm_index[r[j]:r[j+1]])
     return out
+
 """
 stratified sampling (not considering the outcome distribution)
 y: dataframe
