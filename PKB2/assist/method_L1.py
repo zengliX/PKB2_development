@@ -9,6 +9,8 @@ import warnings
 import sklearn.exceptions
 warnings.filterwarnings("ignore", category=sklearn.exceptions.ConvergenceWarning)
 from sklearn import linear_model
+#import time
+
 
 # function to be paralleled
 """
@@ -16,38 +18,25 @@ solve L1 penalized regression for pathway m
 K_train: kernel matrix (Ntrain, Ntrain, Ngroup)
 model: model class object
 m: pathway index
-h: first order derivative
-q: second order derivative
+eta: from calcu_eta
+eta_tilde: tranformed eta vlue
+mid_mat: transforming matrix for eta and Km
+e: intermediate value
+w: from calcu_w
 """
-def paral_fun_L1(K_train,Z,model,m,h,q,Lambda):
+def paral_fun_L1(K_train,Z,model,m,eta,eta_tilde,mid_mat,e,w,Lambda):
     Nsamp = K_train.shape[0]
     # working Lambda
     new_Lambda= Lambda/2 # due to setting of sklearn.linear_model.Lasso
     # get K
     Km = get_K(K_train,m)
-    # transform eta, K for penalized regression
-    if model.problem in ('classification','survival'):
-        eta = model.calcu_eta(h,q)
-        w = model.calcu_w(q)
-        w_half = model.calcu_w_half(q)
-        if model.problem == 'survival' and not model.hasClinical:
-            mid_mat = w_half
-        else:
-            mid_mat = np.eye(Nsamp) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
-        eta_tilde = w_half.dot(mid_mat).dot(eta)
-        Km_tilde = w_half.dot(mid_mat).dot(Km)
-    elif model.problem == 'regression':
-        eta = model.calcu_eta()
-        e = np.linalg.solve(Z.T.dot(Z), Z.T)
-        mid_mat = np.eye(Nsamp) - Z.dot(e)
-        eta_tilde = mid_mat.dot(eta)
-        Km_tilde = mid_mat.dot(Km)
+    # transform K for penalized regression
+    Km_tilde = mid_mat.dot(Km)
     # get beta
     lasso_fit = linear_model.Lasso(alpha = new_Lambda,fit_intercept = False,\
                 selection='random',max_iter=200,tol=10**-4)
     lasso_fit.fit(-Km_tilde,eta_tilde)
     beta = lasso_fit.coef_
-
     #get gamma
     if model.problem in ('classification','survival'):
         if model.problem == 'survival' and not model.hasClinical:
@@ -80,8 +69,8 @@ def find_Lambda_L1(K_train,Z,model):
         if model.problem == 'survival' and not model.hasClinical:
             mid_mat = w_half
         else:
-            mid_mat = np.eye(Nsamp) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w)) )
-        eta_tilde = w_half.dot(mid_mat).dot(eta)
+            mid_mat = w_half.dot( np.eye(Nsamp) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w))) )
+        eta_tilde = mid_mat.dot(eta)
     elif model.problem == 'regression':
         eta = model.calcu_eta()
         mid_mat = np.eye(Z.shape[0]) - Z.dot( np.linalg.solve(Z.T.dot(Z), Z.T) )
@@ -102,13 +91,25 @@ def oneiter_L1(K_train,Z,model,Lambda,\
                parallel=False,group_subset = False):
     Nsamp = K_train.shape[0]
     Ngroup = K_train.shape[2]
+    h = model.calcu_h()
+    q = model.calcu_q()
     if model.problem in ('classification','survival'):
-        # calculate derivatives h,q
-        h = model.calcu_h()
-        q = model.calcu_q()
+        eta = model.calcu_eta(h,q)
+        w = model.calcu_w(q)
+        w_half = model.calcu_w_half(q)
+        if model.problem == 'survival' and not model.hasClinical:
+            mid_mat = w_half
+        else:
+            mid_mat = w_half.dot( np.eye(Nsamp) - Z.dot( np.linalg.solve(Z.T.dot(w).dot(Z), Z.T.dot(w))) )
+        eta_tilde = mid_mat.dot(eta)
+        e = None
     elif model.problem == 'regression':
-        h = None
-        q = None
+        eta = model.calcu_eta()
+        e = np.linalg.solve(Z.T.dot(Z), Z.T)
+        w = None
+        mid_mat = np.eye(Nsamp) - Z.dot(e)
+        eta_tilde = mid_mat.dot(eta)
+
     # identify best fit K_m
         # random subset of groups
     mlist = range(Ngroup)
@@ -119,5 +120,5 @@ def oneiter_L1(K_train,Z,model,Lambda,\
     else:
         out = []
         for m in mlist:
-            out.append(paral_fun_L1(K_train,Z,model,m,h,q,Lambda))
+            out.append(paral_fun_L1(K_train,Z,model,m,eta,eta_tilde,mid_mat,e,w,Lambda))
     return out[np.argmin([x[0] for x in out])][1]

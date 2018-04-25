@@ -37,9 +37,11 @@ def PKBanalyze(infolder,outfolder):
         cur_fd = "{}/{}".format(infolder,f)
         # pickle file in each test folder
         test_f = [ cur_fd+'/'+x+'/'+"results.pckl" for x in os.listdir(cur_fd) if 'test' in x]
+        problem = None
         for one_test in test_f:
             try:
                 saved = pd.read_pickle(one_test)
+                problem = saved.model.problem
                 if saved.model.problem == "regression":
                     res_f.append(saved.model.test_loss[-1])
                 elif saved.model.problem == "survival":
@@ -48,7 +50,7 @@ def PKBanalyze(infolder,outfolder):
                 continue
         res.append([np.mean(res_f), np.std(res_f), res_f, f]) # mean, std, list, parameter
     # sort results and write to file
-    sort_results(res,outfolder,ascending = (saved.model.problem == 'regression') )
+    sort_results(res,outfolder,ascending = (problem == 'regression') )
 
 """
 sort PKB results from best to worst, and save to file

@@ -36,6 +36,11 @@ class BaseModel:
         self.train_loss = [] # loss function at each iteration
         self.test_loss = []
 
+        # time consumption
+        #self.TIME1 = 0
+        #self.TIME2 = 0
+        #self.TIME3 = 0
+
     """
     initialize F_train, ytrain, F_test, ytest
     """

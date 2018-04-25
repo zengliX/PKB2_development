@@ -46,3 +46,18 @@ class PKB_Regression(BaseModel):
     """
     def loss_fun(self,y,f):
         return np.mean( (y-f)**2 )
+
+
+    """
+    calculate first order derivative
+    return gradient, shape (Ntrain,)
+    """
+    def calcu_h(self):
+        return None
+
+    """
+    calculate second order derivative
+    return hessian matrix, shape (Ntrain, Ntrain)
+    """
+    def calcu_q(self):
+        return None

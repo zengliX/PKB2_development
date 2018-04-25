@@ -3,6 +3,8 @@ from assist.util import undefined
 from assist.util import testInf
 import numpy as np
 import numpy.linalg as npl
+from scipy.linalg import sqrtm
+
 # import lifelines
 # censor = 1 means censor
 
@@ -177,6 +179,11 @@ class PKB_Survival(BaseModel):
     q: Hessian, shape (Ntrain, Ntrain)
     """
     def calcu_eta(self,h,q):
+        """
+        q += (10**-3)*np.eye(len(h))
+        out= npl.solve(q,h)
+        return out
+        """
         u, s, vh = npl.svd(q)
         abss = np.abs(s)
         med = np.median(abss)
@@ -193,3 +200,9 @@ class PKB_Survival(BaseModel):
         u, s, vh = npl.svd(q/2)
         S = np.diag(np.sqrt(s))
         return np.dot(u, np.dot(S, vh))
+
+    """
+    def calcu_w_half(self,q):
+        out = sqrtm(q/2)
+        return out
+    """

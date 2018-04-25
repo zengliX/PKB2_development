@@ -78,7 +78,9 @@ if __name__ == "__main__":
     # report
     inputs.input_summary()
     inputs.model_param()
-
+    #print(inputs.train_clinical.dtypes)
+    #print(inputs.train_response.dtypes)
+    #exit(-1)
 
     # ██████  ██████  ███████ ██████
     # ██   ██ ██   ██ ██      ██   ██
@@ -159,7 +161,7 @@ if __name__ == "__main__":
     opt_iter = CV_PKB(inputs,K_train,Lambda,nfold=3,ESTOP=ESTOP,\
                       parallel=parallel,gr_sub=gr_sub,plot=True)
     #opt_iter = int(opt_iter*1.5)
-    #opt_iter = 1000
+    #opt_iter = 500
 
     """---------------------------
     BOOSTING ITERATIONS
@@ -176,7 +178,6 @@ if __name__ == "__main__":
         if inputs.method == 'L1':
             [m,beta,gamma] = oneiter_L1(K_train,Z_train,model,\
                     Lambda=Lambda,parallel = parallel,group_subset = gr_sub)
-        #print("\t beta norm: {}; gamma norm: {}".format(np.mean(beta**2), np.mean(gamma**2)) )
 
         # line search
         x = assist.util.line_search(K_train,Z_train,model,[m,beta,gamma])
@@ -193,6 +194,8 @@ if __name__ == "__main__":
         if t%10 == 0:
             iter_persec = t/(time.time() - time0) # time of one iteration
             rem_time = (opt_iter-t)/iter_persec # remaining time
+            s = model.TIME1+model.TIME2 + model.TIME3
+            #print('time1: {:.2f}%; time2: {:.2f}%; time3: {:.2f}%'.format(100*model.TIME1/s,100*model.TIME2/s,100*model.TIME3/s))
             if model.hasTest:
                 print("%9.0f\t%10.4f\t%9.4f\t%8.4f" % \
                   (t,model.train_loss[t],model.test_loss[t],rem_time/60))
