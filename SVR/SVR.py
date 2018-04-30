@@ -1,5 +1,5 @@
 """
-SUPPORT VECTOR REGRESSION 
+SUPPORT VECTOR REGRESSION
 """
 
 import argparse
@@ -55,18 +55,18 @@ for i in range(10):
     test_lab = "{}/test_label{}.txt".format(folder,i)
     with open(test_lab,'r') as f:
         test_ind = [x.strip() for x in f]
-    train_ind = np.setdiff1d(all_ind,np.array(test_ind))                                                   
+    train_ind = np.setdiff1d(all_ind,np.array(test_ind))
     Xtrain = X.loc[train_ind]
     ytrain = Y.loc[train_ind]
     Xtest = X.loc[test_ind]
     ytest = Y.loc[test_ind]
     # fit data
-    print("fitting test data: {}".format(test_lab))    
+    print("fitting test data: {}".format(test_lab))
     for c, eps, K in itertools.product(C_cand, eps_cand, K_cand):
-        label = "C{:.3f}-eps{:.3f}-{}".format(c,eps,K)
+        label = "C{:.1f}-eps{:.1f}-{}".format(c,eps,K)
         # fit model
         if K =='rbf':
-            model = SVR(kernel = K, epsilon = eps, C = c)            
+            model = SVR(kernel = K, epsilon = eps, C = c)
         elif K[:4] == 'poly':
             d = int(K[4])
             model = SVR(kernel = 'poly', epsilon = eps, C = c, degree = d)
@@ -91,15 +91,15 @@ out.sort()
 
 if not os.path.exists(outfolder):
     os.makedirs(outfolder)
-    
+
 # write to file
 outfile = "{}/results.txt".format(outfolder)
 with open(outfile,'w') as f:
-    title = "{:30}{:10}{:10}{}".format('parameters','mean','std','detail')
+    title = "{:20}{:7}{:7}{}".format('parameters','mean','std','detail')
     f.write(title+'\n')
     for x in out:
         m, sd, vals, pars = x
-        msg = "{:30}{:<10}{:<10}{}".format(pars,round(m,3),round(sd,3),np.round(vals,3))
+        l = [str(x) for x in np.round(vals,3)]
+        msg = "{:20}{:<7}{:<7}{}".format(pars,round(m,3),round(sd,3),' '.join(l))
         f.write(msg+'\n')
     print("results saved to:",outfile)
-

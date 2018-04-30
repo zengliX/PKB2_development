@@ -194,7 +194,7 @@ if __name__ == "__main__":
         if t%10 == 0:
             iter_persec = t/(time.time() - time0) # time of one iteration
             rem_time = (opt_iter-t)/iter_persec # remaining time
-            s = model.TIME1+model.TIME2 + model.TIME3
+            #s = model.TIME1+model.TIME2 + model.TIME3
             #print('time1: {:.2f}%; time2: {:.2f}%; time3: {:.2f}%'.format(100*model.TIME1/s,100*model.TIME2/s,100*model.TIME3/s))
             if model.hasTest:
                 print("%9.0f\t%10.4f\t%9.4f\t%8.4f" % \

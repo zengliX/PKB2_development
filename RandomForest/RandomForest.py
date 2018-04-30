@@ -50,13 +50,13 @@ for i in range(10):
     test_lab = "{}/test_label{}.txt".format(folder,i)
     with open(test_lab,'r') as f:
         test_ind = [x.strip() for x in f]
-    train_ind = np.setdiff1d(all_ind,np.array(test_ind))                                                   
+    train_ind = np.setdiff1d(all_ind,np.array(test_ind))
     Xtrain = X.loc[train_ind]
     ytrain = Y.loc[train_ind]
     Xtest = X.loc[test_ind]
     ytest = Y.loc[test_ind]
     # fit data
-    print("fitting test data: {}".format(test_lab))    
+    print("fitting test data: {}".format(test_lab))
     for ntree, M in itertools.product(num_trees, max_depth):
         label = "ntree{}-maxD{}".format(ntree,M)
         rf_fit = ensemble.RandomForestRegressor(n_estimators=ntree,verbose=0,max_depth = M,n_jobs=njobs)
@@ -78,7 +78,7 @@ out.sort()
 
 if not os.path.exists(outfolder):
     os.makedirs(outfolder)
-    
+
 # write to file
 outfile = "{}/results.txt".format(outfolder)
 with open(outfile,'w') as f:
@@ -86,7 +86,7 @@ with open(outfile,'w') as f:
     f.write(title+'\n')
     for x in out:
         m, sd, vals, pars = x
-        msg = "{:30}{:<10}{:<10}{}".format(pars,round(m,3),round(sd,3),np.round(vals,3))
+        l = [str(x) for x in np.round(vals,3)]
+        msg = "{:30}{:<10}{:<10}{}".format(pars,round(m,3),round(sd,3),' '.join(l))
         f.write(msg+'\n')
     print("results saved to:",outfile)
-

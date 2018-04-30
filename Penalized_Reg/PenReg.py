@@ -130,7 +130,7 @@ with open(outfile,'w') as f:
            round(np.std(res_ridge),3),np.round(res_ridge,3))
     f.write(msg+'\n')
     # write Elastic Net
-    msg = "{:30}{:<10}{:<10}{}".format('lasso',round(np.mean(res_enet),3),\
+    msg = "{:30}{:<10}{:<10}{}".format('ElasticNet',round(np.mean(res_enet),3),\
            round(np.std(res_enet),3),np.round(res_enet,3))
     f.write(msg+'\n')
     print("results saved to:",outfile)

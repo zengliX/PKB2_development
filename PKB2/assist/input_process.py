@@ -181,6 +181,7 @@ class input_obj:
                 self.pred_sets.values[i] = ' '.join(shared)
         if len(to_drop)>0:
             self.pred_sets = self.pred_sets.drop(self.pred_sets.index[to_drop])
+            self.group_names = self.pred_sets.index
 
         # add intercept column to clinical data
         intercept_col = pd.DataFrame( {'intercept':np.ones(self.Ntrain)} , index=self.train_predictors.index)
@@ -189,7 +190,6 @@ class input_obj:
                 self.train_clinical = pd.concat([self.train_clinical, intercept_col],axis=1)
         else:
             self.train_clinical = intercept_col
-
 
         # calculate summary
         self.Ngroup = len(self.pred_sets)

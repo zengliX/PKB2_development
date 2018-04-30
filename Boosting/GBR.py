@@ -100,6 +100,7 @@ with open(outfile,'w') as f:
     f.write(title+'\n')
     for x in out:
         m, sd, vals, pars = x
-        msg = "{:30}{:<10}{:<10}{}".format(pars,round(m,3),round(sd,3),np.round(vals,3))
+        l = [str(x) for x in np.round(vals,3)]
+        msg = "{:30}{:<10}{:<10}{}".format(pars,round(m,3),round(sd,3),' '.join(l))
         f.write(msg+'\n')
     print("results saved to:",outfile)

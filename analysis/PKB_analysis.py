@@ -71,7 +71,8 @@ def sort_results(res,outfolder,ascending = True):
         file.write(title+'\n')
         for x in res:
             m, sd, vals, pars = x
-            msg = "{:40}{:<10}{:<10}{}".format(pars,round(m,3),round(sd,3),np.round(vals,3))
+            l = [str(x) for x in np.round(vals,3)]
+            msg = "{:40}{:<10}{:<10}{}".format(pars,round(m,3),round(sd,3),'[ '+ ' '.join(l) + ' ]')
             file.write(msg+'\n')
 
 def move_nan(ls):
@@ -80,7 +81,7 @@ def move_nan(ls):
     """
     p1 = p2 = 0
     for p2 in range(len(ls)):
-        if not np.isnan(ls[p2][0]) and p1!=p2:
+        if not np.isnan(ls[p2][0]):
             ls[p1], ls[p2] = ls[p2], ls[p1]
             p1 += 1
 
