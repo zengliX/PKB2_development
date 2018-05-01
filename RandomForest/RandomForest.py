@@ -59,7 +59,7 @@ for i in range(10):
     print("fitting test data: {}".format(test_lab))
     for ntree, M in itertools.product(num_trees, max_depth):
         label = "ntree{}-maxD{}".format(ntree,M)
-        rf_fit = ensemble.RandomForestRegressor(n_estimators=ntree,verbose=0,max_depth = M,n_jobs=njobs)
+        rf_fit = ensemble.RandomForestRegressor(n_estimators=ntree,verbose=0,max_depth = M,n_jobs=njobs,max_features='sqrt')
         rf_fit.fit(Xtrain,ytrain.iloc[:,0])
         # prediction error
         pred = rf_fit.predict(Xtest)

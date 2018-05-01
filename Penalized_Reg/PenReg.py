@@ -68,10 +68,10 @@ for i in range(10):
     """
     LASSO FIT
     """
-    lasso_cv = LM.LassoCV(n_alphas=100, random_state=0, cv = 3)
+    lasso_cv = LM.LassoCV(n_alphas=50, random_state=0, cv = 3, max_iter=500, tol=0.001)
     lasso_cv.fit(Xtrain,ytrain.iloc[:,0])
     sele_alpha = lasso_cv.alpha_
-    lasso = LM.Lasso(alpha= sele_alpha, random_state=0)
+    lasso = LM.Lasso(alpha= sele_alpha, random_state=0, max_iter=500, tol=0.001)
     lasso.fit(Xtrain,ytrain)
     pred = lasso.predict(Xtest)
     err = mean_squared_error(ytest.iloc[:,0],pred)
@@ -81,7 +81,8 @@ for i in range(10):
     """
     RIDGE FIT
     """
-    alphas = np.logspace(-1,4,num=100)
+    Nsamp = Xtrain.shape[0]
+    alphas = Nsamp*np.logspace(-1,4,num=50)
     ridge_cv = LM.RidgeCV(alphas, cv = 3)
     ridge_cv.fit(Xtrain,ytrain.iloc[:,0])
     sele_alpha = ridge_cv.alpha_
@@ -95,12 +96,12 @@ for i in range(10):
     """
     ELASTICNET FIT
     """
-    l1_ratios = np.linspace(0.1,1,10)
-    Enet_cv = LM.ElasticNetCV(l1_ratios, n_alphas = 30, cv = 3)
+    l1_ratios = np.linspace(0.1,1,5)
+    Enet_cv = LM.ElasticNetCV(l1_ratios, n_alphas = 20, cv = 3, max_iter=500, tol=0.001)
     Enet_cv.fit(Xtrain,ytrain.iloc[:,0])
     sele_ratio = Enet_cv.l1_ratio_
     sele_alpha = Enet_cv.alpha_
-    Enet = LM.ElasticNet(alpha = sele_alpha, l1_ratio = sele_ratio)
+    Enet = LM.ElasticNet(alpha = sele_alpha, l1_ratio = sele_ratio, max_iter=500, tol=0.001)
     Enet.fit(Xtrain, ytrain.iloc[:,0])
     pred = Enet.predict(Xtest)
     err = mean_squared_error(ytest, pred)
