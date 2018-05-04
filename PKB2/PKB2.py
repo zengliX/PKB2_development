@@ -26,6 +26,7 @@ parser.add_argument("-rate",help="learning rate parameter (default 0.05)")
 parser.add_argument("-Lambda",help="penalty parameter")
 parser.add_argument("-test",help="file containing test data index")
 parser.add_argument("-pen",help="penalty multiplier")
+parser.add_argument("-weights",help="file with gene weights")
 args = parser.parse_args()
 
 # ██ ███    ███ ██████   ██████  ██████  ████████

@@ -52,6 +52,8 @@ class input_obj:
     test_predictors = None
     test_response = None
     test_clinical = None
+    weights = None
+    hasWeights = False
 
     # input summary
     Ngroup = 0
@@ -86,13 +88,20 @@ class input_obj:
         if not args.maxiter is None: self.maxiter= int(args.maxiter)
         if not args.rate is None: self.nu = float(args.rate)
         if not args.Lambda is None: self.Lambda = float(args.Lambda)
+        # test file
         if not args.test is None:
             self.test_file = args.test
             self.hasTest = True
         if not args.pen is None: self.pen = float(args.pen)
+        # clinical file
         if not args.clinical is None:
             self.clinical_file = args.clinical
             self.hasClinical = True
+        # handle weight file
+        if not args.weights is None:
+            self.hasWeights = True
+            self.weights_file = args.weights
+
         #print(self.__dict__)
 
     # ██████  ██████   ██████   ██████     ██ ███    ██ ██████  ██    ██ ████████
@@ -127,11 +136,18 @@ class input_obj:
         have_file(thisfile)
         self.train_response = pd.DataFrame.from_csv(thisfile)
 
+        # clinical file
         if self.hasClinical:
             thisfile = self.input_folder + "/"+ self.clinical_file
             have_file(thisfile)
             self.train_clinical = pd.DataFrame.from_csv(thisfile)
             self.clin_names = self.train_clinical.columns
+        # weights data
+        if self.hasWeights:
+            thisfile = self.input_folder + "/"+ self.weights_file
+            have_file(thisfile)
+            raw_weights = pd.read_csv(thisfile,header=None,index_col=0, squeeze=True)
+            self.proc_weight(raw_weights)
 
         # data summary
         self.Ntrain = self.train_predictors.shape[0]
@@ -144,6 +160,13 @@ class input_obj:
         # change loaded indicator
         self.loaded = True
         return
+
+    """
+    process weight file
+    """
+    def proc_weight(self,raw_weights):
+        raise Exception('undefined')
+        pass
 
     """
     data processing

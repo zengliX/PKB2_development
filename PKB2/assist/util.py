@@ -59,9 +59,8 @@ def subsamp(y,col,fold=3):
 """
 stratified sampling (not considering the outcome distribution)
 y: dataframe
-col: the column used for stratification
 """
-def simple_subsamp(y,col,fold=3):
+def simple_subsamp(y,fold=3):
     out = [list() for i in range(fold)]
     n = y.shape[0]
     r = list(range(0,n+1,n//fold))

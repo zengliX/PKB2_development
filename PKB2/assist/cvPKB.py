@@ -41,9 +41,9 @@ def CV_PKB(inputs,K_train,Lambda,nfold=3,ESTOP=50,parallel=False,gr_sub=False,pl
     if inputs.problem == "classification":
         test_inds = subsamp(inputs.train_response,inputs.train_response.columns[0],nfold)
     elif inputs.problem == 'survival':
-        test_inds = simple_subsamp(inputs.train_response,inputs.train_response.columns[0],nfold)
+        test_inds = subsamp(inputs.train_response,inputs.train_response.columns[1],nfold)
     elif inputs.problem == "regression":
-        test_inds = simple_subsamp(inputs.train_response,inputs.train_response.columns[0],nfold)
+        test_inds = simple_subsamp(inputs.train_response,nfold)
     folds = []
     for i in range(nfold):
         folds.append([ temp[test_inds[i]].values, np.setdiff1d(temp.values,temp[test_inds[i]].values)])
