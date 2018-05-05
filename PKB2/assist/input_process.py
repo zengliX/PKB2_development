@@ -163,10 +163,22 @@ class input_obj:
 
     """
     process weight file
+    raw_weights: pd.Series of (genes, weights); may not be the same genes as in expression data
+    output:
+        add self.weights = pd.Series of (genes, weights)
     """
     def proc_weight(self,raw_weights):
-        raise Exception('undefined')
-        pass
+        new_weights = pd.Series(index = self.train_predictors.columns)
+        shared_g = np.intersect1d(new_weights.index, raw_weights.index)
+        if len(shared_g) < 10:
+            raise Exception("Too few genes from input data are provided weights.")
+        else:
+            new_weights.loc[shared_g] = raw_weights.loc[shared_g]
+            # assign min value in raw_weights for genes not contained in raw_weights
+            m = np.min(raw_weights)
+            new_weights.loc[new_weights.isnull()] = m
+            self.weights = new_weights
+
 
     """
     data processing
