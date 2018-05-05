@@ -93,10 +93,10 @@ if __name__ == "__main__":
     CALCULATE KERNEL; GET CLINICAL MATRIX
     ----------------------------"""
     #importlib.reload(assist.kernel_calc)
-    K_train = assist.kernel_calc.get_kernels(inputs.train_predictors,inputs.train_predictors,inputs)
+    K_train = assist.kernel_calc.get_kernels(inputs.train_predictors,inputs.train_predictors,inputs, inputs.weights)
     Z_train = inputs.train_clinical.values
     if inputs.hasTest:
-        K_test= assist.kernel_calc.get_kernels(inputs.train_predictors,inputs.test_predictors,inputs)
+        K_test= assist.kernel_calc.get_kernels(inputs.train_predictors,inputs.test_predictors,inputs, inputs.weights)
         Z_test = inputs.test_clinical.values
 
     """---------------------------

@@ -176,6 +176,8 @@ class input_obj:
             new_weights.loc[shared_g] = raw_weights.loc[shared_g]
             # assign min value in raw_weights for genes not contained in raw_weights
             m = np.min(raw_weights)
+            if m <=0:
+                raise Exception("need all weights > 0")
             new_weights.loc[new_weights.isnull()] = m
             self.weights = new_weights
 
