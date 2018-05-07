@@ -107,11 +107,12 @@ for fd in folders:
         REAL DATA WEIGHTS LIST
         """
         # clinical list (top 10)
-        ave_clin = clin_df.apply(np.mean,axis=0).to_frame()
-        ave_clin['abs'] = np.abs(ave_clin.iloc[:,0])
-        top_clin = ave_clin.sort_values(by='abs',ascending=False).iloc[:,0][:10]
-        top_clin.to_csv('./PKB2/{}/top_clinical.txt'.format(fd),index_label='variable')
-        clin_df = clin_df[top_clin.index]
+        if pckl.inputs.hasClinical:
+            ave_clin = clin_df.apply(np.mean,axis=0).to_frame()
+            ave_clin['abs'] = np.abs(ave_clin.iloc[:,0])
+            top_clin = ave_clin.sort_values(by='abs',ascending=False).iloc[:,0][:10]
+            top_clin.to_csv('./PKB2/{}/top_clinical.txt'.format(fd),index_label='variable')
+            clin_df = clin_df[top_clin.index]
         # pathway list (top 20)
         ave_path = path_df.apply(np.mean,axis=0)
         top_path = ave_path.sort_values(ascending=False)[:20]
@@ -119,15 +120,16 @@ for fd in folders:
         path_df = path_df[top_path.index]
 
     # clinical plot
-    f1 = plt.figure()
-    clin_df.boxplot(grid = False)
-    plt.axhline(y=0, alpha=0.3, linestyle='-')
-    #plt.xticks(rotation=90)
-    plt.xticks([],[])
-    plt.title(fd)
-    plt.xlabel('clinical variable')
-    plt.ylabel('weights')
-    plt.savefig("PKB2/{}/weights_clinical.pdf".format(fd))
+    if pckl.inputs.hasClinical:
+        f1 = plt.figure()
+        clin_df.boxplot(grid = False)
+        plt.axhline(y=0, alpha=0.3, linestyle='-')
+        #plt.xticks(rotation=90)
+        plt.xticks([],[])
+        plt.title(fd)
+        plt.xlabel('clinical variable')
+        plt.ylabel('weights')
+        plt.savefig("PKB2/{}/weights_clinical.pdf".format(fd))
     # pathway plot
     f2 = plt.figure()
     path_df.boxplot(grid = False)
