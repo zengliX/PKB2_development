@@ -215,7 +215,7 @@ if __name__ == "__main__":
                 'reg': ['L1','L2'],
                 'rate': [0.005, 0.03],
                 'pen': [0.04,0.2,1],
-                'clinical': 'clinical.txt',
+                #'clinical': 'clinical.txt',
                 'test': ['test_label{}.txt'.format(x) for x in range(10)]
                 }
             out = real_command_gen(d)

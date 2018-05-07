@@ -33,13 +33,17 @@ np.random.seed(1)
 
 gene_file = "{}/expression.txt".format(folder)
 clinical_file = "{}/clinical.txt".format(folder)
+hasclinical = os.path.exists(clinical_file)
 resp_file = "{}/response.txt".format(folder)
 
-Z = pd.DataFrame.from_csv(clinical_file)
+if hasclinical:
+    Z = pd.DataFrame.from_csv(clinical_file)
+
 Y = pd.DataFrame.from_csv(resp_file)
 if args.c is None:
     X = pd.DataFrame.from_csv(gene_file)
-    X = pd.concat([Z,X],axis=1)
+    if hasclinical:
+        X = pd.concat([Z,X],axis=1)
 else:
     X = Z
 all_ind = Y.index

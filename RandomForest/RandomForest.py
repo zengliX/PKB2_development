@@ -28,12 +28,18 @@ njobs = 2
 
 gene_file = "{}/expression.txt".format(folder)
 clinical_file = "{}/clinical.txt".format(folder)
+hasclinical = os.path.exists(clinical_file)
 resp_file = "{}/response.txt".format(folder)
+
 X = pd.DataFrame.from_csv(gene_file)
-Z = pd.DataFrame.from_csv(clinical_file)
+if hasclinical:
+    Z = pd.DataFrame.from_csv(clinical_file)
+
 Y = pd.DataFrame.from_csv(resp_file)
 all_ind = Y.index
-X = pd.concat([Z,X],axis=1)
+
+if hasclinical:
+    X = pd.concat([Z,X],axis=1)
 
 """
 RUN RANDOM FOREST
