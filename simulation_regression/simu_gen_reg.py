@@ -6,8 +6,11 @@ GENERATE SIMULATION DATASET FOR REGRESSION
 
 import numpy as np
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import os
+
 """
 --------------------------------------------
 UTIL FUNCTIONS
@@ -129,7 +132,7 @@ def Fgen_Model2(Nsamp, Npathway, Ncateg, Ncont, Ng_per_pway,seed=1):
     part1 = 6*np.sin(temp.iloc[:,:2].dot([.5,.5]))
         # pathway2
     temp = get_group_expr(gene,"group1",pathways)
-    part2 = 3*np.log(np.abs(temp.iloc[:,0]**3 - temp.iloc[:,1]**3))
+    part2 = 2*np.log(np.abs(temp.iloc[:,0]**3 - temp.iloc[:,1]**3))
         # pathway3
     temp = get_group_expr(gene,"group2",pathways)
     part3 = 2*(temp.iloc[:,0]**2 - temp.iloc[:,1]**2)
@@ -146,9 +149,9 @@ def Fgen_Model3(Nsamp, Npathway, Ncateg, Ncont, Ng_per_pway,seed=1):
     coefs = np.array([2,0,2])
     parts = np.zeros([Nsamp,9])
     parts[:,0] = clinical.iloc[:,:3].dot(coefs)
-        # gene part    
+        # gene part
     for i in range(8):
-        temp = get_group_expr(gene,"group{}".format(i),pathways)      
+        temp = get_group_expr(gene,"group{}".format(i),pathways)
         parts[:,i+1] = 2*np.sqrt((temp**2).apply(sum,axis=1))
     parts = pd.DataFrame(parts,index = clinical.index)
     F = parts.apply(sum,axis=1).to_frame(name='response')
@@ -181,7 +184,7 @@ def Reg_simu_gen(outfolder, clinical, gene, pathways, F,seed=1):
     # add regression noise (account for 10% of variance) to F
     v = np.var(F)
     y = F + np.random.normal(scale = np.sqrt(v/5),size=F.shape)
-    y.to_csv(outfolder+'/response.txt',index_label='sample')    
+    y.to_csv(outfolder+'/response.txt',index_label='sample')
 
 
 """
@@ -198,7 +201,7 @@ def test_label_gen(outfolder, clinical, Nfiles= 10, seed = 1):
         with open(f,'w') as thefile:
             for x in sele:
                 thefile.write("{}\n".format(x))
-    
+
 """
 --------------------------------------------
 GENERATE DATA FOR REGRESSION
@@ -212,7 +215,7 @@ if __file__ == "__main__":
     Ncont = 3
     Ng_per_pway = 5
     outfolder = "Reg1_M20"
-    
+
     clinical, gene, pathways, F = Fgen_Model1(Nsamp,Npathway,Ncateg,Ncont,Ng_per_pway)
     Reg_simu_gen(outfolder, clinical, gene, pathways, F)
     test_label_gen(outfolder,clinical)
@@ -236,10 +239,10 @@ if __file__ == "__main__":
     Ncont = 3
     Ng_per_pway = 5
     outfolder = "Reg2_M20"
-    clinical, gene, pathways, F = Fgen_Model2(Nsamp,Npathway,Ncateg,Ncont,Ng_per_pway)
+    clinical, gene, pathways, F = Fgen_Model2(Nsamp,Npathway,Ncateg,Ncont,Ng_per_pway, seed= 1)
     Reg_simu_gen(outfolder, clinical, gene, pathways, F)
     test_label_gen(outfolder,clinical)
-    
+
     # simu4
     Nsamp = 300
     Npathway = 50
@@ -247,10 +250,10 @@ if __file__ == "__main__":
     Ncont = 3
     Ng_per_pway = 5
     outfolder = "Reg2_M50"
-    clinical, gene, pathways, F = Fgen_Model2(Nsamp,Npathway,Ncateg,Ncont,Ng_per_pway)
+    clinical, gene, pathways, F = Fgen_Model2(Nsamp,Npathway,Ncateg,Ncont,Ng_per_pway,seed= 1)
     Reg_simu_gen(outfolder, clinical, gene, pathways, F)
     test_label_gen(outfolder,clinical)
-    
+
     # simu5
     Nsamp = 300
     Npathway = 20
@@ -261,7 +264,7 @@ if __file__ == "__main__":
     clinical, gene, pathways, F = Fgen_Model3(Nsamp,Npathway,Ncateg,Ncont,Ng_per_pway)
     Reg_simu_gen(outfolder, clinical, gene, pathways, F)
     test_label_gen(outfolder,clinical)
-    
+
     # simu6
     Nsamp = 300
     Npathway = 50
@@ -272,4 +275,3 @@ if __file__ == "__main__":
     clinical, gene, pathways, F = Fgen_Model3(Nsamp,Npathway,Ncateg,Ncont,Ng_per_pway)
     Reg_simu_gen(outfolder, clinical, gene, pathways, F)
     test_label_gen(outfolder,clinical)
-

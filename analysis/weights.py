@@ -113,9 +113,12 @@ for fd in folders:
             top_clin = ave_clin.sort_values(by='abs',ascending=False).iloc[:,0][:10]
             top_clin.to_csv('./PKB2/{}/top_clinical.txt'.format(fd),index_label='variable')
             clin_df = clin_df[top_clin.index]
-        # pathway list (top 20)
+        # pathway list (top 50)
         ave_path = path_df.apply(np.mean,axis=0)
-        top_path = ave_path.sort_values(ascending=False)[:20]
+        ct = path_df.apply(lambda x: np.sum(x>0),axis=0)
+        ave_path = ave_path.to_frame(name='weights')
+        ave_path['count'] = ct
+        top_path = ave_path.sort_values(by='weights',ascending=False)[:50]
         top_path.to_csv('./PKB2/{}/top_pathway.txt'.format(fd),index_label='pathway')
         path_df = path_df[top_path.index]
 

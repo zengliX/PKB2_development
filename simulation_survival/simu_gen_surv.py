@@ -7,6 +7,8 @@ import sys
 import os
 import numpy as np
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 sys.path.append(os.getcwd()+'/../simulation_regression/')
@@ -54,7 +56,7 @@ def Surv_simu_gen(outfolder, clinical, gene, pathways, F,seed=1, censor = 0.2):
     U = np.random.uniform(size=[len(F),1])
     rho = np.squeeze((np.max(F)-np.min(F))/np.log(100))
     t = (-np.log(U))**(1/rho)/(np.exp(F/rho))
-    t *= (20/np.median(t))   
+    t *= (20/np.median(t))
     plt.scatter(F.values[:,0],t.values[:,0])
     # generate censor delta
     delta = np.random.binomial(1,0.2,size = [len(F),1])
@@ -66,7 +68,7 @@ def Surv_simu_gen(outfolder, clinical, gene, pathways, F,seed=1, censor = 0.2):
             y.iloc[i,0] = np.random.uniform(0,y.iloc[i,0])
     y.to_csv(outfolder+'/response.txt',index_label='sample')
     return y
-    
+
 """
 2. generate files for labels of test data; each file contains 1/3 of all samples
 Nfiles: number of files generated
@@ -81,7 +83,7 @@ def test_label_gen(outfolder, y, Nfiles= 10, seed = 1):
             for x in sele:
                 thefile.write("{}\n".format(x))
 
-    
+
 """
 --------------------------------------------
 GENERATE DATA FOR SURVIVAL
@@ -95,11 +97,11 @@ if __file__ == "__main__":
     Ncont = 3
     Ng_per_pway = 5
     outfolder = "Surv1_M20"
-    
+
     clinical, gene, pathways, F = Fgen_Model1(Nsamp,Npathway,Ncateg,Ncont,Ng_per_pway)
     y = Surv_simu_gen(outfolder, clinical, gene, pathways, F)
     test_label_gen(outfolder,y)
-    
+
     # simu2
     Nsamp = 300
     Npathway = 50
@@ -107,11 +109,11 @@ if __file__ == "__main__":
     Ncont = 3
     Ng_per_pway = 5
     outfolder = "Surv1_M50"
-    
+
     clinical, gene, pathways, F = Fgen_Model1(Nsamp,Npathway,Ncateg,Ncont,Ng_per_pway)
     y = Surv_simu_gen(outfolder, clinical, gene, pathways, F)
     test_label_gen(outfolder,y)
-    
+
     # simu3
     Nsamp = 300
     Npathway = 20
@@ -133,7 +135,7 @@ if __file__ == "__main__":
     clinical, gene, pathways, F = Fgen_Model2(Nsamp,Npathway,Ncateg,Ncont,Ng_per_pway)
     y = Surv_simu_gen(outfolder, clinical, gene, pathways, F)
     test_label_gen(outfolder,y)
-    
+
     # simu5
     Nsamp = 300
     Npathway = 20
@@ -144,7 +146,7 @@ if __file__ == "__main__":
     clinical, gene, pathways, F = Fgen_Model3(Nsamp,Npathway,Ncateg,Ncont,Ng_per_pway)
     y = Surv_simu_gen(outfolder, clinical, gene, pathways, F)
     test_label_gen(outfolder,y)
-    
+
     # simu6
     Nsamp = 300
     Npathway = 50
@@ -155,4 +157,3 @@ if __file__ == "__main__":
     clinical, gene, pathways, F = Fgen_Model3(Nsamp,Npathway,Ncateg,Ncont,Ng_per_pway)
     y = Surv_simu_gen(outfolder, clinical, gene, pathways, F)
     test_label_gen(outfolder,y)
-    
