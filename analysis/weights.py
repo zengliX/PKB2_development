@@ -33,7 +33,7 @@ sys.path.append("../PKB2")
 import assist
 
 
-
+"""
 def weight_calc(mat):
     weights = []
     for j in range(mat.shape[1]):
@@ -51,7 +51,7 @@ def weights_timeT(self,t):
         # calculate pathway weights
         weights = weight_calc(self.coef_mat)
         return [weights,self.coef_clinical]
-
+"""
 
 
 #data='real'

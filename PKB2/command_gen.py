@@ -1,5 +1,5 @@
 """
-utility functions for running models and analysing results
+generate a script for a list of jobs
 """
 import itertools
 import re
@@ -109,6 +109,8 @@ def real_command_gen(d):
             s += ' -test {}'.format(Tlab)
             if 'clinical' in d:
                 s += ' -clinical {}'.format(d['clinical'])
+            if 'weights' in d:
+                s += ' -weights {}'.format(d['weights'])
             s += ' > ' + report + ' 2>&1'
             s= "source ~/.bashrc; cd /gpfs/ysm/project/lz276/Project3/PKB2/; "+s
             out.append(s)
@@ -128,9 +130,11 @@ if __name__ == "__main__":
     parser.add_argument("data", help="simulation/real")
     parser.add_argument("model", help="classification/regression/survival")
     parser.add_argument("folders", nargs = '*', help="foldernames")
+    parser.add_argument("-weights", help="whether to use gene weight file")
     args = parser.parse_args()
 
     folders = args.folders
+    hasweights = not args.weights is None
     """
     regression simulations
     """
@@ -198,6 +202,9 @@ if __name__ == "__main__":
         for fd in folders:
             infolder = '../data_regression/'+fd
             outfolder = './reg_results/'+fd
+            # new output folder for weighted runs
+            if hasweights:
+                outfolder += "_weighted"
             try:
                 assert(os.path.exists(infolder))
             except:
@@ -218,8 +225,13 @@ if __name__ == "__main__":
                 #'clinical': 'clinical.txt',
                 'test': ['test_label{}.txt'.format(x) for x in range(10)]
                 }
+            if hasweights:
+                d['weights'] = '../../PKB2/weights/degree_weights.txt'
             out = real_command_gen(d)
-            write_list('./scripts/{}.txt'.format(fd),out)
+            if hasweights:
+                write_list('./scripts/{}_weighted.txt'.format(fd),out)
+            else:
+                write_list('./scripts/{}.txt'.format(fd),out)
 
     """
     real data survival
@@ -228,6 +240,9 @@ if __name__ == "__main__":
         for fd in folders:
             infolder = '../data_survival/'+fd
             outfolder = './surv_results/'+fd
+            # new output folder for weighted runs
+            if hasweights:
+                outfolder += "_weighted"
             try:
                 assert(os.path.exists(infolder))
             except:
@@ -248,5 +263,10 @@ if __name__ == "__main__":
                 'clinical': 'clinical.txt',
                 'test': ['test_label{}.txt'.format(x) for x in range(10)]
                 }
+            if hasweights:
+                d['weights'] = '../../PKB2/weights/degree_weights.txt'
             out = real_command_gen(d)
-            write_list('./scripts/{}.txt'.format(fd),out)
+            if hasweights:
+                write_list('./scripts/{}_weighted.txt'.format(fd),out)
+            else:
+                write_list('./scripts/{}.txt'.format(fd),out)
