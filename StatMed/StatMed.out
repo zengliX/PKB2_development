@@ -1,0 +1,12 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Method}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Identify the optimal increment function}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{The PKB algorithm}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Simulation Study}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Regression model results}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Survival model results}{section.3}% 7
+\BOOKMARK [1][-]{section.4}{Applications}{}% 8
+\BOOKMARK [2][-]{subsection.4.1}{CCLE drug response prediction}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.2}{TCGA cancer patient survival prediction}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.3}{Comparison with models using only clinical features}{section.4}% 11
+\BOOKMARK [1][-]{section.5}{Discussion}{}% 12

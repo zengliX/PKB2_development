@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  13 NOV 2019 00:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  13 NOV 2019 00:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**StatMed.tex
-(./StatMed.tex
+**Supplementary.tex
+(./Supplementary.tex
 LaTeX2e <2017-04-15>
 Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/article.cls
@@ -293,23 +293,23 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip50
 )
-(./StatMed.aux)
-\openout1 = `StatMed.aux'.
+(./Supplementary.aux)
+\openout1 = `Supplementary.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -376,7 +376,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box29
-Package hyperref Info: Link coloring OFF on input line 32.
+Package hyperref Info: Link coloring OFF on input line 37.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -386,153 +386,148 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count125
 )
-LaTeX Info: Redefining \ref on input line 32.
-LaTeX Info: Redefining \pageref on input line 32.
-LaTeX Info: Redefining \nameref on input line 32.
+LaTeX Info: Redefining \ref on input line 37.
+LaTeX Info: Redefining \pageref on input line 37.
+LaTeX Info: Redefining \nameref on input line 37.
 
-(./StatMed.out) (./StatMed.out)
+(./Supplementary.out) (./Supplementary.out)
 \@outlinefile=\write3
-\openout3 = `StatMed.out'.
+\openout3 = `Supplementary.out'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 42.
+LaTeX Font Info:    Try loading font information for U+msa on input line 39.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 42.
+LaTeX Font Info:    Try loading font information for U+msb on input line 39.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (0.39836pt too wide) in paragraph at lines 42--42
- [][] 
- []
+
+LaTeX Warning: No \author given.
 
 [1
 
-{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-[2] [3] [4]
-Overfull \hbox (7.15706pt too wide) detected at line 151
-\OML/cmm/m/it/12 F\OT1/cmr/m/n/12 (\OT1/cmr/bx/n/12 x\OML/cmm/m/it/12 ; \OT1/cm
-r/bx/n/12 z\OT1/cmr/m/n/12 ) = \OML/cmm/m/it/12 z[] \OMS/cmsy/m/n/12 ^^@ \OT1/c
-mr/m/n/12 3\OML/cmm/m/it/12 z[] \OT1/cmr/m/n/12 + 3\OML/cmm/m/it/12 z[] \OMS/cm
-sy/m/n/12 ^^@ \OML/cmm/m/it/12 z[] \OT1/cmr/m/n/12 + 6 [](0\OML/cmm/m/it/12 :\O
-T1/cmr/m/n/12 5\OML/cmm/m/it/12 x[] \OT1/cmr/m/n/12 + 0\OML/cmm/m/it/12 :\OT1/c
-mr/m/n/12 5\OML/cmm/m/it/12 x[]\OT1/cmr/m/n/12 ) + 2 [](\OMS/cmsy/m/n/12 j[][] 
-^^@ [][]j\OT1/cmr/m/n/12 ) + 2([][] \OMS/cmsy/m/n/12 ^^@ [][]\OT1/cmr/m/n/12 )
- []
+{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]pdfTeX w
+arning (ext4): destination with the same identifier (name{page.1}) has been alr
+eady used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.64 	\newpage
+               [1] [2]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 94.
 
-[5] [6] [7] [8] [9] [10] [11] (./StatMed.bbl
-Missing character: There is no â in font cmr12!
-Missing character: There is no € in font cmr12!
-Missing character: There is no ™ in font cmr12!
-
-Underfull \hbox (badness 1286) in paragraph at lines 71--77
-[]\OT1/cmr/m/n/12 Jordi Bar-retina, Gior-dano Capon-i-gro, Nico-las Stran-sky, 
-Kavitha Venkate-san,
- []
-
-[12]) [13] <simu_reg_weights.pdf, id=198, 650.43pt x 433.62pt>
-File: simu_reg_weights.pdf Graphic file (type pdf)
-
-<use simu_reg_weights.pdf>
-Package pdftex.def Info: simu_reg_weights.pdf used on input line 238.
-(pdftex.def)             Requested size: 484.67896pt x 323.13pt.
-
-Overfull \hbox (31.71106pt too wide) in paragraph at lines 238--239
- [][] 
- []
-
-[14 <./simu_reg_weights.pdf>] <GSEA_Brain.pdf, id=234, 722.7pt x 180.675pt>
-File: GSEA_Brain.pdf Graphic file (type pdf)
-
-<use GSEA_Brain.pdf>
-Package pdftex.def Info: GSEA_Brain.pdf used on input line 245.
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 94.
+ [3] [4] [5]
+<GSEA_Stomach.pdf, id=46, 722.7pt x 180.675pt>
+File: GSEA_Stomach.pdf Graphic file (type pdf)
+ <use GSEA_Stomach.pdf>
+Package pdftex.def Info: GSEA_Stomach.pdf used on input line 162.
 (pdftex.def)             Requested size: 452.9679pt x 113.24138pt.
- <GSEA_Kidney.pdf, id=235, 722.7pt x 180.675pt>
-File: GSEA_Kidney.pdf Graphic file (type pdf)
 
-<use GSEA_Kidney.pdf>
-Package pdftex.def Info: GSEA_Kidney.pdf used on input line 246.
+<GSEA_Head_Neck.pdf, id=47, 722.7pt x 180.675pt>
+File: GSEA_Head_Neck.pdf Graphic file (type pdf)
+ <use GSEA_Head_Neck.pdf>
+Package pdftex.def Info: GSEA_Head_Neck.pdf used on input line 163.
 (pdftex.def)             Requested size: 452.9679pt x 113.24138pt.
- <GSEA_Lung.pdf, id=236, 722.7pt x 180.675pt>
-File: GSEA_Lung.pdf Graphic file (type pdf)
 
-<use GSEA_Lung.pdf>
-Package pdftex.def Info: GSEA_Lung.pdf used on input line 247.
+<GSEA_Bladder.pdf, id=48, 722.7pt x 180.675pt>
+File: GSEA_Bladder.pdf Graphic file (type pdf)
+ <use GSEA_Bladder.pdf>
+Package pdftex.def Info: GSEA_Bladder.pdf used on input line 164.
 (pdftex.def)             Requested size: 452.9679pt x 113.24138pt.
- [15 <./GSEA_Brain.pdf> <./GSEA_Kidney.pdf
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./GSEA_Kidney.pdf): PDF incl
-usion: multiple pdfs with page group included in a single page
-> <./GSEA_Lung.pdf
+<GSEA_Skin.pdf, id=49, 722.7pt x 180.675pt>
+File: GSEA_Skin.pdf Graphic file (type pdf)
+ <use GSEA_Skin.pdf>
+Package pdftex.def Info: GSEA_Skin.pdf used on input line 165.
+(pdftex.def)             Requested size: 452.9679pt x 113.24138pt.
+ [6 <./GSEA_Stomach.pdf> <./GSEA_Head_Neck.pdf
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./GSEA_Lung.pdf): PDF inclus
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./GSEA_Head_Neck.pdf): PDF i
+nclusion: multiple pdfs with page group included in a single page
+> <./GSEA_Bladder.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./GSEA_Bladder.pdf): PDF inc
+lusion: multiple pdfs with page group included in a single page
+> <./GSEA_Skin.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./GSEA_Skin.pdf): PDF inclus
 ion: multiple pdfs with page group included in a single page
->] <PKB_LM_LMc.pdf, id=324, 722.7pt x 289.08pt>
-File: PKB_LM_LMc.pdf Graphic file (type pdf)
- <use PKB_LM_LMc.pdf>
-Package pdftex.def Info: PKB_LM_LMc.pdf used on input line 254.
-(pdftex.def)             Requested size: 430.31812pt x 172.12602pt.
+>] <simu_surv_weights.pdf, id=166, 650.43pt x 433.62pt>
+File: simu_surv_weights.pdf Graphic file (type pdf)
 
-<PKB_LM_LMc_surv.pdf, id=325, 722.7pt x 289.08pt>
-File: PKB_LM_LMc_surv.pdf Graphic file (type pdf)
- <use PKB_LM_LMc_surv.pdf>
-Package pdftex.def Info: PKB_LM_LMc_surv.pdf used on input line 255.
-(pdftex.def)             Requested size: 430.31812pt x 172.12602pt.
+<use simu_surv_weights.pdf>
+Package pdftex.def Info: simu_surv_weights.pdf used on input line 173.
+(pdftex.def)             Requested size: 452.9679pt x 301.98367pt.
+ [7 <./simu_surv_weights.pdf>]
+<reg_W_vs_noW.pdf, id=203, 722.7pt x 267.39899pt>
+File: reg_W_vs_noW.pdf Graphic file (type pdf)
+ <use reg_W_vs_noW.pdf>
+Package pdftex.def Info: reg_W_vs_noW.pdf used on input line 182.
+(pdftex.def)             Requested size: 452.9679pt x 167.59724pt.
 
-[16 <./PKB_LM_LMc.pdf> <./PKB_LM_LMc_surv.pdf
+<surv_W_vs_noW.pdf, id=204, 722.7pt x 267.39899pt>
+File: surv_W_vs_noW.pdf Graphic file (type pdf)
+ <use surv_W_vs_noW.pdf>
+Package pdftex.def Info: surv_W_vs_noW.pdf used on input line 183.
+(pdftex.def)             Requested size: 452.9679pt x 167.59724pt.
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./PKB_LM_LMc_surv.pdf): PDF 
-inclusion: multiple pdfs with page group included in a single page
->] [17]
-Overfull \hbox (8.54387pt too wide) in paragraph at lines 282--292
+[8 <./reg_W_vs_noW.pdf> <./surv_W_vs_noW.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./surv_W_vs_noW.pdf): PDF in
+clusion: multiple pdfs with page group included in a single page
+>]
+Overfull \hbox (8.54384pt too wide) in paragraph at lines 215--225
  [][] 
  []
 
-[18] [19]
-Overfull \hbox (17.12308pt too wide) in paragraph at lines 320--329
+[9]
+Overfull \hbox (15.64368pt too wide) in paragraph at lines 249--258
  [][] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 332.
-[20]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 332.
- (./StatMed.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 332.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 332.
-Package rerunfilecheck Info: File `StatMed.out' has not changed.
-(rerunfilecheck)             Checksum: 7C89F1F0190F0A02612FD3C15A1D6DCB;798.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 332.
+[10] (./Supplementary.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 262.
+ [11]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 262.
+ (./Supplementary.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 262.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 262.
+Package rerunfilecheck Info: File `Supplementary.out' has not changed.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 262.
  ) 
 Here is how much of TeX's memory you used:
- 7027 strings out of 492995
- 101465 string characters out of 6132704
- 198597 words of memory out of 5000000
- 10429 multiletter control sequences out of 15000+600000
- 14286 words of font info for 54 fonts, out of 8000000 for 9000
+ 6936 strings out of 492995
+ 99578 string characters out of 6132704
+ 197910 words of memory out of 5000000
+ 10371 multiletter control sequences out of 15000+600000
+ 14494 words of font info for 56 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 28i,9n,28p,1210b,484s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
-></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx6.pfb></
-usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></us
-r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr
-/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/
-local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/l
-ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/loc
-al/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local
-/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/t
-exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/tex
-live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texliv
-e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2
-017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/20
-17/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2017
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on StatMed.pdf (20 pages, 346266 bytes).
+ 28i,17n,28p,580b,394s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
+></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb><
+/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></u
+sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr
+/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/l
+ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/loc
+al/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/
+texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/tex
+live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texl
+ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texliv
+e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive
+/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on Supplementary.pdf (12 pages, 283557 bytes).
 PDF statistics:
- 515 PDF objects out of 1000 (max. 8388607)
- 288 compressed objects within 3 object streams
- 69 named destinations out of 1000 (max. 500000)
- 127 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 377 PDF objects out of 1000 (max. 8388607)
+ 143 compressed objects within 2 object streams
+ 29 named destinations out of 1000 (max. 500000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
 

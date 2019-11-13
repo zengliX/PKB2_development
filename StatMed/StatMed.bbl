@@ -1,0 +1,120 @@
+\begin{thebibliography}{10}
+
+\bibitem{li2005boosting}
+Hongzhe Li and Yihui Luan.
+\newblock Boosting proportional hazards models using smoothing splines, with
+  applications to high-dimensional microarray data.
+\newblock {\em Bioinformatics}, 21(10):2403--2409, 2005.
+
+\bibitem{friedman2001elements}
+Jerome Friedman, Trevor Hastie, and Robert Tibshirani.
+\newblock {\em The elements of statistical learning}, volume~1.
+\newblock Springer series in statistics New York, 2001.
+
+\bibitem{zeng2019pathway}
+Li~Zeng, Zhaolong Yu, and Hongyu Zhao.
+\newblock A pathway-based kernel boosting method for sample classification
+  using genomic data.
+\newblock {\em Genes}, 10(9):670, 2019.
+
+\bibitem{bender2005generating}
+Ralf Bender, Thomas Augustin, and Maria Blettner.
+\newblock Generating survival times to simulate cox proportional hazards
+  models.
+\newblock {\em Statistics in medicine}, 24(11):1713--1723, 2005.
+
+\bibitem{harrell1982evaluating}
+Frank~E Harrell~Jr, Robert~M Califf, David~B Pryor, Kerry~L Lee, Robert~A
+  Rosati, et~al.
+\newblock Evaluating the yield of medical tests.
+\newblock {\em Jama}, 247(18):2543--2546, 1982.
+
+\bibitem{zou2005regularization}
+Hui Zou and Trevor Hastie.
+\newblock Regularization and variable selection via the elastic net.
+\newblock {\em Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology)}, 67(2):301--320, 2005.
+
+\bibitem{breiman2001random}
+Leo Breiman.
+\newblock Random forests.
+\newblock {\em Machine learning}, 45(1):5--32, 2001.
+
+\bibitem{friedman2001greedy}
+Jerome~H Friedman.
+\newblock Greedy function approximation: a gradient boosting machine.
+\newblock {\em Annals of statistics}, pages 1189--1232, 2001.
+
+\bibitem{smola2004tutorial}
+Alex~J Smola and Bernhard Sch{\"o}lkopf.
+\newblock A tutorial on support vector regression.
+\newblock {\em Statistics and computing}, 14(3):199--222, 2004.
+
+\bibitem{simon2011regularization}
+Noah Simon, Jerome Friedman, Trevor Hastie, and Rob Tibshirani.
+\newblock Regularization paths for cox’s proportional hazards model via
+  coordinate descent.
+\newblock {\em Journal of statistical software}, 39(5):1, 2011.
+
+\bibitem{ishwaran2008random}
+Hemant Ishwaran, Udaya~B Kogalur, Eugene~H Blackstone, and Michael~S Lauer.
+\newblock Random survival forests.
+\newblock {\em The annals of applied statistics}, pages 841--860, 2008.
+
+\bibitem{binder2013coxboost}
+Harald Binder.
+\newblock Coxboost: Cox models by likelihood based boosting for a single
+  survival endpoint or competing risks.
+\newblock {\em R package version}, 1, 2013.
+
+\bibitem{barretina2012cancer}
+Jordi Barretina, Giordano Caponigro, Nicolas Stransky, Kavitha Venkatesan,
+  Adam~A Margolin, Sungjoon Kim, Christopher~J Wilson, Joseph Leh{\'a}r,
+  Gregory~V Kryukov, Dmitriy Sonkin, et~al.
+\newblock The cancer cell line encyclopedia enables predictive modelling of
+  anticancer drug sensitivity.
+\newblock {\em Nature}, 483(7391):603, 2012.
+
+\bibitem{kanehisa2000kegg}
+Minoru Kanehisa and Susumu Goto.
+\newblock Kegg: kyoto encyclopedia of genes and genomes.
+\newblock {\em Nucleic acids research}, 28(1):27--30, 2000.
+
+\bibitem{nishimura2001biocarta}
+Darryl Nishimura.
+\newblock Biocarta.
+\newblock {\em Biotech Software \& Internet Report: The Computer Software
+  Journal for Scient}, 2(3):117--120, 2001.
+
+\bibitem{ashburner2000gene}
+Michael Ashburner, Catherine~A Ball, Judith~A Blake, David Botstein, Heather
+  Butler, J~Michael Cherry, Allan~P Davis, Kara Dolinski, Selina~S Dwight,
+  Janan~T Eppig, et~al.
+\newblock Gene ontology: tool for the unification of biology.
+\newblock {\em Nature genetics}, 25(1):25, 2000.
+
+\bibitem{gene2016expansion}
+Gene~Ontology Consortium.
+\newblock Expansion of the gene ontology knowledgebase and resources.
+\newblock {\em Nucleic acids research}, 45(D1):D331--D338, 2016.
+
+\bibitem{huang2008bioinformatics}
+Da~Wei Huang, Brad~T Sherman, and Richard~A Lempicki.
+\newblock Bioinformatics enrichment tools: paths toward the comprehensive
+  functional analysis of large gene lists.
+\newblock {\em Nucleic acids research}, 37(1):1--13, 2008.
+
+\bibitem{warde2010genemania}
+David Warde-Farley, Sylva~L Donaldson, Ovi Comes, Khalid Zuberi, Rashad
+  Badrawi, Pauline Chao, Max Franz, Chris Grouios, Farzana Kazi,
+  Christian~Tannus Lopes, et~al.
+\newblock The genemania prediction server: biological network integration for
+  gene prioritization and predicting gene function.
+\newblock {\em Nucleic acids research}, 38(suppl\_2):W214--W220, 2010.
+
+\bibitem{ridgeway2006gbm}
+Greg Ridgeway et~al.
+\newblock gbm: Generalized boosted regression models.
+\newblock {\em R package version}, 1(3):55, 2006.
+
+\end{thebibliography}
