@@ -1,5 +1,11 @@
 \begin{thebibliography}{10}
 
+\bibitem{zeng2019pathway}
+Li~Zeng, Zhaolong Yu, and Hongyu Zhao.
+\newblock A pathway-based kernel boosting method for sample classification
+  using genomic data.
+\newblock {\em Genes}, 10(9):670, 2019.
+
 \bibitem{li2005boosting}
 Hongzhe Li and Yihui Luan.
 \newblock Boosting proportional hazards models using smoothing splines, with
@@ -11,11 +17,11 @@ Jerome Friedman, Trevor Hastie, and Robert Tibshirani.
 \newblock {\em The elements of statistical learning}, volume~1.
 \newblock Springer series in statistics New York, 2001.
 
-\bibitem{zeng2019pathway}
-Li~Zeng, Zhaolong Yu, and Hongyu Zhao.
-\newblock A pathway-based kernel boosting method for sample classification
-  using genomic data.
-\newblock {\em Genes}, 10(9):670, 2019.
+\bibitem{johnson2014learning}
+Rie Johnson and Tong Zhang.
+\newblock Learning nonlinear functions using regularized greedy forest.
+\newblock {\em IEEE transactions on pattern analysis and machine intelligence},
+  36(5):942--954, 2014.
 
 \bibitem{bender2005generating}
 Ralf Bender, Thomas Augustin, and Maria Blettner.

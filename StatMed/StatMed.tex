@@ -51,13 +51,13 @@
 	In last chapter, we have proposed a pathway-based boosting (PKB) algorithm that can utilize cancer patients' gene expression data and known pathway information to classify patients into different clinical groups. It has been applied to several cancer study datasets in The Cancer Genome Atlas (TCGA) to predict various clinical outcomes, such as tumor stage, grade, and metastasis status. However, two drawbacks of the model may limit the usefulness of it in cancer data analysis. First of all, typical cancer genomic study datasets provide both clinical features and genomic features. In PKB, only gene expressions are considered as predictors, which is a waste of the clinical features that are potentially predictive of the outcome variable. Second, the current PKB is only able to predict categorical outcome variables, which excludes the analysis for interesting clinical variables, such as drug response, disease free survival, and overall survival. 
 	
 	In this chapter, we propose a modified PKB framework. It enables the inclusion of clinical features as predictors by adding a linear model part to the base learner spaces. It also unifies classification, regression, and survival analysis under the same Boosting procedure, which can handle different types of outcome variables by specifying different loss functions. We focus on the applications of the new PKB model to regression and survival analysis, and examine its performance in two databases:  the Cancer Cell Line Encyclopedia (CCLE) for cell line drug response prediction, and TCGA for patient survival prediction.
-	\section{Method}
-	We follow similar notations as used in last chapter. Suppose our observed data is collected from $N$ subjects. For subject $i$, we use a $p$ dimensional vector $\bd{x}_i = (x_{i1}, x_{i2}, \ldots, x_{ip})$ to denote the normalized gene expression profile. Similarly, the gene expression levels of a given pathway $m$ with $p_m$ genes can be represented by $\pathexpr{\bd{x}}{i}{m} = (\pathexpr{x}{i1}{m},\pathexpr{x}{i2}{m}, \ldots, \pathexpr{x}{ip_m}{m})$, which is a sub-vector of $\bd{x}_i$. We use $\bd{z}_i = (z_{i1}, z_{i2}, \ldots, z_{iq})$ to represent available clinical features for the patient, such as gender, age, and cancer type.
+	\section{Materials and methods}
+	Suppose our observed data is collected from $N$ subjects. For subject $i$, we use a $p$ dimensional vector $\bd{x}_i = (x_{i1}, x_{i2}, \ldots, x_{ip})$ to denote the normalized gene expression profile. Similarly, the gene expression levels of a given pathway $m$ with $p_m$ genes can be represented by $\pathexpr{\bd{x}}{i}{m} = (\pathexpr{x}{i1}{m},\pathexpr{x}{i2}{m}, \ldots, \pathexpr{x}{ip_m}{m})$, which is a sub-vector of $\bd{x}_i$. We use $\bd{z}_i = (z_{i1}, z_{i2}, \ldots, z_{iq})$ to represent available clinical features for the patient, such as gender, age, and cancer type.
 	
 	For classification, each subject has an observed class label $y_i \in \{1,-1\}$. The probability of being class 1 is modeled as 
 	$$p(y = 1| \bd{x}, \bd{z}) = \frac{\exp[F(\bd{x}, \bd{z})]}{1 + \exp[F(\bd{x}, \bd{z})]},$$
-	where $F(\bd{x}, \bd{z})$ is the log odds function. Maximizing the probability is equivalent to minimizing the following log loss function:
-	$$l(y , F(\bd{x}, \bd{z}) ) = \log(1+\exp[-y F(\bd{x}, \bd{z})])$$
+	where $F(\bd{x}, \bd{z})$ is the log odds function of classification model. Maximizing the likelihood is equivalent to minimizing the following log loss function:\cite{zeng2019pathway}
+	$$l(y , F(\bd{x}, \bd{z}) ) = \log(1+\exp[-y F(\bd{x}, \bd{z})]).$$
 	
 	In the regression model, we observe continuous outcome $y$ for each subject. The loss function for regression is the widely used squared error:
 	$$l(y , F(\bd{x}, \bd{z}) ) = ( y - F(\bd{x}, \bd{z}))^2$$
@@ -68,33 +68,37 @@
 	\label{eqn:hazard}
 	h(t, F(\bd{x},\bd{z}) ) = h_0(t)\exp[F(\bd{x},\bd{z})]
 	\end{equation}
-	where $h_0(t)$ is an unknown baseline hazard function. Using the partial likelihood function enables us to circumvent the inference of $h_0(x)$, and directly estimate $F(\bd{x}, \bd{z})$. We use the negative log partial likelihood as the loss function:
+	where $h_0(t)$ is an unknown baseline hazard function. Using the partial likelihood function enables us to circumvent the inference of $h_0(x)$, and directly estimate $F(\bd{x}, \bd{z})$. We use the negative log partial likelihood\cite{li2005boosting} as the loss function in the survival model:
 	$$l(y, F(\bd{x}, \bd{z}) ) = -\delta \left\lbrace F(\bd{x}, \bd{z}) - \log\left( \sum^{N}_{j=1}1_{\left\lbrace t_j \geq t\right\rbrace }\exp[F(\bd{x}, \bd{z})]\right)  \right\rbrace.$$
 	
 	The goal of PKB is to estimate $F(\bd{x}, \bd{z})$ non-parametrically through a Boosting procedure. $F(\bd{x}, \bd{z})$ has different interpretations in different loss functions. We will refer to it as the score function in what follows.
-	
-	Results from theories of Reproducing Kernel Hilbert Space \citep{friedman2001elements} have shown that kernel functions can capture complex interactions among features. It has been used in Zeng et al\citep{zeng2019pathway} to capture predictive genomic information for classification purpose. We extend it by incorporating clinical features in the base learner space. For pathway $m$, the base learner space takes the following form:
+	\subsection{Base learner space}
+	Results from theories of Reproducing Kernel Hilbert Space (RKHS)\citep{friedman2001elements} have shown that kernel functions can capture complex interactions among features. It has been used in Zeng et al\citep{zeng2019pathway} to capture predictive genomic information for classification purpose. We extend it by incorporating clinical features in the base learner space. For pathway $m$, the base learner space takes the following form:
 	\begin{equation}
 	\label{eqn:G}
 	\mathcal{G}_m = \{  f(\bd{x}, \bd{z}) = \sum_{i=1}^N K_m(\pathexpr{\bd{x}}{i}{m}, \pathexpr{\bd{x} }{}{m}) \beta_i + \sum_{j=1}^q z_j \gamma_j : \mathbf{\beta} \in R^{N}, \mathbf{\gamma} \in R^{q} \},
 	\end{equation}
+	where $K_m(\cdot,\cdot)$ is a kernel function that calculates similarity between two subjects using only genes in the $m$th pathway. Each element in the space is composed of two parts: a nonlinear component to model gene expression effect and a linear component to model clinical features' effect. The overall base learner space $\mathcal{G}$ is simply the union of individual learner spaces from each pathway: $\mathcal{G} = \bigcup_{m=1}^M\mathcal{G}_m$.
 	
-	
-	where $K_m(\cdot,\cdot)$ is a kernel function that calculates similarity between two subjects using only genes in the $m$th pathway. Each element in the space is composed of two parts: a nonlinear component to model gene expression effect and a linear component to model clinical features' effect. The overall base learner space $\mathcal{G}$ is simply the union of individual learner spaces from each pathway.
+	Assume there are $M$ pathways considered in our model. Since genes within the same pathway likely have much stronger interactions than genes in different pathways, in our pathway-based model setting, we assume additive effects across pathways and focus on capturing gene interactions within pathways:
+	\begin{equation*}
+	F(\bd{x}, \bd{z}) = \sum_{m=1}^M H_m(\bd{x}^{(m)}, \bd{z}),
+	\end{equation*}
+	where each $H_m$ is a function that only depends on the expression level of genes in the $m$th pathway and the clinical features. $H_m$ belongs to the RKHS of the $m$th pathway $\mathcal{G}_m $. Due to the additive nature of this model, it only captures gene interactions within each pathway but not across pathways. 
 	
 	Given a problem and the corresponding loss function, the empirical loss is defined as the mean of losses evaluated at each sample point:
 	$$L(\bd{y},\bd{F}) = \frac{1}{N} \sum_{i=1}^N l(y_i,F(\bd{x}_i,\bd{z}_i)),$$
-	where $\bd{F} = (F(\bd{x}_1, \bd{z}_1), F(\bd{x}_2, \bd{z}_2), \ldots, F(\bd{x}_N, \bd{z}_N))$. In the rest of this chapter, we will also use boldface font of a function to represent the vector of the function evaluated at each observed sample point.
+	where $\bd{F} = (F(\bd{x}_1, \bd{z}_1), F(\bd{x}_2, \bd{z}_2), \ldots, F(\bd{x}_N, \bd{z}_N))$. In the rest of this article, we will also use boldface font of a function to represent the vector of the function evaluated at each observed sample point.
 	
 	\subsection{Identify the optimal increment function} \label{sec:identify}
-	Boosting is an iterative functional descent procedure to minimize the empirical loss function. The most crucial step in the Boosting procedure is the identification of an ``optimal" increment function $f \in \mathcal{G}$, which shrinks the empirical loss as much as possible, given the current value of $F(\bd{x}, \bd{z})$. We approximate $L(\bd{y},\bd{F})$ by its second order Taylor expansion around $\bd{F}$:
+	Boosting is an iterative functional descent procedure to minimize the empirical loss function. Assume that at iteration $t$, the estimated target function is $F_t(\bd{x}, \bd{z})$. The most crucial step in the Boosting procedure is the identification of an ``optimal" increment function $f \in \mathcal{G}$, which shrinks the empirical loss as much as possible, given the current value of $F_t(\bd{x}, \bd{z})$ and add it to $F_t(\bd{x}, \bd{z})$. We approximate $L(\bd{y},\bd{F}_t)$ by its second order Taylor expansion around $\bd{F}_t$:
 	\begin{eqnarray*}
-		L(\bd{y}, \bd{F} + \bd{f}) &\approx& L(\bd{y}, \bd{F}) +  (\grad{L}{F})^T \bd{f} + \frac{1}{2}\bd{f}^T \hess{F} \bd{f} \\
-		& = & \frac{1}{2} (\bd{f} + \hess{F}^{-1} \grad{L}{F})^T \hess{F} (\bd{f} + \hess{F}^{-1} \grad{L}{F}) + \mbox{const},
+		L(\bd{y}, \bd{F}_t + \bd{f}) &\approx& L(\bd{y}, \bd{F}_t) +  (\grad{L}{F_t})^T \bd{f} + \frac{1}{2}\bd{f}^T \hess{F_t} \bd{f} \\
+		& = & \frac{1}{2} (\bd{f} + \hess{F_t}^{-1} \grad{L}{F_t})^T \hess{F_t} (\bd{f} + \hess{F_t}^{-1} \grad{L}{F_t}) + \mbox{const},
 	\end{eqnarray*}
-where $f$ is the increment function. $\nabla_{\bd{F}} L$ and $\bd{H}_{\bd{F}}$ are the gradient and Hessian matrix of $L(\bd{y}, \bd{F})$ with respect to $\bd{F}$, respectively, and const includes all the terms that do not involve $\bd{f}$. Note that this approximation is accurate in the case of regression, since the regression loss is quadratic itself. Calculations of $\grad{L}{F}$ and $\hess{F}$ for different problems are available in Appendix A in the Supplementary Materials. Direct minimization for this loss approximation in $\mathcal{G}$, however, may lead to overfitting, due to the high flexibility of the base learner space. It is necessary to apply penalties in the selection of $f$. Therefore we propose the following regularized loss as the working loss function in PKB:
-$$L_{R}(f) = \frac{1}{2} (\bd{f} + \hess{F}^{-1} \grad{L}{F})^T \hess{F} (\bd{f} + \hess{F}^{-1} \grad{L}{F}) + \lambda \Omega(f),$$
-where $\Omega(f)$ is the penalty term. Since $f$ takes the functional form as presented in (\ref{eqn:G}), it is natural to consider the  $L_1$ and $L_2$ norm of $\beta$ as choices of penalty: $\Omega(f) = \| \beta \|_1$ or $\| \beta \|_2^2$. 
+where $f$ is the increment function. $\nabla_{\bd{F_t}} L$ and $\bd{H}_{\bd{F_t}}$ are the gradient and Hessian matrix of $L(\bd{y}, \bd{F_t})$ with respect to $\bd{F_t}$, respectively, and const includes all the terms that do not involve $\bd{f}$. Note that this approximation is accurate in the case of regression, since the regression loss is quadratic itself. Calculations of $\grad{L}{F_t}$ and $\hess{F_t}$ for different problems are available in Appendix A in the Supplementary Materials. Direct minimization for this loss approximation in $\mathcal{G}$, however, may lead to overfitting, due to the high flexibility of the base learner space. It is necessary to apply penalties in the selection of $f$. Therefore we propose the following regularized loss as the working loss function in PKB:
+$$L_{R}(f) = \frac{1}{2} (\bd{f} + \hess{F_t}^{-1} \grad{L}{F_t})^T \hess{F_t} (\bd{f} + \hess{F_t}^{-1} \grad{L}{F_t}) + \lambda \Omega(f),$$
+where $\Omega(f)$ is the penalty term. Since $f$ takes the functional form as presented in (\ref{eqn:G}), it is natural to consider the  $L_1$ and $L_2$ norm of $\beta$ as choices of penalty: $\Omega(f) = \| \beta \|_1$ or $\| \beta \|_2^2$. Such a penalized boosting step has been employed in sevaral methods (e.g., Johnson et al). \cite{johnson2014learning} Intuitively, the regularized loss function would prefer simple solutions that also fit the observed data well, which usually leads to better generalization capability to unseen data.
 
 Optimizing $L_R(f)$ in $\mathcal{G}_m$ is equivalent to
 \begin{equation}
@@ -106,12 +110,12 @@ where $K_m$ is the $N \times N$ kernel matrix calculated using gene expressions 
 	\tilde{\eta} &=& \frac{1}{\sqrt{2}}\hess{F}^{\frac{1}{2}}(I_N - Z(Z^T \hess{F} Z)^{-1}Z^T \hess{F})\hess{F}^{-1}\grad{L}{F}\\
 	\tilde{K}_m &=& \frac{1}{\sqrt{2}}\hess{F}^{\frac{1}{2}}(I_N - Z(Z^T\hess{F}Z)^{-1}Z^T\hess{F})K_m,
 \end{eqnarray*}
-solving $\beta$ in problem (\ref{eqn:regloss}) is reduced to:
+solving $\beta$ in Equation (\ref{eqn:regloss}) is reduced to:
 \begin{equation}
 \label{eqn:reduced}
 \min_{\beta} \|\tilde{\eta} + \tilde{K}_m \beta \|_2^2 + \lambda \Omega(f).
 \end{equation}
-Proof is provided in Appendix B in the Supplementary Materials. Problem (\ref{eqn:reduced}) becomes the LASSO problem when we use the $L_1$ penalty, and the Ridge Regression when we use $L_2$ penalty. Both can be efficiently solved with existing solvers. After solving $\beta$, we can subsequently obtain the solution of $\gamma$ as:
+Proof is provided in Appendix B in the Supplementary Materials. Equation (\ref{eqn:reduced}) becomes the LASSO problem when we use the $L_1$ penalty, and the Ridge Regression when we use $L_2$ penalty. Both can be efficiently solved with existing solvers. After solving $\beta$, we can subsequently obtain the solution of $\gamma$ as:
 $$\gamma = -(Z^T\hess{F}Z)^{-1}Z^T\hess{F}(K_m\beta + \hess{F}^{-1}\grad{L}{F}).$$
 
 
@@ -216,7 +220,7 @@ Comparison of the three models in the TCGA datasets is presented in the lower pa
 \section{Discussion}
 In this article, we have extended the PKB framework proposed by  Zeng et al\cite{zeng2019pathway} to perform regression and survival analysis. It has also enabled the algorithm to incorporate clinical features as predictors by adding a linear part to the base learner spaces. We have applied PKB to the CCLE database to predict cancer drug responses on cell lines, and to the TCGA database to predict cancer patients' survival. In both applications, PKB has achieved equal or superior prediction accuracy than competing methods in most datasets. Especially in several TCGA datasets, PKB has significantly improved the prediction accuracy by a large amount. We have further compared PKB with linear models that only use clinical predictors. Results have demonstrated that PKB can effectively capture genomic predictive signals in addition to clinical signals, and significantly improve prediction performance.
 
-In the PKB regression model, the final score $F(\bd{x}, \bd{z})$ function is an estimate of the regression function, which can be used directly to predict the outcome variable. However, in the survival model, $F(\bd{x}, \bd{z})$ is not an estimate of the patient's survival time, but rather an estimate to the risk score in the hazard function (see equation (\ref{eqn:hazard})). Since the baseline hazard $h_0(t)$ is still unknown, we cannot provide direct estimates of patients' survival times. Nonetheless, after an estimate for $F(\bd{x}, \bd{z})$ is acquired, it is easy to get a nonparametric estimate of the baseline hazard function, and subsequently estimate the survival times.
+In the PKB regression model, the final score $F(\bd{x}, \bd{z})$ function is an estimate of the regression function, which can be used directly to predict the outcome variable. However, in the survival model, $F(\bd{x}, \bd{z})$ is not an estimate of the patient's survival time, but rather an estimate to the risk score in the hazard function (see Equation (\ref{eqn:hazard})). Since the baseline hazard $h_0(t)$ is still unknown, we cannot provide direct estimates of patients' survival times. Nonetheless, after an estimate for $F(\bd{x}, \bd{z})$ is acquired, it is easy to get a nonparametric estimate of the baseline hazard function, and subsequently estimate the survival times.
 
 We have also assumed that the clinical effects and pathway effects are additive, therefore no interactions between clinical features and pathways are modeled. In the existence of categorical clinical features, informative pathways are supposed to be informative in all categories. This assumption, however, may be violated in real datasets. For example, each CCLE dataset is a mixture of cell lines from several cancer types. A pathway may be significant in one or two cancers, but it is hard to be predictive in all the cancer types. This is a probable reason why PKB has not made significant improvement in certain CCLE datasets. We have tried to fit PKB for each cancer type separately, but the small sample sizes make it difficult to pick out true pathway signals. 
 
