@@ -1,10 +1,159 @@
 \begin{thebibliography}{10}
 
+\bibitem{subramanian2005gene}
+Aravind Subramanian, Pablo Tamayo, Vamsi~K Mootha, Sayan Mukherjee, Benjamin~L
+  Ebert, Michael~A Gillette, Amanda Paulovich, Scott~L Pomeroy, Todd~R Golub,
+  Eric~S Lander, et~al.
+\newblock Gene set enrichment analysis: a knowledge-based approach for
+  interpreting genome-wide expression profiles.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  102(43):15545--15550, 2005.
+
+\bibitem{carlson2004mapping}
+Christopher~S Carlson, Michael~A Eberle, Leonid Kruglyak, and Deborah~A
+  Nickerson.
+\newblock Mapping complex disease loci in whole-genome association studies.
+\newblock {\em Nature}, 429(6990):446, 2004.
+
+\bibitem{kanehisa2000kegg}
+Minoru Kanehisa and Susumu Goto.
+\newblock Kegg: kyoto encyclopedia of genes and genomes.
+\newblock {\em Nucleic acids research}, 28(1):27--30, 2000.
+
+\bibitem{schaefer2008pid}
+Carl~F Schaefer, Kira Anthony, Shiva Krupa, Jeffrey Buchoff, Matthew Day, Timo
+  Hannay, and Kenneth~H Buetow.
+\newblock Pid: the pathway interaction database.
+\newblock {\em Nucleic acids research}, 37(suppl\_1):D674--D679, 2008.
+
+\bibitem{nishimura2001biocarta}
+Darryl Nishimura.
+\newblock Biocarta.
+\newblock {\em Biotech Software \& Internet Report: The Computer Software
+  Journal for Scient}, 2(3):117--120, 2001.
+
+\bibitem{liu2007semiparametric}
+Dawei Liu, Xihong Lin, and Debashis Ghosh.
+\newblock Semiparametric regression of multidimensional genetic pathway data:
+  Least-squares kernel machines and linear mixed models.
+\newblock {\em Biometrics}, 63(4):1079--1088, 2007.
+
+\bibitem{wu2011rare}
+Michael~C Wu, Seunggeun Lee, Tianxi Cai, Yun Li, Michael Boehnke, and Xihong
+  Lin.
+\newblock Rare-variant association testing for sequencing data with the
+  sequence kernel association test.
+\newblock {\em The American Journal of Human Genetics}, 89(1):82--93, 2011.
+
+\bibitem{shou2004mechanisms}
+Jiang Shou, Suleiman Massarweh, C~Kent Osborne, Alan~E Wakeling, Simale Ali,
+  Heidi Weiss, and Rachel Schiff.
+\newblock Mechanisms of tamoxifen resistance: increased estrogen
+  receptor-her2/neu cross-talk in er/her2--positive breast cancer.
+\newblock {\em Journal of the National Cancer Institute}, 96(12):926--935,
+  2004.
+
+\bibitem{shtivelman2014molecular}
+Emma Shtivelman, Thomas Hensing, George~R Simon, Phillip~A Dennis, Gregory~A
+  Otterson, Raphael Bueno, and Ravi Salgia.
+\newblock Molecular pathways and therapeutic targets in lung cancer.
+\newblock {\em Oncotarget}, 5(6):1392, 2014.
+
+\bibitem{berk2009neuroprogression}
+Michael Berk.
+\newblock Neuroprogression: pathways to progressive brain changes in bipolar
+  disorder.
+\newblock {\em International Journal of Neuropsychopharmacology},
+  12(4):441--445, 2009.
+
+\bibitem{gonen2014drug}
+Mehmet G{\"o}nen and Adam~A Margolin.
+\newblock Drug susceptibility prediction against a panel of drugs using
+  kernelized bayesian multitask learning.
+\newblock {\em Bioinformatics}, 30(17):i556--i563, 2014.
+
+\bibitem{aiolli2015easymkl}
+Fabio Aiolli and Michele Donini.
+\newblock Easymkl: a scalable multiple kernel learning algorithm.
+\newblock {\em Neurocomputing}, 169:215--224, 2015.
+
+\bibitem{costello2014community}
+James~C Costello, Laura~M Heiser, Elisabeth Georgii, Mehmet G{\"o}nen,
+  Michael~P Menden, Nicholas~J Wang, Mukesh Bansal, Petteri Hintsanen,
+  Suleiman~A Khan, John-Patrick Mpindi, et~al.
+\newblock A community effort to assess and improve drug sensitivity prediction
+  algorithms.
+\newblock {\em Nature biotechnology}, 32(12):1202--1212, 2014.
+
+\bibitem{friedrichs2017pathway}
+Stefanie Friedrichs, Juliane Manitz, Patricia Burger, Christopher~I Amos,
+  Angela Risch, Jenny Chang-Claude, Heinz-Erich Wichmann, Thomas Kneib, Heike
+  Bickeb{\"o}ller, and Benjamin Hofner.
+\newblock Pathway-based kernel boosting for the analysis of genome-wide
+  association studies.
+\newblock {\em Computational and mathematical methods in medicine}, 2017, 2017.
+
+\bibitem{manica2019pimkl}
+Matteo Manica, Joris Cadow, Roland Mathis, and Mar{\'\i}a~Rodr{\'\i}guez
+  Mart{\'\i}nez.
+\newblock Pimkl: Pathway-induced multiple kernel learning.
+\newblock {\em NPJ Systems Biology and Applications}, 5(1):8, 2019.
+
+\bibitem{wei2007nonparametric}
+Zhi Wei and Hongzhe Li.
+\newblock Nonparametric pathway-based regression models for analysis of genomic
+  data.
+\newblock {\em Biostatistics}, 8(2):265--284, 2007.
+
+\bibitem{luan2007group}
+Yihui Luan and Hongzhe Li.
+\newblock Group additive regression models for genomic data analysis.
+\newblock {\em Biostatistics}, 9(1):100--113, 2007.
+
+\bibitem{friedman2001greedy}
+Jerome~H Friedman.
+\newblock Greedy function approximation: a gradient boosting machine.
+\newblock {\em Annals of statistics}, pages 1189--1232, 2001.
+
 \bibitem{zeng2019pathway}
 Li~Zeng, Zhaolong Yu, and Hongyu Zhao.
 \newblock A pathway-based kernel boosting method for sample classification
   using genomic data.
 \newblock {\em Genes}, 10(9):670, 2019.
+
+\bibitem{tibshirani1996regression}
+Robert Tibshirani.
+\newblock Regression shrinkage and selection via the lasso.
+\newblock {\em Journal of the Royal Statistical Society. Series B
+  (Methodological)}, pages 267--288, 1996.
+
+\bibitem{hoerl1970ridge}
+Arthur~E Hoerl and Robert~W Kennard.
+\newblock Ridge regression: Biased estimation for nonorthogonal problems.
+\newblock {\em Technometrics}, 12(1):55--67, 1970.
+
+\bibitem{zou2005regularization}
+Hui Zou and Trevor Hastie.
+\newblock Regularization and variable selection via the elastic net.
+\newblock {\em Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology)}, 67(2):301--320, 2005.
+
+\bibitem{simon2011regularization}
+Noah Simon, Jerome Friedman, Trevor Hastie, and Rob Tibshirani.
+\newblock Regularization paths for cox’s proportional hazards model via
+  coordinate descent.
+\newblock {\em Journal of statistical software}, 39(5):1, 2011.
+
+\bibitem{ishwaran2008random}
+Hemant Ishwaran, Udaya~B Kogalur, Eugene~H Blackstone, and Michael~S Lauer.
+\newblock Random survival forests.
+\newblock {\em The annals of applied statistics}, pages 841--860, 2008.
+
+\bibitem{binder2013coxboost}
+Harald Binder.
+\newblock Coxboost: Cox models by likelihood based boosting for a single
+  survival endpoint or competing risks.
+\newblock {\em R package version}, 1, 2013.
 
 \bibitem{li2005boosting}
 Hongzhe Li and Yihui Luan.
@@ -35,43 +184,15 @@ Frank~E Harrell~Jr, Robert~M Califf, David~B Pryor, Kerry~L Lee, Robert~A
 \newblock Evaluating the yield of medical tests.
 \newblock {\em Jama}, 247(18):2543--2546, 1982.
 
-\bibitem{zou2005regularization}
-Hui Zou and Trevor Hastie.
-\newblock Regularization and variable selection via the elastic net.
-\newblock {\em Journal of the Royal Statistical Society: Series B (Statistical
-  Methodology)}, 67(2):301--320, 2005.
-
 \bibitem{breiman2001random}
 Leo Breiman.
 \newblock Random forests.
 \newblock {\em Machine learning}, 45(1):5--32, 2001.
 
-\bibitem{friedman2001greedy}
-Jerome~H Friedman.
-\newblock Greedy function approximation: a gradient boosting machine.
-\newblock {\em Annals of statistics}, pages 1189--1232, 2001.
-
 \bibitem{smola2004tutorial}
 Alex~J Smola and Bernhard Sch{\"o}lkopf.
 \newblock A tutorial on support vector regression.
 \newblock {\em Statistics and computing}, 14(3):199--222, 2004.
-
-\bibitem{simon2011regularization}
-Noah Simon, Jerome Friedman, Trevor Hastie, and Rob Tibshirani.
-\newblock Regularization paths for cox’s proportional hazards model via
-  coordinate descent.
-\newblock {\em Journal of statistical software}, 39(5):1, 2011.
-
-\bibitem{ishwaran2008random}
-Hemant Ishwaran, Udaya~B Kogalur, Eugene~H Blackstone, and Michael~S Lauer.
-\newblock Random survival forests.
-\newblock {\em The annals of applied statistics}, pages 841--860, 2008.
-
-\bibitem{binder2013coxboost}
-Harald Binder.
-\newblock Coxboost: Cox models by likelihood based boosting for a single
-  survival endpoint or competing risks.
-\newblock {\em R package version}, 1, 2013.
 
 \bibitem{barretina2012cancer}
 Jordi Barretina, Giordano Caponigro, Nicolas Stransky, Kavitha Venkatesan,
@@ -80,17 +201,6 @@ Jordi Barretina, Giordano Caponigro, Nicolas Stransky, Kavitha Venkatesan,
 \newblock The cancer cell line encyclopedia enables predictive modelling of
   anticancer drug sensitivity.
 \newblock {\em Nature}, 483(7391):603, 2012.
-
-\bibitem{kanehisa2000kegg}
-Minoru Kanehisa and Susumu Goto.
-\newblock Kegg: kyoto encyclopedia of genes and genomes.
-\newblock {\em Nucleic acids research}, 28(1):27--30, 2000.
-
-\bibitem{nishimura2001biocarta}
-Darryl Nishimura.
-\newblock Biocarta.
-\newblock {\em Biotech Software \& Internet Report: The Computer Software
-  Journal for Scient}, 2(3):117--120, 2001.
 
 \bibitem{ashburner2000gene}
 Michael Ashburner, Catherine~A Ball, Judith~A Blake, David Botstein, Heather

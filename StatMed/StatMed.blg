@@ -3,44 +3,53 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: StatMed.aux
 The style file: unsrt.bst
 Database file #1: mybib_DB.bib
-You've used 21 entries,
+Repeated entry---line 1352 of file mybib_DB.bib
+ : @article{zou2005regularization
+ :                               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1363 of file mybib_DB.bib
+ : @article{tibshirani1996regression
+ :                                  ,
+I'm skipping whatever remains of this entry
+You've used 38 entries,
             1791 wiz_defined-function locations,
-            586 strings with 7454 characters,
-and the built_in function-call counts, 5277 in all, are:
-= -- 465
-> -- 265
-< -- 3
-+ -- 97
-- -- 76
-* -- 419
-:= -- 859
-add.period$ -- 63
-call.type$ -- 21
-change.case$ -- 20
+            695 strings with 11345 characters,
+and the built_in function-call counts, 9882 in all, are:
+= -- 855
+> -- 543
+< -- 4
++ -- 196
+- -- 158
+* -- 819
+:= -- 1621
+add.period$ -- 114
+call.type$ -- 38
+change.case$ -- 37
 chr.to.int$ -- 0
-cite$ -- 21
-duplicate$ -- 209
-empty$ -- 481
-format.name$ -- 76
-if$ -- 1135
+cite$ -- 38
+duplicate$ -- 370
+empty$ -- 878
+format.name$ -- 158
+if$ -- 2104
 int.to.chr$ -- 0
-int.to.str$ -- 21
-missing$ -- 22
-newline$ -- 108
-num.names$ -- 21
-pop$ -- 30
+int.to.str$ -- 38
+missing$ -- 39
+newline$ -- 193
+num.names$ -- 38
+pop$ -- 49
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 96
+skip$ -- 165
 stack$ -- 0
-substring$ -- 411
-swap$ -- 42
-text.length$ -- 3
+substring$ -- 791
+swap$ -- 68
+text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 56
-width$ -- 23
-write$ -- 233
+while$ -- 103
+width$ -- 40
+write$ -- 420
+(There were 2 error messages)
