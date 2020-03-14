@@ -25,13 +25,13 @@
 \citation{subramanian2005gene}
 \citation{liu2007semiparametric}
 \citation{wu2011rare}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}}
 \citation{shou2004mechanisms,shtivelman2014molecular,berk2009neuroprogression}
 \citation{gonen2014drug,aiolli2015easymkl}
 \citation{costello2014community,friedrichs2017pathway,manica2019pimkl}
 \citation{wei2007nonparametric}
 \citation{luan2007group}
 \citation{friedman2001greedy}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}}
 \citation{zeng2019pathway}
 \citation{tibshirani1996regression}
 \citation{hoerl1970ridge}
@@ -42,19 +42,19 @@
 \citation{zeng2019pathway}
 \citation{li2005boosting}
 \citation{li2005boosting}
-\citation{friedman2001elements}
-\citation{zeng2019pathway}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Materials and methods}{3}{section.2}}
 \newlabel{methods}{{2}{3}{Materials and methods}{section.2}{}}
 \newlabel{eqn:hazard}{{1}{3}{Materials and methods}{equation.2.1}{}}
+\citation{friedman2001elements}
+\citation{zeng2019pathway}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Base learner space}{4}{subsection.2.1}}
 \newlabel{eqn:G}{{2}{4}{Base learner space}{equation.2.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Identify the optimal increment function}{4}{subsection.2.2}}
-\newlabel{sec:identify}{{2.2}{4}{Identify the optimal increment function}{subsection.2.2}{}}
 \citation{johnson2014learning}
-\newlabel{eqn:regloss}{{3}{5}{Identify the optimal increment function}{equation.2.3}{}}
-\newlabel{eqn:reduced}{{4}{5}{Identify the optimal increment function}{equation.2.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}The PKB algorithm}{5}{subsection.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}The optimal increment function identification}{5}{subsection.2.2}}
+\newlabel{sec:identify}{{2.2}{5}{The optimal increment function identification}{subsection.2.2}{}}
+\newlabel{eqn:regloss}{{3}{5}{The optimal increment function identification}{equation.2.3}{}}
+\newlabel{eqn:reduced}{{4}{5}{The optimal increment function identification}{equation.2.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}The PKB algorithm}{6}{subsection.2.3}}
 \citation{zeng2019pathway}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Simulation Study}{7}{section.3}}
 \newlabel{simu}{{3}{7}{Simulation Study}{section.3}{}}
@@ -66,25 +66,25 @@
 \citation{breiman2001random}
 \citation{friedman2001greedy}
 \citation{smola2004tutorial}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Simulation results for the regression model}{8}{subsection.3.1}}
 \citation{simon2011regularization}
 \citation{ishwaran2008random}
 \citation{binder2013coxboost}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Regression model results}{8}{subsection.3.1}}
 \citation{barretina2012cancer}
 \citation{kanehisa2000kegg}
 \citation{nishimura2001biocarta}
 \citation{ashburner2000gene,gene2016expansion}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Survival model results}{9}{subsection.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Simulation results for the survival model}{9}{subsection.3.2}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Applications}{9}{section.4}}
 \newlabel{results}{{4}{9}{Applications}{section.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}CCLE drug response prediction}{9}{subsection.4.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}The CCLE drug response prediction}{9}{subsection.4.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}The TCGA cancer patient survival prediction}{10}{subsection.4.2}}
 \citation{huang2008bioinformatics}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}TCGA cancer patient survival prediction}{10}{subsection.4.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Comparison with models using only clinical features}{10}{subsection.4.3}}
 \citation{zeng2019pathway}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Discussion}{11}{section.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Comparison with models using only clinical features}{11}{subsection.4.3}}
 \citation{warde2010genemania}
 \citation{ridgeway2006gbm}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Discussion}{12}{section.5}}
 \bibdata{mybib_DB}
 \bibcite{subramanian2005gene}{{1}{}{{}}{{}}}
 \bibcite{carlson2004mapping}{{2}{}{{}}{{}}}
@@ -124,18 +124,18 @@
 \bibcite{huang2008bioinformatics}{{36}{}{{}}{{}}}
 \bibcite{warde2010genemania}{{37}{}{{}}{{}}}
 \bibcite{ridgeway2006gbm}{{38}{}{{}}{{}}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Boxplots for pathway weights in the regression simulations. Each box represents the weights distribution for one pathway over ten PKB runs.}}{16}{figure.1}}
-\newlabel{fig:reg_weights}{{1}{16}{Boxplots for pathway weights in the regression simulations. Each box represents the weights distribution for one pathway over ten PKB runs}{figure.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Enrichment analysis on brain, kidney, and lung cancer datasets. X-axis represents pathways sorted by their p-values in the enrichment analysis. The blue dashed line corresponds to p-value 0.05. The pathways marked with red bars and stars are pathways with significant weights in PKB.}}{17}{figure.2}}
-\newlabel{fig:gsea}{{2}{17}{Enrichment analysis on brain, kidney, and lung cancer datasets. X-axis represents pathways sorted by their p-values in the enrichment analysis. The blue dashed line corresponds to p-value 0.05. The pathways marked with red bars and stars are pathways with significant weights in PKB}{figure.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Prediction performances from models with and without genomic features. The figure presents the prediction accuracy from three types of models on each dataset. The models include: PKB, linear model, and linear model with only clinical features as predictors. LM in the upper panel represents linear regression model, which reports the best results from LASSO, Ridge Regression, and ElasticNet. The methods with label ``clinical only" are trained without genomic features. The PKB boxes represent the best results from PKB-$L_1$ and PKB-$L_2$.}}{18}{figure.3}}
-\newlabel{fig:clin_noclin}{{3}{18}{Prediction performances from models with and without genomic features. The figure presents the prediction accuracy from three types of models on each dataset. The models include: PKB, linear model, and linear model with only clinical features as predictors. LM in the upper panel represents linear regression model, which reports the best results from LASSO, Ridge Regression, and ElasticNet. The methods with label ``clinical only" are trained without genomic features. The PKB boxes represent the best results from PKB-$L_1$ and PKB-$L_2$}{figure.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Cross-validated MSE of all methods on simulated regression datasets. $M$ represents the number of simulated pathways. For each dataset, MSE values from the top two methods are in boldface.}}{19}{table.1}}
-\newlabel{tab:simu_reg}{{1}{19}{Cross-validated MSE of all methods on simulated regression datasets. $M$ represents the number of simulated pathways. For each dataset, MSE values from the top two methods are in boldface}{table.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Cross-validated C-indices of all methods on simulated survival datasets. $M$ represents the number of simulated pathways. For each dataset, C-indices from the top two methods are highlighted in boldface.}}{20}{table.2}}
-\newlabel{tab:simu_surv}{{2}{20}{Cross-validated C-indices of all methods on simulated survival datasets. $M$ represents the number of simulated pathways. For each dataset, C-indices from the top two methods are highlighted in boldface}{table.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Cross-validated MSEs from all methods on CCLE drug response data. For each dataset, the two methods with the smallest MSEs are marked in boldface.}}{21}{table.3}}
-\newlabel{tab:ccle_mean}{{3}{21}{Cross-validated MSEs from all methods on CCLE drug response data. For each dataset, the two methods with the smallest MSEs are marked in boldface}{table.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Boxplots for pathway weights in the regression simulations. Each box represents the weights distribution for one pathway over ten PKB runs.}}{17}{figure.1}}
+\newlabel{fig:reg_weights}{{1}{17}{Boxplots for pathway weights in the regression simulations. Each box represents the weights distribution for one pathway over ten PKB runs}{figure.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Enrichment analysis on brain, kidney, and lung cancer datasets. X-axis represents pathways sorted by their p-values in the enrichment analysis. The blue dashed line corresponds to p-value 0.05. The pathways marked with red bars and stars are pathways with significant weights in PKB.}}{18}{figure.2}}
+\newlabel{fig:gsea}{{2}{18}{Enrichment analysis on brain, kidney, and lung cancer datasets. X-axis represents pathways sorted by their p-values in the enrichment analysis. The blue dashed line corresponds to p-value 0.05. The pathways marked with red bars and stars are pathways with significant weights in PKB}{figure.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Prediction performances from models with and without genomic features. The figure presents the prediction accuracy from three types of models on each dataset. The models include: PKB, linear model, and linear model with only clinical features as predictors. LM in the upper panel represents linear regression model, which reports the best results from LASSO, Ridge Regression, and ElasticNet. The methods with label ``clinical only" are trained without genomic features. The PKB boxes represent the best results from PKB-$L_1$ and PKB-$L_2$.}}{19}{figure.3}}
+\newlabel{fig:clin_noclin}{{3}{19}{Prediction performances from models with and without genomic features. The figure presents the prediction accuracy from three types of models on each dataset. The models include: PKB, linear model, and linear model with only clinical features as predictors. LM in the upper panel represents linear regression model, which reports the best results from LASSO, Ridge Regression, and ElasticNet. The methods with label ``clinical only" are trained without genomic features. The PKB boxes represent the best results from PKB-$L_1$ and PKB-$L_2$}{figure.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Cross-validated MSE of all methods on simulated regression datasets. $M$ represents the number of simulated pathways. For each dataset, MSE values from the top two methods are in boldface.}}{20}{table.1}}
+\newlabel{tab:simu_reg}{{1}{20}{Cross-validated MSE of all methods on simulated regression datasets. $M$ represents the number of simulated pathways. For each dataset, MSE values from the top two methods are in boldface}{table.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Cross-validated C-indices of all methods on simulated survival datasets. $M$ represents the number of simulated pathways. For each dataset, C-indices from the top two methods are highlighted in boldface.}}{21}{table.2}}
+\newlabel{tab:simu_surv}{{2}{21}{Cross-validated C-indices of all methods on simulated survival datasets. $M$ represents the number of simulated pathways. For each dataset, C-indices from the top two methods are highlighted in boldface}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Cross-validated MSEs from all methods on CCLE drug response data. For each dataset, the two methods with the smallest MSEs are marked in boldface.}}{22}{table.3}}
+\newlabel{tab:ccle_mean}{{3}{22}{Cross-validated MSEs from all methods on CCLE drug response data. For each dataset, the two methods with the smallest MSEs are marked in boldface}{table.3}{}}
 \providecommand\NAT@force@numbers{}\NAT@force@numbers
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Cross-validated C-index from all methods on CCLE drug response data. For each dataset, the two methods with the highest C-index are marked in boldface.}}{22}{table.4}}
-\newlabel{tab:tcga_mean}{{4}{22}{Cross-validated C-index from all methods on CCLE drug response data. For each dataset, the two methods with the highest C-index are marked in boldface}{table.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Cross-validated C-index from all methods on CCLE drug response data. For each dataset, the two methods with the highest C-index are marked in boldface.}}{23}{table.4}}
+\newlabel{tab:tcga_mean}{{4}{23}{Cross-validated C-index from all methods on CCLE drug response data. For each dataset, the two methods with the highest C-index are marked in boldface}{table.4}{}}
