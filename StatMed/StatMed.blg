@@ -11,45 +11,45 @@ Repeated entry---line 1363 of file mybib_DB.bib
  : @article{tibshirani1996regression
  :                                  ,
 I'm skipping whatever remains of this entry
-You've used 38 entries,
+You've used 39 entries,
             1791 wiz_defined-function locations,
-            695 strings with 11345 characters,
-and the built_in function-call counts, 9882 in all, are:
-= -- 855
-> -- 543
+            701 strings with 11548 characters,
+and the built_in function-call counts, 10148 in all, are:
+= -- 879
+> -- 557
 < -- 4
-+ -- 196
-- -- 158
-* -- 819
-:= -- 1621
-add.period$ -- 114
-call.type$ -- 38
-change.case$ -- 37
++ -- 201
+- -- 162
+* -- 843
+:= -- 1664
+add.period$ -- 117
+call.type$ -- 39
+change.case$ -- 38
 chr.to.int$ -- 0
-cite$ -- 38
-duplicate$ -- 370
-empty$ -- 878
-format.name$ -- 158
-if$ -- 2104
+cite$ -- 39
+duplicate$ -- 379
+empty$ -- 902
+format.name$ -- 162
+if$ -- 2160
 int.to.chr$ -- 0
-int.to.str$ -- 38
-missing$ -- 39
-newline$ -- 193
-num.names$ -- 38
-pop$ -- 49
+int.to.str$ -- 39
+missing$ -- 40
+newline$ -- 198
+num.names$ -- 39
+pop$ -- 50
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 165
+skip$ -- 168
 stack$ -- 0
-substring$ -- 791
-swap$ -- 68
+substring$ -- 816
+swap$ -- 69
 text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 103
-width$ -- 40
-write$ -- 420
+while$ -- 106
+width$ -- 41
+write$ -- 431
 (There were 2 error messages)
