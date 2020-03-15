@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  14 MAR 2020 23:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  15 MAR 2020 00:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -432,7 +432,7 @@ Underfull \hbox (badness 1286) in paragraph at lines 204--210
 Kavitha Venkate-san,
  []
 
-) [15] <simu_reg_weights.pdf, id=259, 650.43pt x 433.62pt>
+) [15] <simu_reg_weights.pdf, id=260, 650.43pt x 433.62pt>
 File: simu_reg_weights.pdf Graphic file (type pdf)
 
 <use simu_reg_weights.pdf>
@@ -443,19 +443,19 @@ Overfull \hbox (31.71106pt too wide) in paragraph at lines 259--260
  [][] 
  []
 
-[16 <./simu_reg_weights.pdf>] <GSEA_Brain.pdf, id=295, 722.7pt x 180.675pt>
+[16 <./simu_reg_weights.pdf>] <GSEA_Brain.pdf, id=296, 722.7pt x 180.675pt>
 File: GSEA_Brain.pdf Graphic file (type pdf)
 
 <use GSEA_Brain.pdf>
 Package pdftex.def Info: GSEA_Brain.pdf used on input line 266.
 (pdftex.def)             Requested size: 452.9679pt x 113.24138pt.
- <GSEA_Kidney.pdf, id=296, 722.7pt x 180.675pt>
+ <GSEA_Kidney.pdf, id=297, 722.7pt x 180.675pt>
 File: GSEA_Kidney.pdf Graphic file (type pdf)
 
 <use GSEA_Kidney.pdf>
 Package pdftex.def Info: GSEA_Kidney.pdf used on input line 267.
 (pdftex.def)             Requested size: 452.9679pt x 113.24138pt.
- <GSEA_Lung.pdf, id=297, 722.7pt x 180.675pt>
+ <GSEA_Lung.pdf, id=298, 722.7pt x 180.675pt>
 File: GSEA_Lung.pdf Graphic file (type pdf)
 
 <use GSEA_Lung.pdf>
@@ -469,13 +469,13 @@ usion: multiple pdfs with page group included in a single page
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./GSEA_Lung.pdf): PDF inclus
 ion: multiple pdfs with page group included in a single page
->] <PKB_LM_LMc.pdf, id=385, 722.7pt x 289.08pt>
+>] <PKB_LM_LMc.pdf, id=386, 722.7pt x 289.08pt>
 File: PKB_LM_LMc.pdf Graphic file (type pdf)
  <use PKB_LM_LMc.pdf>
 Package pdftex.def Info: PKB_LM_LMc.pdf used on input line 275.
 (pdftex.def)             Requested size: 430.31812pt x 172.12602pt.
 
-<PKB_LM_LMc_surv.pdf, id=386, 722.7pt x 289.08pt>
+<PKB_LM_LMc_surv.pdf, id=387, 722.7pt x 289.08pt>
 File: PKB_LM_LMc_surv.pdf Graphic file (type pdf)
  <use PKB_LM_LMc_surv.pdf>
 Package pdftex.def Info: PKB_LM_LMc_surv.pdf used on input line 276.
@@ -512,7 +512,7 @@ Here is how much of TeX's memory you used:
  10491 multiletter control sequences out of 15000+600000
  14286 words of font info for 54 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 28i,9n,28p,1276b,535s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 28i,9n,28p,1351b,535s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx6.pfb></
@@ -529,10 +529,10 @@ e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2
 017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/20
 17/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2017
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on StatMed.pdf (22 pages, 372009 bytes).
+Output written on StatMed.pdf (22 pages, 372188 bytes).
 PDF statistics:
- 581 PDF objects out of 1000 (max. 8388607)
- 351 compressed objects within 4 object streams
+ 582 PDF objects out of 1000 (max. 8388607)
+ 352 compressed objects within 4 object streams
  91 named destinations out of 1000 (max. 500000)
  135 words of extra memory for PDF output out of 10000 (max. 10000000)
 
