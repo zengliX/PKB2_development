@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  14 MAR 2020 20:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  14 MAR 2020 21:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -408,12 +408,6 @@ Overfull \hbox (0.39836pt too wide) in paragraph at lines 42--42
  [][] 
  []
 
-
-Overfull \hbox (3.72327pt too wide) in paragraph at lines 43--44
-[]\OT1/cmr/m/n/10.95 Predictive mod-el-ing based on ge-nomic data is of pro-fou
-nd im-por-tance for biomed-
- []
-
 [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
@@ -535,7 +529,7 @@ e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2
 017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/20
 17/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2017
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on StatMed.pdf (23 pages, 373075 bytes).
+Output written on StatMed.pdf (23 pages, 373461 bytes).
 PDF statistics:
  588 PDF objects out of 1000 (max. 8388607)
  357 compressed objects within 4 object streams
