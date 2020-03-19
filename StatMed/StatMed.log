@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  19 MAR 2020 11:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  19 MAR 2020 14:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -293,23 +293,88 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip50
 )
+(/usr/local/texlive/2017/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
+Package: algorithm2e 2013/01/06 v5.00 algorithms environments
+\c@AlgoLine=\count119
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\algocf@hangindent=\skip51
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/tools/xspace.sty
+Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/relsize/relsize.sty
+Package: relsize 2013/03/29 ver 4.1
+)
+********************************************************
+Package `algorithm2e' Release 5.1 -- october 19 2015 --
+- algorithm2e-announce@lirmm.fr mailing list for announcement about releases
+- algorithm2e-discussion@lirmm.fr mailing list for discussion about package
+subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
+- Author: Christophe Fiorio (christophe.fiorio@umontpellier.fr)
+********************************************************
+\skiptotal=\skip52
+\skiplinenumber=\skip53
+\skiprule=\skip54
+\skiphlne=\skip55
+\skiptext=\skip56
+\skiplength=\skip57
+\algomargin=\skip58
+\skipalgocfslide=\skip59
+\algowidth=\dimen140
+\inoutsize=\dimen141
+\inoutindent=\dimen142
+\interspacetitleruled=\dimen143
+\interspacealgoruled=\dimen144
+\interspacetitleboxruled=\dimen145
+\algocf@ruledwidth=\skip60
+\algocf@inoutbox=\box28
+\algocf@inputbox=\box29
+\AlCapSkip=\skip61
+\AlCapHSkip=\skip62
+\algoskipindent=\skip63
+\algocf@nlbox=\box30
+\algocf@hangingbox=\box31
+\algocf@untilbox=\box32
+\algocf@skipuntil=\skip64
+\algocf@capbox=\box33
+\algoheightruledefault=\skip65
+\algoheightrule=\skip66
+\algotitleheightruledefault=\skip67
+\algotitleheightrule=\skip68
+\c@algocfline=\count120
+\c@algocfproc=\count121
+\c@algocf=\count122
+\algocf@algoframe=\box34
+\algocf@algobox=\box35
+) (/usr/local/texlive/2017/texmf-dist/tex/latex/algorithms/algorithmic.sty
+Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
+\c@ALC@unique=\count123
+\c@ALC@line=\count124
+\c@ALC@rem=\count125
+\c@ALC@depth=\count126
+\ALC@tlm=\skip69
+\algorithmicindent=\skip70
+)
 (./StatMed.aux)
 \openout1 = `StatMed.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -347,16 +412,16 @@ LaTeX Font Info:    ... okay on input line 32.
 
 (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count119
-\scratchdimen=\dimen140
-\scratchbox=\box28
-\nofMPsegments=\count120
-\nofMParguments=\count121
+\scratchcounter=\count127
+\scratchdimen=\dimen146
+\scratchbox=\box36
+\nofMPsegments=\count128
+\nofMParguments=\count129
 \everyMPshowfont=\toks21
-\MPscratchCnt=\count122
-\MPscratchDim=\dimen141
-\MPnumerator=\count123
-\makeMPintoPDFobject=\count124
+\MPscratchCnt=\count130
+\MPscratchDim=\dimen147
+\MPnumerator=\count131
+\makeMPintoPDFobject=\count132
 \everyMPtoPDFconversion=\toks22
 ) (/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -375,8 +440,8 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\AtBeginShipoutBox=\box29
-Package hyperref Info: Link coloring OFF on input line 32.
+\AtBeginShipoutBox=\box37
+Package hyperref Info: Link coloring OFF on input line 33.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -384,84 +449,78 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count125
+\c@section@level=\count133
 )
-LaTeX Info: Redefining \ref on input line 32.
-LaTeX Info: Redefining \pageref on input line 32.
-LaTeX Info: Redefining \nameref on input line 32.
+LaTeX Info: Redefining \ref on input line 33.
+LaTeX Info: Redefining \pageref on input line 33.
+LaTeX Info: Redefining \nameref on input line 33.
 
 (./StatMed.out) (./StatMed.out)
 \@outlinefile=\write3
 \openout3 = `StatMed.out'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 42.
+LaTeX Font Info:    Try loading font information for U+msa on input line 43.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 42.
+LaTeX Font Info:    Try loading font information for U+msb on input line 43.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (0.39836pt too wide) in paragraph at lines 42--42
+Overfull \hbox (0.39836pt too wide) in paragraph at lines 43--43
  [][] 
  []
 
 [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-[2] [3] [4] [5] [6]
-Overfull \hbox (7.15706pt too wide) detected at line 172
-\OML/cmm/m/it/12 F\OT1/cmr/m/n/12 (\OT1/cmr/bx/n/12 x\OML/cmm/m/it/12 ; \OT1/cm
-r/bx/n/12 z\OT1/cmr/m/n/12 ) = \OML/cmm/m/it/12 z[] \OMS/cmsy/m/n/12 ^^@ \OT1/c
-mr/m/n/12 3\OML/cmm/m/it/12 z[] \OT1/cmr/m/n/12 + 3\OML/cmm/m/it/12 z[] \OMS/cm
-sy/m/n/12 ^^@ \OML/cmm/m/it/12 z[] \OT1/cmr/m/n/12 + 6 [](0\OML/cmm/m/it/12 :\O
-T1/cmr/m/n/12 5\OML/cmm/m/it/12 x[] \OT1/cmr/m/n/12 + 0\OML/cmm/m/it/12 :\OT1/c
-mr/m/n/12 5\OML/cmm/m/it/12 x[]\OT1/cmr/m/n/12 ) + 2 [](\OMS/cmsy/m/n/12 j[][] 
-^^@ [][]j\OT1/cmr/m/n/12 ) + 2([][] \OMS/cmsy/m/n/12 ^^@ [][]\OT1/cmr/m/n/12 )
+[2] [3] [4]
+Overfull \hbox (35.64963pt too wide) detected at line 159
+[][] 
  []
 
-[7] [8] [9] [10] [11] [12] (./StatMed.bbl [13]
+[5] [6] [7] [8] [9] [10] [11] [12] [13] (./StatMed.bbl [14]
 Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no ™ in font cmr12!
- [14]
-Underfull \hbox (badness 1286) in paragraph at lines 204--210
+ [15]
+Underfull \hbox (badness 1286) in paragraph at lines 187--193
 []\OT1/cmr/m/n/12 Jordi Bar-retina, Gior-dano Capon-i-gro, Nico-las Stran-sky, 
 Kavitha Venkate-san,
  []
 
-) [15] <simu_reg_weights.pdf, id=260, 650.43pt x 433.62pt>
+) [16] <simu_reg_weights.pdf, id=265, 650.43pt x 433.62pt>
 File: simu_reg_weights.pdf Graphic file (type pdf)
 
 <use simu_reg_weights.pdf>
-Package pdftex.def Info: simu_reg_weights.pdf used on input line 259.
+Package pdftex.def Info: simu_reg_weights.pdf used on input line 263.
 (pdftex.def)             Requested size: 484.67896pt x 323.13pt.
 
-Overfull \hbox (31.71106pt too wide) in paragraph at lines 259--260
+Overfull \hbox (31.71106pt too wide) in paragraph at lines 263--264
  [][] 
  []
 
-[16 <./simu_reg_weights.pdf>] <GSEA_Brain.pdf, id=296, 722.7pt x 180.675pt>
+[17 <./simu_reg_weights.pdf>] <GSEA_Brain.pdf, id=301, 722.7pt x 180.675pt>
 File: GSEA_Brain.pdf Graphic file (type pdf)
 
 <use GSEA_Brain.pdf>
-Package pdftex.def Info: GSEA_Brain.pdf used on input line 266.
+Package pdftex.def Info: GSEA_Brain.pdf used on input line 270.
 (pdftex.def)             Requested size: 452.9679pt x 113.24138pt.
- <GSEA_Kidney.pdf, id=297, 722.7pt x 180.675pt>
+ <GSEA_Kidney.pdf, id=302, 722.7pt x 180.675pt>
 File: GSEA_Kidney.pdf Graphic file (type pdf)
 
 <use GSEA_Kidney.pdf>
-Package pdftex.def Info: GSEA_Kidney.pdf used on input line 267.
+Package pdftex.def Info: GSEA_Kidney.pdf used on input line 271.
 (pdftex.def)             Requested size: 452.9679pt x 113.24138pt.
- <GSEA_Lung.pdf, id=298, 722.7pt x 180.675pt>
+ <GSEA_Lung.pdf, id=303, 722.7pt x 180.675pt>
 File: GSEA_Lung.pdf Graphic file (type pdf)
 
 <use GSEA_Lung.pdf>
-Package pdftex.def Info: GSEA_Lung.pdf used on input line 268.
+Package pdftex.def Info: GSEA_Lung.pdf used on input line 272.
 (pdftex.def)             Requested size: 452.9679pt x 113.24138pt.
- [17 <./GSEA_Brain.pdf> <./GSEA_Kidney.pdf
+ [18 <./GSEA_Brain.pdf> <./GSEA_Kidney.pdf
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./GSEA_Kidney.pdf): PDF incl
 usion: multiple pdfs with page group included in a single page
@@ -469,70 +528,74 @@ usion: multiple pdfs with page group included in a single page
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./GSEA_Lung.pdf): PDF inclus
 ion: multiple pdfs with page group included in a single page
->] <PKB_LM_LMc.pdf, id=386, 722.7pt x 289.08pt>
+>] <PKB_LM_LMc.pdf, id=391, 722.7pt x 289.08pt>
 File: PKB_LM_LMc.pdf Graphic file (type pdf)
  <use PKB_LM_LMc.pdf>
-Package pdftex.def Info: PKB_LM_LMc.pdf used on input line 275.
+Package pdftex.def Info: PKB_LM_LMc.pdf used on input line 279.
 (pdftex.def)             Requested size: 430.31812pt x 172.12602pt.
 
-<PKB_LM_LMc_surv.pdf, id=387, 722.7pt x 289.08pt>
+<PKB_LM_LMc_surv.pdf, id=392, 722.7pt x 289.08pt>
 File: PKB_LM_LMc_surv.pdf Graphic file (type pdf)
  <use PKB_LM_LMc_surv.pdf>
-Package pdftex.def Info: PKB_LM_LMc_surv.pdf used on input line 276.
+Package pdftex.def Info: PKB_LM_LMc_surv.pdf used on input line 280.
 (pdftex.def)             Requested size: 430.31812pt x 172.12602pt.
 
-[18 <./PKB_LM_LMc.pdf> <./PKB_LM_LMc_surv.pdf
+[19 <./PKB_LM_LMc.pdf> <./PKB_LM_LMc_surv.pdf
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./PKB_LM_LMc_surv.pdf): PDF 
 inclusion: multiple pdfs with page group included in a single page
->] [19]
-Overfull \hbox (8.54387pt too wide) in paragraph at lines 303--313
+>] [20]
+Overfull \hbox (8.54387pt too wide) in paragraph at lines 307--317
  [][] 
  []
 
-[20] [21]
-Overfull \hbox (17.12308pt too wide) in paragraph at lines 341--350
+[21] [22]
+Overfull \hbox (17.12308pt too wide) in paragraph at lines 345--354
  [][] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 353.
-[22]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 353.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 357.
+[23]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 357.
  (./StatMed.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 353.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 353.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 357.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 357.
 Package rerunfilecheck Info: File `StatMed.out' has not changed.
 (rerunfilecheck)             Checksum: 3034FA4E60FA1121BDED186620A2BD5C;933.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 353.
- ) 
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 357.
+ )
+(\end occurred inside a group at level 1)
+
+### simple group (level 1) entered at line 1061 ({)
+### bottom level 
 Here is how much of TeX's memory you used:
- 7111 strings out of 492995
- 103465 string characters out of 6132704
- 199064 words of memory out of 5000000
- 10491 multiletter control sequences out of 15000+600000
+ 8175 strings out of 492995
+ 120138 string characters out of 6132704
+ 233449 words of memory out of 5000000
+ 11538 multiletter control sequences out of 15000+600000
  14286 words of font info for 54 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 28i,9n,28p,1350b,535s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
-></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx6.pfb></
-usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></us
-r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr
-/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/
-local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/l
-ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/loc
-al/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local
-/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/t
-exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/tex
-live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texliv
-e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2
-017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/20
-17/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2017
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on StatMed.pdf (22 pages, 372378 bytes).
+ 28i,11n,30p,1350b,2277s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmbx6.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmbx8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+ex10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmm
+i10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi
+12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6
+.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.p
+fb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb
+></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><
+/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></us
+r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/l
+ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
+cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/loca
+l/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on StatMed.pdf (23 pages, 372849 bytes).
 PDF statistics:
- 582 PDF objects out of 1000 (max. 8388607)
- 352 compressed objects within 4 object streams
+ 587 PDF objects out of 1000 (max. 8388607)
+ 356 compressed objects within 4 object streams
  91 named destinations out of 1000 (max. 500000)
  135 words of extra memory for PDF output out of 10000 (max. 10000000)
 
