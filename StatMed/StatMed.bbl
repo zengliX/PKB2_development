@@ -1,5 +1,30 @@
 \begin{thebibliography}{10}
 
+\bibitem{reuter2015high}
+Jason~A Reuter, Damek~V Spacek, and Michael~P Snyder.
+\newblock High-throughput sequencing technologies.
+\newblock {\em Molecular cell}, 58(4):586--597, 2015.
+
+\bibitem{kim2013gwas}
+Hyun~Seok Kim, John~D Minna, and Michael~A White.
+\newblock Gwas meets tcga to illuminate mechanisms of cancer predisposition.
+\newblock {\em Cell}, 152(3):387--389, 2013.
+
+\bibitem{sanchez2018oncogenic}
+Francisco Sanchez-Vega, Marco Mina, Joshua Armenia, Walid~K Chatila, Augustin
+  Luna, Konnor~C La, Sofia Dimitriadoy, David~L Liu, Havish~S Kantheti, Sadegh
+  Saghafinia, et~al.
+\newblock Oncogenic signaling pathways in the cancer genome atlas.
+\newblock {\em Cell}, 173(2):321--337, 2018.
+
+\bibitem{liu2018integrated}
+Jianfang Liu, Tara Lichtenberg, Katherine~A Hoadley, Laila~M Poisson,
+  Alexander~J Lazar, Andrew~D Cherniack, Albert~J Kovatich, Christopher~C Benz,
+  Douglas~A Levine, Adrian~V Lee, et~al.
+\newblock An integrated tcga pan-cancer clinical data resource to drive
+  high-quality survival outcome analytics.
+\newblock {\em Cell}, 173(2):400--416, 2018.
+
 \bibitem{subramanian2005gene}
 Aravind Subramanian, Pablo Tamayo, Vamsi~K Mootha, Sayan Mukherjee, Benjamin~L
   Ebert, Michael~A Gillette, Amanda Paulovich, Scott~L Pomeroy, Todd~R Golub,
@@ -149,6 +174,20 @@ Harald Binder.
   survival endpoint or competing risks.
 \newblock {\em R package version}, 1, 2013.
 
+\bibitem{barretina2012cancer}
+Jordi Barretina, Giordano Caponigro, Nicolas Stransky, Kavitha Venkatesan,
+  Adam~A Margolin, Sungjoon Kim, Christopher~J Wilson, Joseph Leh{\'a}r,
+  Gregory~V Kryukov, Dmitriy Sonkin, et~al.
+\newblock The cancer cell line encyclopedia enables predictive modelling of
+  anticancer drug sensitivity.
+\newblock {\em Nature}, 483(7391):603, 2012.
+
+\bibitem{tomczak2015tcga}
+K.~Tomczak, P.~Czerwi?ska, and M.~Wiznerowicz.
+\newblock {{T}he {C}ancer {G}enome {A}tlas ({T}{C}{G}{A}): an immeasurable
+  source of knowledge}.
+\newblock {\em Contemp Oncol (Pozn)}, 19(1A):68--77, 2015.
+
 \bibitem{li2005boosting}
 Hongzhe Li and Yihui Luan.
 \newblock Boosting proportional hazards models using smoothing splines, with
@@ -183,14 +222,6 @@ Alex~J Smola and Bernhard Sch{\"o}lkopf.
 \newblock A tutorial on support vector regression.
 \newblock {\em Statistics and computing}, 14(3):199--222, 2004.
 
-\bibitem{barretina2012cancer}
-Jordi Barretina, Giordano Caponigro, Nicolas Stransky, Kavitha Venkatesan,
-  Adam~A Margolin, Sungjoon Kim, Christopher~J Wilson, Joseph Leh{\'a}r,
-  Gregory~V Kryukov, Dmitriy Sonkin, et~al.
-\newblock The cancer cell line encyclopedia enables predictive modelling of
-  anticancer drug sensitivity.
-\newblock {\em Nature}, 483(7391):603, 2012.
-
 \bibitem{kanehisa2000kegg}
 Minoru Kanehisa and Susumu Goto.
 \newblock Kegg: kyoto encyclopedia of genes and genomes.
@@ -213,12 +244,6 @@ Michael Ashburner, Catherine~A Ball, Judith~A Blake, David Botstein, Heather
 Gene~Ontology Consortium.
 \newblock Expansion of the gene ontology knowledgebase and resources.
 \newblock {\em Nucleic acids research}, 45(D1):D331--D338, 2016.
-
-\bibitem{huang2008bioinformatics}
-Da~Wei Huang, Brad~T Sherman, and Richard~A Lempicki.
-\newblock Bioinformatics enrichment tools: paths toward the comprehensive
-  functional analysis of large gene lists.
-\newblock {\em Nucleic acids research}, 37(1):1--13, 2008.
 
 \bibitem{warde2010genemania}
 David Warde-Farley, Sylva~L Donaldson, Ovi Comes, Khalid Zuberi, Rashad

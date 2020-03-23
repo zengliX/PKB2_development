@@ -1,55 +1,46 @@
-This is BibTeX, Version 0.99d (TeX Live 2017)
-Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+This is BibTeX, Version 0.99d (TeX Live 2016)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: StatMed.aux
 The style file: unsrt.bst
 Database file #1: mybib_DB.bib
-Repeated entry---line 1352 of file mybib_DB.bib
- : @article{zou2005regularization
- :                               ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 1363 of file mybib_DB.bib
- : @article{tibshirani1996regression
- :                                  ,
-I'm skipping whatever remains of this entry
-You've used 38 entries,
+You've used 42 entries,
             1791 wiz_defined-function locations,
-            696 strings with 11350 characters,
-and the built_in function-call counts, 9825 in all, are:
-= -- 853
-> -- 534
+            720 strings with 12273 characters,
+and the built_in function-call counts, 11052 in all, are:
+= -- 950
+> -- 626
 < -- 4
-+ -- 193
-- -- 155
-* -- 811
-:= -- 1610
-add.period$ -- 114
-call.type$ -- 38
-change.case$ -- 37
++ -- 225
+- -- 183
+* -- 930
+:= -- 1819
+add.period$ -- 126
+call.type$ -- 42
+change.case$ -- 41
 chr.to.int$ -- 0
-cite$ -- 38
-duplicate$ -- 370
-empty$ -- 876
-format.name$ -- 155
-if$ -- 2094
+cite$ -- 42
+duplicate$ -- 406
+empty$ -- 973
+format.name$ -- 183
+if$ -- 2344
 int.to.chr$ -- 0
-int.to.str$ -- 38
-missing$ -- 39
-newline$ -- 193
-num.names$ -- 38
-pop$ -- 49
+int.to.str$ -- 42
+missing$ -- 43
+newline$ -- 213
+num.names$ -- 42
+pop$ -- 53
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 165
+skip$ -- 177
 stack$ -- 0
-substring$ -- 785
-swap$ -- 68
+substring$ -- 888
+swap$ -- 72
 text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 103
-width$ -- 40
-write$ -- 420
-(There were 2 error messages)
+while$ -- 115
+width$ -- 44
+write$ -- 464
