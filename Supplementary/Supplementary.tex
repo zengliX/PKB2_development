@@ -157,6 +157,13 @@
 	\end{itemize}
 \newpage
 \section*{Appendix E. Pathway enrichment analysis in TCGA survival datasets}\label{sec:gsea}
+The pathway enrichment analysis was performed based on the following steps:
+\begin{itemize}
+	\item[1.] For each gene, we performed a Cox regression using the clinical features and the gene's expression as predictors. P-values for each gene were calculated from the Cox models.
+	\item[2.] We chose $20\%$ genes with the smallest p-values as relevant genes to patients' survival times. 
+	\item[3.] The relevant genes were used to perform Fisher's exact test-based enrichment analysis \cite{huang2008bioinformatics} on the pathway database (KEGG, GO-BP, or Biocarta) used in the PKB model that achieved the highest accuracy. An enrichment p-value was calculated for each pathway.
+\end{itemize}
+
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=\textwidth]{GSEA_Stomach.pdf}\\ \vspace{-3mm}

@@ -6,4 +6,10 @@ Li~Zeng, Zhaolong Yu, and Hongyu Zhao.
   using genomic data.
 \newblock {\em Genes}, 10(9):670, 2019.
 
+\bibitem{huang2008bioinformatics}
+Da~Wei Huang, Brad~T Sherman, and Richard~A Lempicki.
+\newblock Bioinformatics enrichment tools: paths toward the comprehensive
+  functional analysis of large gene lists.
+\newblock {\em Nucleic acids research}, 37(1):1--13, 2008.
+
 \end{thebibliography}
