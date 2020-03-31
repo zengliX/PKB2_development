@@ -40,7 +40,7 @@
 	\newpage
 	\setcounter{page}{1}
 	\section*{Appendix A. Calculation of gradient and Hessian matrix} \label{sec:calcu}
-	In this section, we provide close form expressions for calculation of the gradients $\grad{L}{F}$ and Hessian matrices $\hess{F}$ for classification and survival model, as needed in Section 2.1 in the main text.
+	In this section, we provide closed form expressions for calculating the gradients $\grad{L}{F}$ and Hessian matrices $\hess{F}$ for classification and survival model, as needed in Section 2.1 in the main text.
 	
 	\noindent $\bullet$ Classification model:
 	\begin{eqnarray*}
@@ -60,10 +60,10 @@
 	\end{eqnarray*}
 	
 	
-	Since the regression model's loss function is quadratic itself, we do not need to calculate the gradient or Hessian matrix to make approximation. As a result of using the negative log partial likelihood as loss in survival model, the loss for each sample is dependent on the $F(\bd{x}, \bd{z})$ values of other samples, which leads to non-zero off-diagonal values in the Hessian matrix. It is more complex as compared to the diagonal Hessian matrix in classification problem, and therefore causing the algorithm to be slower than classification as well.
+	Since the regression model's loss function is quadratic itself, we do not need to calculate the gradient or Hessian matrix to make approximation. As a result of using the negative log partial likelihood as loss in survival model, the loss for each sample is dependent on the $F(\bd{x}, \bd{z})$ values of other samples, which leads to non-zero off-diagonal values in the Hessian matrix. It is more complex compared to the diagonal Hessian matrix in classification problem, and therefore causing the algorithm to be slower than classification as well.
 	\newpage
 	\section*{Appendix B. Proof of the reduction to LASSO and Ridge Regression} \label{sec:proof}
-	In this section, we prove the following result about Equation (3) as stated in Section 2.1:
+	In this section, we prove the following result on Equation (3) as stated in Section 2.1:
 	
 	By applying transformation
 	\begin{eqnarray*}
@@ -75,7 +75,7 @@
 	\min_{\beta} \|\tilde{\eta} + \tilde{K}_m \beta \|_2^2 + \lambda \Omega(f).
 	\end{equation*}
 	
-	Because the penalty term $\Omega(f)$ in Equation (3) does not involve $\gamma$, we can fix $\beta$ and solve $\gamma$ as a weighted least square problem:
+	Because the penalty term $\Omega(f)$ in Equation (3) does not involve $\gamma$, we can fix $\beta$ and solve $\gamma$ as a weighted least squares problem:
 	$$\gamma = -(Z^T\hess{F}Z)^{-1}Z^T\hess{F}(K_m\beta + \hess{F}^{-1}\grad{L}{F})$$
 	Plugging it back to Equation (3), we can get the following reduction:
 	\begin{eqnarray*}
@@ -106,7 +106,7 @@
 	\newpage
 	\section*{Appendix D. Parameter tuning}
 	\label{sec:tune}
-	The usage of most methods in this article involves tuning of certain model parameters. In general, we generated a series of candidate values for each parameter, and considered all possible combinations among them. Cross-validation was utilized to determine the optimal combination and corresponding prediction accuracy.
+	The usage of most methods in this article involves tuning of certain model parameters. In general, we generated a series of candidate values for each parameter, and considered all possible combinations among them. Cross-validation was used to determine the optimal combination and corresponding prediction accuracy.
 	
 	\begin{itemize}
 		\item PKB\\
