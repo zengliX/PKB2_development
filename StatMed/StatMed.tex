@@ -255,10 +255,10 @@ We have explored this idea using gene weights calculated from GeneMANIA, \citep{
 
 The current PKB algorithm can also be improved for better computational efficiency. The 3-fold cross-validation step is the most time and space-consuming part of the model, since it involves running three boosting processes at the same time. It is possible to adopt the notion of out-of-bag (OOB) samples from RandomForest and GBR to calculate testing loss in just one boosting process. In each iteration, instead of using all the samples, we draw a bootstrap sample to train the increment function. The samples not selected in the training set are treated as OOB samples, on which testing loss can be computed. It has been reported that OOB often underestimates the optimal number of iterations, \citep{ridgeway2006gbm} but brings the advantage of efficient model training, especially when the dataset is large.
 
-A Python software implementing the PKB algorithms is available from Github repository: \href{https://github.com/zengliX/PKB}{https://github.com/zengliX/PKB2}. 
+A Python software implementing the PKB algorithms is available from Github repository: \href{https://github.com/zengliX/PKB}{https://github.com/zengliX/PKB2}. The data that support the findings of this study are available from the corresponding author upon reasonable request.
 
 
-AcknowledgmentsThis work was supported in part by NIH grants P50 CA196530 and P30 CA016359.
+\section*{Acknowledgment}This work was supported in part by NIH grants P50 CA196530 and P30 CA016359.
 
 \newpage
 	\bibliography{mybib_DB}
